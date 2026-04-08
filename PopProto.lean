@@ -16,3 +16,4 @@ import PopProto.Convergence.DeltaF
 import PopProto.Convergence.Supermartingale
 import PopProto.Convergence.RegionBounds
 import PopProto.Convergence.Drift
+import PopProto.Convergence.Expected
