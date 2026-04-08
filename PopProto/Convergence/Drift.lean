@@ -332,6 +332,124 @@ theorem weighted_drift_v (c : Config n) :
   simp only [term_v_xb, term_v_xy, term_v_yx, term_v_yb]
   ring
 
+/-! ### Individual weighted terms for potentialLargeY (symmetric to X) -/
+
+private theorem term_potLargeY_xb (c : Config n) :
+    (c.interactionCount x b : ℤ) *
+    (↑(c.stepOrSelf x b).potentialLargeY - ↑c.potentialLargeY) =
+    2 * ↑c.x_count * ↑c.b_count := by
+  simp only [interactionCount, countOf, show (x : State) ≠ b from by decide,
+             ite_false, stepOrSelf, step, potentialLargeY]
+  split_ifs with h
+  · obtain ⟨_, hb⟩ := h
+    simp only [Option.getD_some]; push_cast
+    rw [show (↑(c.b_count - 1) : ℤ) = ↑c.b_count - 1 from Nat.cast_sub hb]; ring
+  · simp only [Option.getD_none, sub_self, mul_zero]
+    have : c.x_count = 0 ∨ c.b_count = 0 := by
+      by_contra hc; push_neg at hc; exact h ⟨by omega, by omega⟩
+    rcases this with h | h <;> simp [h]
+
+private theorem term_potLargeY_xy (c : Config n) :
+    (c.interactionCount x y : ℤ) *
+    (↑(c.stepOrSelf x y).potentialLargeY - ↑c.potentialLargeY) =
+    ↑c.x_count * ↑c.y_count := by
+  simp only [interactionCount, countOf, show (x : State) ≠ y from by decide,
+             ite_false, stepOrSelf, step, potentialLargeY]
+  split_ifs with h
+  · simp only [Option.getD_some]; push_cast; ring
+  · simp only [Option.getD_none, sub_self, mul_zero]
+    have : c.x_count = 0 ∨ c.y_count = 0 := by
+      by_contra hc; push_neg at hc; exact h ⟨by omega, by omega⟩
+    rcases this with h | h <;> simp [h]
+
+private theorem term_potLargeY_yx (c : Config n) :
+    (c.interactionCount y x : ℤ) *
+    (↑(c.stepOrSelf y x).potentialLargeY - ↑c.potentialLargeY) =
+    -(2 * ↑c.y_count * ↑c.x_count) := by
+  simp only [interactionCount, countOf, show (y : State) ≠ x from by decide,
+             ite_false, stepOrSelf, step, potentialLargeY]
+  split_ifs with h
+  · obtain ⟨_, hx⟩ := h
+    simp only [Option.getD_some]; push_cast
+    rw [show (↑(c.x_count - 1) : ℤ) = ↑c.x_count - 1 from Nat.cast_sub hx]; ring
+  · simp only [Option.getD_none, sub_self, mul_zero]
+    have : c.y_count = 0 ∨ c.x_count = 0 := by
+      by_contra hc; push_neg at hc; exact h ⟨by omega, by omega⟩
+    rcases this with h | h <;> simp [h]
+
+private theorem term_potLargeY_yb (c : Config n) :
+    (c.interactionCount y b : ℤ) *
+    (↑(c.stepOrSelf y b).potentialLargeY - ↑c.potentialLargeY) =
+    -(↑c.y_count * ↑c.b_count) := by
+  simp only [interactionCount, countOf, show (y : State) ≠ b from by decide,
+             ite_false, stepOrSelf, step, potentialLargeY]
+  split_ifs with h
+  · obtain ⟨_, hb⟩ := h
+    simp only [Option.getD_some]; push_cast
+    rw [show (↑(c.b_count - 1) : ℤ) = ↑c.b_count - 1 from Nat.cast_sub hb]; ring
+  · simp only [Option.getD_none, sub_self, mul_zero]
+    have : c.y_count = 0 ∨ c.b_count = 0 := by
+      by_contra hc; push_neg at hc; exact h ⟨by omega, by omega⟩
+    rcases this with h | h <;> simp [h]
+
+/-- **Bridge theorem for potentialLargeY**: The weighted sum of `potentialLargeY`
+    changes over all interactions equals `-(y(b+x) - 2xb)`. -/
+theorem weighted_drift_potentialLargeY (c : Config n) :
+    (Finset.univ.sum fun s₁ : State =>
+      Finset.univ.sum fun s₂ : State =>
+        (c.interactionCount s₁ s₂ : ℤ) *
+        (↑(c.stepOrSelf s₁ s₂).potentialLargeY - ↑c.potentialLargeY)) =
+    -((c.y_count : ℤ) * (↑c.b_count + ↑c.x_count) -
+      2 * ↑c.x_count * ↑c.b_count) := by
+  simp only [sum_state_eq]
+  rw [stepOrSelf_xx, stepOrSelf_bb, stepOrSelf_yy, stepOrSelf_bx, stepOrSelf_by']
+  simp only [sub_self, mul_zero, zero_add, add_zero]
+  simp only [term_potLargeY_xb, term_potLargeY_xy, term_potLargeY_yx, term_potLargeY_yb]
+  ring
+
+/-! ### Combined drift inequalities
+
+These theorems combine the bridge theorems (weighted drift = algebraic expression)
+with the algebraic drift bounds (multiplicative drift coefficient) to obtain
+the key integer inequality: the weighted drift gives sufficient decrease
+relative to the potential. Dividing both sides by `totalPairs(n) * Φ(c)` would
+give the multiplicative drift coefficient `δ`. -/
+
+/-- **Large-x combined**: weighted drift of potentialLargeX satisfies the
+    multiplicative drift bound `64·(-ΔΦ) ≥ 13n·Φ`. -/
+theorem expected_decrease_potentialLargeX (c : Config n) (hx : c.inLargeX) (hn : n ≥ 2)
+    (hby : c.b_count + c.y_count ≥ 1) :
+    64 * (-(Finset.univ.sum fun s₁ : State =>
+      Finset.univ.sum fun s₂ : State =>
+        (c.interactionCount s₁ s₂ : ℤ) *
+        (↑(c.stepOrSelf s₁ s₂).potentialLargeX - ↑c.potentialLargeX))) ≥
+    13 * (n : ℤ) * ↑c.potentialLargeX := by
+  rw [weighted_drift_potentialLargeX]; simp only [neg_neg, potentialLargeX]
+  exact multiplicative_drift_largeX c hx hn hby
+
+/-- **Large-y combined**: weighted drift of potentialLargeY satisfies the
+    multiplicative drift bound `64·(-ΔΦ) ≥ 13n·Φ`. -/
+theorem expected_decrease_potentialLargeY (c : Config n) (hy : c.inLargeY) (hn : n ≥ 2)
+    (hbx : c.b_count + c.x_count ≥ 1) :
+    64 * (-(Finset.univ.sum fun s₁ : State =>
+      Finset.univ.sum fun s₂ : State =>
+        (c.interactionCount s₁ s₂ : ℤ) *
+        (↑(c.stepOrSelf s₁ s₂).potentialLargeY - ↑c.potentialLargeY))) ≥
+    13 * (n : ℤ) * ↑c.potentialLargeY := by
+  rw [weighted_drift_potentialLargeY]; simp only [neg_neg, potentialLargeY]
+  exact multiplicative_drift_largeY c hy hn hbx
+
+/-- **Large-b combined**: weighted drift of v satisfies the multiplicative
+    drift bound `16·Δv ≥ 13n·v` (v increases in large-b). -/
+theorem expected_increase_v (c : Config n) (hb : c.inLargeB) (hn : n ≥ 2) :
+    16 * (Finset.univ.sum fun s₁ : State =>
+      Finset.univ.sum fun s₂ : State =>
+        (c.interactionCount s₁ s₂ : ℤ) *
+        (↑(c.stepOrSelf s₁ s₂).v - ↑c.v)) ≥
+    13 * (n : ℤ) * ↑c.v := by
+  rw [weighted_drift_v]
+  exact multiplicative_drift_largeB c hb hn
+
 /-! ### Convergence time constants
 
 From the multiplicative drift theorem with drift `δ ≥ 13/(64(n-1))`
@@ -347,9 +465,17 @@ central region, each contributing O(n log n). The total is O(n log n).
 Specifically (Theorem 1 of AAE 2008):
   Pr[τ* ≥ 6769n·ln(n+2) + 6773cn·ln n + 2552n] ≤ 5n⁻ᶜ
 
-The algebraic bounds proven here (all zero sorry) give the coefficients.
-The probabilistic conclusion requires the measure-theoretic machinery
-for supermartingales and stopping times.
+**Formalized (zero sorry):**
+1. Algebraic drift bounds for all regions
+2. Bridge theorems: weighted drift = algebraic expression via stepOrSelf
+3. Combined inequalities: multiplicative drift in integer form
+4. Region classification and mutual exclusivity
+
+**Remaining (measure theory gap):**
+- Express weighted ℤ-drift as ℝ-valued PMF expectation
+- Construct the supermartingale M_t
+- Apply multiplicative drift theorem / Doob's inequality
+- Stopping times and union bound → Theorem 1
 -/
 
 /-- **Region coverage**: every configuration is in exactly one region
