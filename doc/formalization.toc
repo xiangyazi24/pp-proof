@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}The Protocol}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}States and Transition Rules}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Configurations}{2}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Lean Formalization Strategy}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Design Decisions}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Project Structure}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Type Definitions}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}State}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Transition Function}{3}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Configuration}{4}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Step Function}{4}{section.5}%
+\contentsline {section}{\numberline {6}Invariant Proofs}{4}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Population Size}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}One-Way Property}{5}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Gap Bounded Change}{5}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Absorbing States}{5}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Last Agent Survival}{5}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Probabilistic Framework}{5}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Uniform Random Scheduler}{5}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}One-Step Distribution}{6}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Markov Chain (Stub)}{6}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Proof Techniques}{6}{section.8}%
+\contentsline {section}{\numberline {9}Challenges and Future Work}{6}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Challenges Encountered}{6}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Future Work}{7}{subsection.9.2}%

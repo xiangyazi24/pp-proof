@@ -1,0 +1,502 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinelanguage{Lean4}{
+  morekeywords={def,theorem,lemma,structure,inductive,namespace,end,
+    where,open,import,variable,section,match,with,if,then,else,
+    deriving,instance,noncomputable,set_option,sorry,by,have,let,
+    unfold,cases,simp,omega,obtain,intro,exact,rfl,some,none},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[n]{/-}{-/},
+  morestring=[b]",
+  literate={→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↦}{{$\mapsto$}}1
+           {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {≠}{{$\ne$}}1
+           {∧}{{$\wedge$}}1 {∨}{{$\vee$}}1 {¬}{{$\neg$}}1
+           {∃}{{$\exists$}}1 {∀}{{$\forall$}}1
+           {ℕ}{{$\mathbb{N}$}}1 {ℤ}{{$\mathbb{Z}$}}1
+           {×}{{$\times$}}1,
+}
+
+\lstset{
+  language=Lean4,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  xleftmargin=2em,
+  aboveskip=1em,
+  belowskip=1em,
+}
+
+\title{Formalizing the 3-State Approximate Majority\\Population Protocol in Lean~4}
+\author{}
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a formalization in Lean~4 (with Mathlib) of the 3-state approximate
+majority population protocol introduced by Angluin, Aspnes, and Eisenstat
+(2008).  The formalization covers the protocol's state space, deterministic
+transition function, configuration representation with a built-in population
+size invariant, single-step dynamics, and several key structural invariants
+proved by exhaustive case analysis.  We also lay the groundwork for a
+probabilistic treatment by defining the uniform random scheduler as a
+probability mass function.  All deterministic results are machine-checked
+without axioms; the probabilistic components include clearly marked stubs
+for future work.
+\end{abstract}
+
+\tableofcontents
+
+%% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+Population protocols~\cite{AngluinADFP2006} model distributed computation
+among a collection of finite-state agents that interact in pairs chosen by
+an adversary or random scheduler.  The \emph{approximate majority} protocol
+of Angluin, Aspnes, and Eisenstat~\cite{AngluinAE2008} achieves consensus
+using only \textbf{three states}---opinion~$x$, blank~$b$, and
+opinion~$y$---with expected convergence time $O(n \log n)$ under a uniform
+random scheduler.
+
+This document describes a Lean~4 formalization of the protocol's core
+definitions, deterministic invariants, and the beginnings of a probabilistic
+framework.  The formalization is structured as a Lake project called
+\texttt{PopProto} with Mathlib as a dependency.
+
+%% ============================================================
+\section{The Protocol}
+\label{sec:protocol}
+
+\subsection{States and Transition Rules}
+
+The protocol uses three states:
+\[
+  Q = \{ x,\; b,\; y \}
+\]
+where $x$ and $y$ represent opposing opinions and $b$ is a ``blank''
+(undecided) state.
+
+When two agents interact, one is designated the \emph{initiator} and the
+other the \emph{responder}.  The key asymmetry is:
+\begin{quote}
+\textbf{One-way property:} The initiator's state never changes.
+\end{quote}
+
+The full transition table $\delta(i, r) = (i', r')$ is:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+\toprule
+Initiator $i$ & Responder $r$ & Initiator $i'$ & Responder $r'$ \\
+\midrule
+$x$ & $x$ & $x$ & $x$ \\
+$x$ & $b$ & $x$ & $x$ \\
+$x$ & $y$ & $x$ & $b$ \\
+$b$ & $x$ & $b$ & $x$ \\
+$b$ & $b$ & $b$ & $b$ \\
+$b$ & $y$ & $b$ & $y$ \\
+$y$ & $x$ & $y$ & $b$ \\
+$y$ & $b$ & $y$ & $y$ \\
+$y$ & $y$ & $y$ & $y$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Intuitively: a blank responder adopts the initiator's opinion; two agents with
+opposing opinions ``neutralize'' the responder to blank; a blank initiator
+does nothing.
+
+\subsection{Configurations}
+
+A \emph{configuration} of a population of $n$ agents is a triple
+$(x_c, b_c, y_c) \in \mathbb{N}^3$ satisfying $x_c + b_c + y_c = n$.
+
+%% ============================================================
+\section{Lean Formalization Strategy}
+\label{sec:strategy}
+
+\subsection{Design Decisions}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Decision} & \textbf{Choice} & \textbf{Rationale} \\
+\midrule
+Config representation & Struct with proof field & Sum invariant by construction \\
+Population size & Type parameter \texttt{Config n} & Type-level separation \\
+Counts & \texttt{Nat} (not \texttt{Fin}) & Simpler arithmetic; \texttt{omega} \\
+Proof strategy & Exhaustive case split & Only 9 cases; closes by \texttt{rfl}/\texttt{omega} \\
+Probability & \texttt{PMF} from Mathlib & Ready-made PMF type \\
+\bottomrule
+\end{tabular}
+\caption{Key design decisions.}
+\label{tab:decisions}
+\end{table}
+
+\subsection{Project Structure}
+
+The formalization is organized as follows:
+
+\begin{itemize}[nosep]
+  \item \texttt{PopProto/State.lean} --- The inductive type \texttt{State}
+  \item \texttt{PopProto/Transition.lean} --- The transition function $\delta$
+  \item \texttt{PopProto/Config.lean} --- Configuration type with sum constraint
+  \item \texttt{PopProto/Step.lean} --- Single-step configuration update
+  \item \texttt{PopProto/Invariant/} --- Five invariant proof modules
+  \item \texttt{PopProto/Probability/} --- Scheduler, step distribution, Markov chain stub
+\end{itemize}
+
+%% ============================================================
+\section{Type Definitions}
+\label{sec:types}
+
+\subsection{State}
+
+The state type is a simple inductive with three constructors:
+
+\begin{lstlisting}
+inductive State
+  | x  -- opinion X
+  | b  -- blank (undecided)
+  | y  -- opinion Y
+  deriving DecidableEq, Repr
+\end{lstlisting}
+
+We derive \texttt{DecidableEq} (for case splits in \texttt{if} expressions)
+and provide a \texttt{Fintype} instance (the universe has exactly 3 elements).
+
+\subsection{Transition Function}
+
+The transition function is defined by pattern matching on all 9 cases:
+
+\begin{lstlisting}
+def delta : State $\times$ State $\to$ State $\times$ State
+  | (.x, .x) => (.x, .x)
+  | (.x, .b) => (.x, .x)
+  | (.x, .y) => (.x, .b)
+  | (.b, .x) => (.b, .x)
+  | (.b, .b) => (.b, .b)
+  | (.b, .y) => (.b, .y)
+  | (.y, .x) => (.y, .b)
+  | (.y, .b) => (.y, .y)
+  | (.y, .y) => (.y, .y)
+\end{lstlisting}
+
+The one-way property is an immediate consequence:
+
+\begin{lstlisting}
+@[simp]
+theorem delta_fst (p : State $\times$ State) :
+    (delta p).1 = p.1 := by
+  rcases p with $\langle$i, r$\rangle$; cases i <;> cases r <;> rfl
+\end{lstlisting}
+
+\subsection{Configuration}
+
+A configuration bundles three natural-number counts with a proof that they
+sum to the population size~$n$:
+
+\begin{lstlisting}
+structure Config (n : $\mathbb{N}$) where
+  x_count : $\mathbb{N}$
+  b_count : $\mathbb{N}$
+  y_count : $\mathbb{N}$
+  sum_eq : x_count + b_count + y_count = n
+\end{lstlisting}
+
+By carrying \texttt{sum\_eq} as a field, the population-size invariant is
+enforced \emph{by construction}: any function that produces a
+\texttt{Config n} must supply a proof.  This eliminates an entire class of
+potential errors and makes the invariant trivially true (Theorem~\ref{thm:popsize}).
+
+Helper definitions include:
+\begin{itemize}[nosep]
+  \item \texttt{gap : $\mathbb{Z}$} --- the signed difference $x_c - y_c$
+  \item \texttt{opinionated : $\mathbb{N}$} --- the count $x_c + y_c$
+  \item \texttt{allX}, \texttt{allY}, \texttt{allB} --- consensus predicates
+  \item \texttt{countOf : State $\to$ $\mathbb{N}$} --- state-indexed lookup
+\end{itemize}
+
+%% ============================================================
+\section{Step Function}
+\label{sec:step}
+
+The function \texttt{Config.step} applies one interaction to a configuration.
+Given an initiator state~$i$ and responder state~$r$, it:
+\begin{enumerate}[nosep]
+  \item Checks feasibility (enough agents of the required types).
+  \item Computes the new responder state $r' = \delta(i,r)_2$.
+  \item Adjusts the counts: $\mathrm{count}(r)$ decreases by 1 and
+        $\mathrm{count}(r')$ increases by 1 (when $r \neq r'$).
+  \item Returns the new configuration wrapped in \texttt{Option}, or
+        \texttt{none} if infeasible.
+\end{enumerate}
+
+The function is defined by explicit pattern matching on all 9 cases.
+For each non-trivial case, the proof obligation
+$x' + b' + y' = n$ is closed by \texttt{omega} using the hypothesis
+\texttt{c.sum\_eq} and the feasibility guard.
+
+A total wrapper \texttt{stepOrSelf} returns the original configuration
+when the interaction is infeasible:
+\begin{lstlisting}
+def stepOrSelf (c : Config n) (i r : State) : Config n :=
+  (c.step i r).getD c
+\end{lstlisting}
+
+%% ============================================================
+\section{Invariant Proofs}
+\label{sec:invariants}
+
+All invariant proofs follow the same pattern:
+\begin{enumerate}[nosep]
+  \item Unfold \texttt{step} to expose the 9-way match.
+  \item Apply \texttt{cases i <;> cases r} to split into 9 goals.
+  \item Close trivial goals with \texttt{simp\_all} and \texttt{omega}.
+  \item For non-trivial goals, destructure the \texttt{Option.some}
+        hypothesis and simplify.
+\end{enumerate}
+
+\subsection{Population Size}
+\label{sec:popsize}
+
+\begin{theorem}[Population Size Invariant]
+\label{thm:popsize}
+For any configuration $c$ of size $n$ and any interaction $(i,r)$, if
+$c' = \texttt{step}(c, i, r)$, then $c'.x + c'.b + c'.y = n$.
+\end{theorem}
+
+This is trivially true because \texttt{Config n} enforces
+$x + b + y = n$ by construction.  The proof is simply \texttt{c'.sum\_eq}.
+
+\subsection{One-Way Property}
+
+\begin{theorem}[One-Way Property]
+For any states $i, r$, we have $\delta(i,r)_1 = i$.
+\end{theorem}
+
+Proved by \texttt{cases i <;> cases r <;> rfl} --- each of the 9 cases
+is definitionally equal.
+
+\subsection{Gap Bounded Change}
+
+\begin{theorem}[Gap Invariant]
+\label{thm:gap}
+If $c \xrightarrow{(i,r)} c'$, then $|u' - u| \leq 1$ where
+$u = x_c - y_c$ and $u' = x_{c'} - y_{c'}$ (computed over $\mathbb{Z}$).
+\end{theorem}
+
+This is proved by exhaustive 9-case analysis. In each case, at most one
+of $x_c$ or $y_c$ changes by~$\pm 1$, so the gap changes by at most~1.
+
+\subsection{Absorbing States}
+
+\begin{theorem}[Absorbing Configurations]
+The configurations all-$x$, all-$y$, and all-$b$ are absorbing:
+if $c$ is one of these, then $\texttt{stepOrSelf}(c, i, r) = c$ for all
+$i, r$.
+\end{theorem}
+
+When all agents share the same state, every interaction is between two
+agents of that state, and $\delta(s,s) = (s,s)$ for all $s$.
+
+\begin{theorem}[Unreachability of All-Blank]
+\label{thm:allb}
+If $c$ has at least one opinionated agent ($x_c + y_c > 0$), then for any
+step $c \to c'$, the configuration $c'$ also has at least one opinionated
+agent.  In particular, all-$b$ is unreachable.
+\end{theorem}
+
+The proof uses the \texttt{hasOpinion\_preserved} lemma: the last non-blank
+agent can only interact with blanks, and in every such interaction (e.g.,
+$(x, b) \to (x, x)$), the blank is converted rather than the opinionated
+agent being eliminated.
+
+\subsection{Last Agent Survival}
+
+\begin{theorem}[Last Agent]
+If $x_c \geq 1$ and $y_c = 0$, then after any step, $x_{c'} \geq 1$ and
+$y_{c'} = 0$.  Symmetrically for~$y$.
+\end{theorem}
+
+With no opposing agents, the only possible interactions involving an $x$-agent
+are $(x,x)$ and $(x,b)$, both of which preserve or increase the $x$-count.
+
+%% ============================================================
+\section{Probabilistic Framework}
+\label{sec:probability}
+
+\subsection{Uniform Random Scheduler}
+
+Under the uniform random scheduler, an ordered pair of distinct agents
+$(a_i, a_j)$ is selected uniformly from $n(n-1)$ possibilities.
+The probability of an interaction of type $(s_1, s_2)$ is:
+\[
+  \Pr[(s_1, s_2)] =
+  \begin{cases}
+    \dfrac{c(s_1) \cdot (c(s_1) - 1)}{n(n-1)} & \text{if } s_1 = s_2, \\[6pt]
+    \dfrac{c(s_1) \cdot c(s_2)}{n(n-1)} & \text{if } s_1 \neq s_2.
+  \end{cases}
+\]
+
+We define \texttt{interactionCount} and \texttt{interactionProb} in
+\texttt{Scheduler.lean}.  The key identity
+\[
+  \sum_{s_1 \in Q} \sum_{s_2 \in Q}
+  \texttt{interactionCount}(c, s_1, s_2) = n(n-1)
+\]
+is stated as \texttt{sum\_interactionCount}.  This identity follows from
+$(x+b+y)^2 - (x+b+y) = n^2 - n = n(n-1)$, but its formal proof requires
+careful handling of natural-number subtraction (since $a \cdot (a-1)$ in
+$\mathbb{N}$ truncates to~0 when $a=0$).  This proof is currently left as
+a \texttt{sorry} stub.
+
+The PMF construction \texttt{interactionPMF} wraps the probabilities into
+Mathlib's \texttt{PMF (State $\times$ State)} type.
+
+\subsection{One-Step Distribution}
+
+The one-step distribution \texttt{stepDist} composes the scheduler PMF
+with the deterministic step function via \texttt{PMF.map}:
+
+\begin{lstlisting}
+noncomputable def stepDist (c : Config n)
+    (hn : n $\ge$ 2) : PMF (Config n) :=
+  PMF.map (fun p => c.stepOrSelf p.1 p.2)
+          (c.interactionPMF hn)
+\end{lstlisting}
+
+\subsection{Markov Chain (Stub)}
+
+The file \texttt{MarkovChain.lean} outlines how to view the protocol as a
+discrete-time Markov chain using Mathlib's
+\texttt{ProbabilityTheory.Kernel} framework.  Constructing the transition
+kernel and proving convergence properties are left as future work.
+
+%% ============================================================
+\section{Proof Techniques}
+\label{sec:techniques}
+
+The formalization relies heavily on a small set of Lean~4 / Mathlib tactics:
+
+\begin{description}[nosep]
+  \item[\texttt{cases i <;> cases r}]
+    Splits into 9 subgoals, one per $(i,r)$ pair.  Most transition-level
+    properties reduce to definitional equality after this split.
+
+  \item[\texttt{simp\_all}]
+    Simplifies goals using hypotheses and \texttt{@[simp]} lemmas.
+    Particularly effective after case-splitting, when the match arms
+    of \texttt{step} have been reduced.
+
+  \item[\texttt{omega}]
+    Decides linear natural-number and integer arithmetic.  Closes
+    sum-preservation goals, count bounds, and gap-change bounds.
+
+  \item[\texttt{split\_ifs}]
+    Case-splits on \texttt{if}-\texttt{then}-\texttt{else} expressions
+    remaining after partial simplification.
+
+  \item[\texttt{obtain}]
+    Destructures existential hypotheses produced when \texttt{simp\_all}
+    processes the \texttt{Option.some} constructor in step results.
+\end{description}
+
+%% ============================================================
+\section{Challenges and Future Work}
+\label{sec:challenges}
+
+\subsection{Challenges Encountered}
+
+\begin{enumerate}
+  \item \textbf{Natural-number subtraction.}  The expression $a \cdot (a-1)$
+        in $\mathbb{N}$ introduces truncation artifacts.  The tactic
+        \texttt{omega} handles linear arithmetic over $\mathbb{N}$ well,
+        but the nonlinear identity $\sum c_i(c_i - 1) + \sum_{i \neq j}
+        c_i c_j = n(n-1)$ required for the scheduler's sum-to-1 proof
+        resists both \texttt{omega} (nonlinear) and \texttt{nlinarith}
+        (Nat subtraction).  Converting via \texttt{zify} is a promising
+        approach but requires careful handling of \texttt{Nat.cast} applied
+        to subtraction terms.
+
+  \item \textbf{Struct field unfolding.}  When \texttt{step} returns
+        \texttt{some \{x\_count := \ldots, \ldots\}}, the hypothesis after
+        \texttt{simp\_all} takes the form $\exists h, \{\ldots\} = c'$,
+        requiring \texttt{obtain} to extract the proof and substitute.
+
+  \item \textbf{Linter noise.}  Automated proofs using chains like
+        \texttt{cases i <;> cases r <;> simp\_all <;> \ldots} produce
+        linter warnings about unused or unreachable tactics on branches
+        that close early.  We suppress these with targeted
+        \texttt{set\_option} directives.
+\end{enumerate}
+
+\subsection{Future Work}
+
+\begin{enumerate}
+  \item \textbf{Complete the scheduler sum-to-1 proof.}  The algebraic
+        identity is straightforward on paper; formalizing it requires
+        either working in $\mathbb{Z}$ (via \texttt{zify}) or establishing
+        auxiliary lemmas about $a \cdot (a-1)$ in $\mathbb{N}$.
+
+  \item \textbf{Construct the Markov transition kernel.}  Lift
+        \texttt{stepDist} into Mathlib's \texttt{ProbabilityTheory.Kernel}
+        framework by equipping \texttt{Config n} with the discrete
+        $\sigma$-algebra.
+
+  \item \textbf{Convergence to consensus.}  Prove that, starting from any
+        configuration with $x_c + y_c > 0$, the protocol reaches all-$x$
+        or all-$y$ with probability~1.
+
+  \item \textbf{Expected convergence time.}  Formalize the $O(n \log n)$
+        bound from~\cite{AngluinAE2008} using a potential-function argument
+        and optional stopping times.
+
+  \item \textbf{Correctness of majority.}  Show that if the initial
+        majority is $x$ (i.e., $x_0 > y_0$), then the protocol converges
+        to all-$x$ with probability $1 - o(1)$ as $n \to \infty$.
+\end{enumerate}
+
+%% ============================================================
+\begin{thebibliography}{9}
+
+\bibitem{AngluinADFP2006}
+D.~Angluin, J.~Aspnes, Z.~Diamadi, M.~J.~Fischer, and R.~Peralta.
+\newblock Computation in networks of passively mobile finite-state sensors.
+\newblock \emph{Distributed Computing}, 18(4):235--253, 2006.
+
+\bibitem{AngluinAE2008}
+D.~Angluin, J.~Aspnes, and D.~Eisenstat.
+\newblock A simple population protocol for fast robust approximate majority.
+\newblock \emph{Distributed Computing}, 21(2):87--102, 2008.
+
+\end{thebibliography}
+
+\end{document}
