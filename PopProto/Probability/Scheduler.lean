@@ -82,12 +82,16 @@ private lemma inner_sum_x (c : Config n) :
 private lemma inner_sum_b (c : Config n) :
     (Finset.univ.sum fun s₂ => c.interactionCount .b s₂) = c.b_count * (n - 1) := by
   rw [sum_state_eq]; simp [interactionCount, countOf]
-  exact row_sum_eq_mul c.b_count c.x_count c.y_count n (by linarith [c.sum_eq])
+  have := c.sum_eq
+  have := row_sum_eq_mul c.b_count c.x_count c.y_count n (by omega)
+  omega
 
 private lemma inner_sum_y (c : Config n) :
     (Finset.univ.sum fun s₂ => c.interactionCount .y s₂) = c.y_count * (n - 1) := by
   rw [sum_state_eq]; simp [interactionCount, countOf]
-  exact row_sum_eq_mul c.y_count c.x_count c.b_count n (by linarith [c.sum_eq])
+  have := c.sum_eq
+  have := row_sum_eq_mul c.y_count c.x_count c.b_count n (by omega)
+  omega
 
 /-- The sum of all interaction counts equals `n * (n - 1)`.
     This is the key identity: `∑ᵢ ∑ⱼ count(i,j) = n(n-1)`.
@@ -136,7 +140,7 @@ noncomputable def interactionPMF (c : Config n) (hn : n ≥ 2) :
   -- Convert single sum over State × State to double sum
   rw [show (Finset.univ : Finset (State × State)) = Finset.univ ×ˢ Finset.univ
     from (Finset.univ_product_univ).symm]
-  rw [Finset.sum_product']
+  simp_rw [Finset.sum_product]
   -- Push Nat.cast through the double sum and apply sum_interactionCount
   have hkey : (∑ s₁ : State, ∑ s₂ : State, (c.interactionCount s₁ s₂ : ENNReal)) =
       (totalPairs n : ENNReal) := by

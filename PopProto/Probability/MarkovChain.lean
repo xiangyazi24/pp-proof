@@ -49,7 +49,7 @@ instance instDiscreteMeasurableSpaceConfig : DiscreteMeasurableSpace (Config n) 
 noncomputable def transitionKernel (hn : n ≥ 2) :
     ProbabilityTheory.Kernel (Config n) (Config n) where
   toFun c := (c.stepDist hn).toMeasure
-  measurable' := measurable_of_discrete
+  measurable' := Measurable.of_discrete
 
 end Config
 end PopProto
