@@ -246,5 +246,69 @@ theorem large_b_v_drift_pos (c : Config n) (hb : c.inLargeB)
   have hbc : (↑c.x_count : ℤ) + ↑c.y_count > 0 := by push_cast; exact_mod_cast hv
   exact seven_fold_bound ha hbc (Int.natCast_nonneg _) (Int.natCast_nonneg _)
 
+/-! ### Quantitative drift bounds
+
+The qualitative bounds show the drift is negative. The quantitative bounds
+give the rate, which determines the convergence time.
+
+Key result: the drift per interaction satisfies
+  `-E[Δpot] ≥ 13·n·(b+y) / (16·n(n-1))`
+
+Since `pot ≤ 3(b+y)+1 ≤ 4(b+y)`, the multiplicative drift is:
+  `-E[Δpot] / pot ≥ 13/(64(n-1))`
+
+By the multiplicative drift theorem, the expected convergence time from
+the large-x corner is `O(n · log(pot_max)) = O(n log n)`. -/
+
+/-- Quantitative drift: `16·(x(b+y) - 2yb) ≥ 13·n·(b+y)` in large-x.
+    Equivalently, the drift per interaction is `≥ 13·n·(b+y) / (16·n(n-1))`.
+    Proof certificate: `(16x-14n)(b+y) + (n-8(b+y))(b+y) + 8(b-y)² = 16x(b+y)-13n(b+y)-32yb`. -/
+theorem large_x_drift_quantitative (c : Config n) (hx : c.inLargeX) (hn : n ≥ 2) :
+    16 * ((c.x_count : ℤ) * (↑c.b_count + ↑c.y_count) -
+      2 * ↑c.y_count * ↑c.b_count) ≥
+    13 * (n : ℤ) * (↑c.b_count + ↑c.y_count) := by
+  unfold inLargeX at hx
+  have hsum := c.sum_eq
+  -- Work in ℤ with explicit product hints for the SOS certificate
+  have hx_z : (8 : ℤ) * ↑c.x_count ≥ 7 * ↑n := by exact_mod_cast hx
+  have hsum_z : (↑c.x_count : ℤ) + ↑c.b_count + ↑c.y_count = ↑n := by exact_mod_cast hsum
+  nlinarith [sq_nonneg ((↑c.b_count : ℤ) - ↑c.y_count),
+             mul_nonneg (show 16 * (↑c.x_count : ℤ) - 14 * ↑n ≥ 0 by nlinarith)
+                        (show (↑c.b_count : ℤ) + ↑c.y_count ≥ 0 by positivity),
+             mul_nonneg (show (↑n : ℤ) - 8 * (↑c.b_count + ↑c.y_count) ≥ 0 by nlinarith)
+                        (show (↑c.b_count : ℤ) + ↑c.y_count ≥ 0 by positivity)]
+
+/-- Quantitative drift in large-b: `16·(bv - 2xy) ≥ 13·n·v`. -/
+theorem large_b_drift_quantitative (c : Config n) (hb : c.inLargeB) (hn : n ≥ 2) :
+    16 * ((c.b_count : ℤ) * (↑c.x_count + ↑c.y_count) -
+      2 * ↑c.x_count * ↑c.y_count) ≥
+    13 * (n : ℤ) * (↑c.x_count + ↑c.y_count) := by
+  unfold inLargeB at hb
+  have hsum := c.sum_eq
+  have hb_z : (8 : ℤ) * ↑c.b_count ≥ 7 * ↑n := by exact_mod_cast hb
+  have hsum_z : (↑c.x_count : ℤ) + ↑c.b_count + ↑c.y_count = ↑n := by exact_mod_cast hsum
+  nlinarith [sq_nonneg ((↑c.x_count : ℤ) - ↑c.y_count),
+             mul_nonneg (show 16 * (↑c.b_count : ℤ) - 14 * ↑n ≥ 0 by nlinarith)
+                        (show (↑c.x_count : ℤ) + ↑c.y_count ≥ 0 by positivity),
+             mul_nonneg (show (↑n : ℤ) - 8 * (↑c.x_count + ↑c.y_count) ≥ 0 by nlinarith)
+                        (show (↑c.x_count : ℤ) + ↑c.y_count ≥ 0 by positivity)]
+
+/-- Quantitative drift in large-y (symmetric to large-x):
+    `16·(y(b+x) - 2xb) ≥ 13·n·(b+x)`.
+    Certificate: `(16y-14n)(b+x) + (n-8(b+x))(b+x) + 8(b-x)²`. -/
+theorem large_y_drift_quantitative (c : Config n) (hy : c.inLargeY) (hn : n ≥ 2) :
+    16 * ((c.y_count : ℤ) * (↑c.b_count + ↑c.x_count) -
+      2 * ↑c.x_count * ↑c.b_count) ≥
+    13 * (n : ℤ) * (↑c.b_count + ↑c.x_count) := by
+  unfold inLargeY at hy
+  have hsum := c.sum_eq
+  have hy_z : (8 : ℤ) * ↑c.y_count ≥ 7 * ↑n := by exact_mod_cast hy
+  have hsum_z : (↑c.x_count : ℤ) + ↑c.b_count + ↑c.y_count = ↑n := by exact_mod_cast hsum
+  nlinarith [sq_nonneg ((↑c.b_count : ℤ) - ↑c.x_count),
+             mul_nonneg (show 16 * (↑c.y_count : ℤ) - 14 * ↑n ≥ 0 by nlinarith)
+                        (show (↑c.b_count : ℤ) + ↑c.x_count ≥ 0 by positivity),
+             mul_nonneg (show (↑n : ℤ) - 8 * (↑c.b_count + ↑c.x_count) ≥ 0 by nlinarith)
+                        (show (↑c.b_count : ℤ) + ↑c.x_count ≥ 0 by positivity)]
+
 end Config
 end PopProto
