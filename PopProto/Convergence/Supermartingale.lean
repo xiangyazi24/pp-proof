@@ -211,6 +211,86 @@ theorem xy_sum_denominators (c : Config n) :
     2 * ((c.potential : ℤ) + 1) := by
   simp [potential, Int.natAbs_sq]; ring
 
+/-! ### Per-step supermartingale bounds (Corollary 1 algebraic core)
+
+These bounds are the algebraic core of the exponential supermartingale
+construction (Lemma 4). They express the per-type bounds:
+
+- **XY bound**: `(1 - 5/(16n)) · f · E[1/f' | xy] ≤ 1`
+  Cross-multiplied: `(16n-5) · f · (f+1) ≤ 16n · ((f+1)² - 4u²)`
+
+- **VB bound**: `(1 + 7/(16n)) · f · E[1/f' | vb] ≤ 1`
+  Cross-multiplied: `(16n+7) · f · (v(f+1) - 2u²) ≤ 16n · v · ((f+1)² - 4u²)`
+
+where `f = u² + 2n`, `E[1/f' | xy] = (f+1) / ((f+1)² - 4u²)` (average of
+`1/((u±1)²+2n)`), and `E[1/f' | vb]` is the x,y-weighted average.
+
+The rational factors `(16n+7)/(16n)` and `(16n-5)/(16n)` play the role of
+`exp(7/(16n))` and `exp(-5/(16n))` in the paper's construction. Since
+`1 + x ≤ exp(x)` for all `x`, our rational bounds are strictly stronger
+than the paper's exponential bounds, and hold for ALL `n ≥ 1`
+(not just "sufficiently large n"). -/
+
+/-- **XY per-step supermartingale bound** (Corollary 1, algebraic core):
+    `(16n-5) · f · (f+1) ≤ 16n · ((f+1)² - 4u²)` where `f = u²+2n`.
+
+    Proof: RHS - LHS = 5u⁴ + (5-28n)u² + 52n²+26n ≥ 0.
+    Via: `5·(RHS-LHS) = (5u²-14n)² + 25u² + 64n² + 130n`. -/
+theorem supermartingale_factor_xy_le (u : ℤ) (n : ℕ) (hn : n ≥ 1) :
+    (16 * (n : ℤ) - 5) * (u ^ 2 + 2 * n) * (u ^ 2 + 2 * n + 1) ≤
+    16 * (n : ℤ) * ((u ^ 2 + 2 * n + 1) ^ 2 - 4 * u ^ 2) := by
+  have hn' : (n : ℤ) ≥ 1 := by exact_mod_cast hn
+  nlinarith [sq_nonneg (5 * u ^ 2 - 14 * (n : ℤ)), sq_nonneg u, sq_nonneg (n : ℤ)]
+
+/-- Auxiliary: at `v = n`, the VB expression is non-negative.
+    `(25n+14)u⁴ + n(-12n+21)u² + n²(4n+2) ≥ 0`.
+    Via: `4(25n+14)·LHS = ((50n+28)u²-n(12n-21))² + n²(256n²+928n-329)`. -/
+private theorem vb_bound_at_v_eq_n (u : ℤ) (n : ℕ) (hn : n ≥ 1) :
+    (25 * (n : ℤ) + 14) * u ^ 4 + (n : ℤ) * (-12 * (n : ℤ) + 21) * u ^ 2 +
+    (n : ℤ) ^ 2 * (4 * (n : ℤ) + 2) ≥ 0 := by
+  have hn' : (n : ℤ) ≥ 1 := by exact_mod_cast hn
+  nlinarith [sq_nonneg ((50 * (n : ℤ) + 28) * u ^ 2 - (n : ℤ) * (12 * (n : ℤ) - 21)),
+             sq_nonneg (n : ℤ), sq_nonneg u]
+
+/-- **VB per-step supermartingale bound** (Corollary 1, algebraic core):
+    `(16n+7) · f · (v(f+1)-2u²) ≤ 16n · v · ((f+1)²-4u²)`
+    where `f = u²+2n` and `0 ≤ v ≤ n`.
+
+    The expression is linear in `v` with non-negative constant term
+    `B = 2u²(16n+7)f` and slope `A`. When `A < 0`, the minimum over
+    `[0, n]` is at `v = n`, which is non-negative by `vb_bound_at_v_eq_n`. -/
+theorem supermartingale_factor_vb_le (u : ℤ) (v n : ℕ) (hn : n ≥ 1) (hv : v ≤ n) :
+    (16 * (n : ℤ) + 7) * (u ^ 2 + 2 * n) *
+    ((v : ℤ) * (u ^ 2 + 2 * n + 1) - 2 * u ^ 2) ≤
+    16 * (n : ℤ) * (v : ℤ) * ((u ^ 2 + 2 * n + 1) ^ 2 - 4 * u ^ 2) := by
+  have hn' : (n : ℤ) ≥ 1 := by exact_mod_cast hn
+  have hvn : (v : ℤ) ≤ n := by exact_mod_cast hv
+  -- The expression RHS - LHS is linear in v: A·v + B.
+  -- B = 2u²(16n+7)(u²+2n) ≥ 0 (at v=0).
+  -- At v=n: value = (25n+14)u⁴ + n(-12n+21)u² + n²(4n+2) ≥ 0.
+  -- Since it's linear in v and non-neg at both endpoints [0,n], it's non-neg on [0,n].
+  -- Strategy: show value at v=n is non-neg, and (n-v)·B_coeff ≥ 0.
+  have hv0 : (0 : ℤ) ≤ v := by exact_mod_cast Nat.zero_le v
+  have hatN := vb_bound_at_v_eq_n u n hn
+  -- B ≥ 0: the value at v = 0
+  have hB : (0 : ℤ) ≤ (32 * (n : ℤ) + 14) * u ^ 4 +
+      (64 * (n : ℤ) ^ 2 + 28 * (n : ℤ)) * u ^ 2 := by
+    have : (0 : ℤ) ≤ n := by exact_mod_cast Nat.zero_le n
+    positivity
+  -- (n-v) · B ≥ 0
+  have h1 : (0 : ℤ) ≤ ((n : ℤ) - v) *
+      ((32 * (n : ℤ) + 14) * u ^ 4 +
+       (64 * (n : ℤ) ^ 2 + 28 * (n : ℤ)) * u ^ 2) :=
+    mul_nonneg (by linarith) hB
+  -- v · nAB ≥ 0
+  have h2 : (0 : ℤ) ≤ (v : ℤ) *
+      ((25 * (n : ℤ) + 14) * u ^ 4 +
+       (n : ℤ) * (-12 * (n : ℤ) + 21) * u ^ 2 +
+       (n : ℤ) ^ 2 * (4 * (n : ℤ) + 2)) :=
+    mul_nonneg hv0 hatN.le
+  -- Identity: n·(RHS-LHS) = h1_val + h2_val ≥ 0, and n ≥ 1.
+  nlinarith
+
 /-! ### Convergence Theorem
 
 The main convergence result: O(n log n) interactions with high probability.
@@ -224,16 +304,26 @@ measure-theoretic infrastructure that is work in progress.
 3. Lemma 1: relative change decomposition of 1/f
 4. Key coefficients: E[Δf | I^vb], E[Δf | I^xy], E[(Δf)²]
 5. Lemma 2 core: (2u²+v)/(vf) ≥ 7/(16n) — supermartingale coefficient
-6. Region predicates and potential functions for each region
-7. Drift bounds: negative expected drift in all non-consensus regions
-8. Scheduler PMF construction and Markov chain kernel
+6. Corollary 1 per-step bounds: xy and vb factors (rational, all n ≥ 1)
+7. Region predicates and potential functions for each region
+8. Drift bounds: negative expected drift in all non-consensus regions
+9. Scheduler PMF construction and Markov chain kernel
+10. Expected value bridge: PMF integral = ℤ drift / totalPairs
+11. Multiplicative drift in ℝ for all three corner regions:
+    - Large-x: E[Φ'] ≤ (1 - 13/(64(n-1)))·Φ
+    - Large-y: E[Φ'] ≤ (1 - 13/(64(n-1)))·Φ  (symmetric)
+    - Large-b: E[v'] ≥ (1 + 13/(16(n-1)))·v
 
-**Remaining (measure theory gap):**
-- Construct M_t as a stochastic process (Lemma 4)
-- Prove M_t is a supermartingale using the coefficient bounds
-- Apply Markov/Doob's inequality for supermartingales
-- Formalize stopping times and stopping theorem
-- Combine region bounds via union bound (Theorem 1) -/
+**Remaining (measure theory gap — central region only):**
+The central region cannot use multiplicative drift of 1/f (proven FALSE,
+see ConvergenceTime.lean). Instead it requires:
+- Augmented state tracking cumulative vb/xy interaction counts
+- Supermartingale M_t = α_vb^{S^vb} · α_xy^{S^xy} / f_t
+  with α_vb = (16n+7)/(16n), α_xy = (16n-5)/(16n)
+- Per-step bound E[M_{t+1}|F_t] ≤ M_t (from the bounds above)
+- Iterative E[M_t] ≤ M_0 and Markov's inequality
+- Combine region bounds via union bound (Theorem 1)
+The three corner regions are fully proven with 0 sorry. -/
 
 /-- **Theorem 1** (Angluin-Aspnes-Eisenstat 2008):
     The 3-state approximate majority protocol converges to consensus
@@ -242,9 +332,9 @@ measure-theoretic infrastructure that is work in progress.
     Formally: for any c > 0 and sufficiently large n,
     Pr[τ* ≥ 6769n·log(n+2) + 6773cn·log n + 2552n] ≤ 5n⁻ᶜ.
 
-    Status: The algebraic bounds (Lemmas 1-3, drift analysis) are fully
-    proven. The probabilistic argument requires measure-theoretic
-    formalization of supermartingales and stopping times. -/
+    Status: The algebraic bounds (Lemmas 1-3, drift analysis, Corollary 1)
+    are fully proven. The probabilistic argument for the central region
+    requires augmented-state supermartingale formalization. -/
 theorem convergence_time_bound :
     True := trivial  -- placeholder for the full probabilistic statement
 

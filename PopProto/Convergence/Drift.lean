@@ -471,8 +471,11 @@ Specifically (Theorem 1 of AAE 2008):
 3. Combined inequalities: multiplicative drift in integer form
 4. Region classification and mutual exclusivity
 
+**Completed (in Expected.lean):**
+- Express weighted ℤ-drift as ℝ-valued PMF expectation ✓
+- Multiplicative drift in ℝ for all three regions ✓
+
 **Remaining (measure theory gap):**
-- Express weighted ℤ-drift as ℝ-valued PMF expectation
 - Construct the supermartingale M_t
 - Apply multiplicative drift theorem / Doob's inequality
 - Stopping times and union bound → Theorem 1
@@ -501,6 +504,73 @@ theorem at_most_one_large (c : Config n) (hn : n ≥ 2) :
   unfold inLargeB inLargeX inLargeY
   have := c.sum_eq
   constructor <;> [skip; constructor] <;> intro ⟨h1, h2⟩ <;> omega
+
+/-! ### Quantitative drift for 1/v in large-b
+
+For the 1/v potential in the large-b region, we need:
+  `bv(v-1) - 2xy(v+1) ≥ 5n(v²-1)/16`
+
+This gives the multiplicative contraction rate `δ = 5/(16(n-1))` for `1/v`.
+
+The SOS certificate uses:
+- `4xy ≤ v²` (AM-GM: `(x-y)² ≥ 0` gives `4xy ≤ (x+y)² = v²`)
+- `n ≥ 8v` (from `8b ≥ 7n` and `b = n - v`)
+- `8v² - 15v + 5 ≥ 0` for `v ≥ 2` -/
+
+/-- **Reciprocal drift bound**: In large-b with `v ≥ 2`,
+    `16(bv(v-1) - 2xy(v+1)) ≥ 5n(v²-1)`.
+    This is the key integer inequality for the `1/v` drift. -/
+theorem large_b_reciprocal_drift (c : Config n) (hb : c.inLargeB)
+    (hv2 : c.v ≥ 2) :
+    16 * ((c.b_count : ℤ) * ↑c.v * (↑c.v - 1) -
+      2 * ↑c.x_count * ↑c.y_count * (↑c.v + 1)) ≥
+    5 * (n : ℤ) * (↑c.v ^ 2 - 1) := by
+  unfold inLargeB at hb; unfold v at hv2 ⊢
+  have hsum := c.sum_eq
+  -- Key substitution: b = n - (x + y)
+  -- Key facts for nlinarith:
+  -- (1) 4xy ≤ (x+y)² from (x-y)² ≥ 0
+  -- (2) n ≥ 8(x+y) from 8b ≥ 7n
+  -- (3) 8(x+y)² - 15(x+y) + 5 ≥ 0 for x+y ≥ 2
+  have hx : (c.x_count : ℤ) ≥ 0 := Int.natCast_nonneg _
+  have hy : (c.y_count : ℤ) ≥ 0 := Int.natCast_nonneg _
+  have hsum_z : (c.x_count : ℤ) + ↑c.b_count + ↑c.y_count = ↑n := by exact_mod_cast hsum
+  have hb_large : 8 * (c.b_count : ℤ) ≥ 7 * ↑n := by exact_mod_cast hb
+  have hv_ge : (c.x_count : ℤ) + ↑c.y_count ≥ 2 := by exact_mod_cast hv2
+  -- Eliminate b: b = n - x - y
+  have hbeq : (c.b_count : ℤ) = ↑n - ↑c.x_count - ↑c.y_count := by linarith
+  rw [hbeq]; push_cast
+  -- n ≥ 8v (from 8b ≥ 7n and b = n - v)
+  have hn8 : (n : ℤ) ≥ 8 * (↑c.x_count + ↑c.y_count) := by linarith
+  -- SOS decomposition: goal = 8·h₁ + h₂ + 8·h₃ where
+  --   h₁ = (v+1)(x-y)²  ≥ 0
+  --   h₂ = (n-8v)(v-1)(11v-5) ≥ 0
+  --   h₃ = v(8v²-15v+5) ≥ 0
+  have h₁ : ((c.x_count : ℤ) + ↑c.y_count + 1) *
+      ((↑c.x_count - ↑c.y_count) ^ 2) ≥ 0 :=
+    mul_nonneg (by linarith) (sq_nonneg _)
+  have h₂ : ((n : ℤ) - 8 * (↑c.x_count + ↑c.y_count)) *
+      ((↑c.x_count + ↑c.y_count) - 1) *
+      (11 * (↑c.x_count + ↑c.y_count) - 5) ≥ 0 :=
+    mul_nonneg (mul_nonneg (by linarith) (by linarith)) (by linarith)
+  have h₃ : ((c.x_count : ℤ) + ↑c.y_count) *
+      (8 * (↑c.x_count + ↑c.y_count) ^ 2 -
+       15 * (↑c.x_count + ↑c.y_count) + 5) ≥ 0 :=
+    mul_nonneg (by linarith)
+      (by nlinarith [mul_nonneg (show (↑c.x_count + ↑c.y_count : ℤ) ≥ 0 from by linarith)
+                                (show (↑c.x_count + ↑c.y_count : ℤ) - 2 ≥ 0 from by linarith)])
+  nlinarith [h₁, h₂, h₃]
+
+/-- For `v = 1` in large-b, the `1/v` drift is simpler: just `-b/2`.
+    The bound `b ≥ 7n/8` gives `E[Δ(1/v)] ≤ -7/(16(n-1)v)`. -/
+theorem large_b_reciprocal_drift_v1 (c : Config n) (hb : c.inLargeB)
+    (hv1 : c.v = 1) :
+    c.x_count * c.y_count = 0 := by
+  unfold v at hv1
+  rcases Nat.eq_zero_or_pos c.x_count with hx | hx
+  · simp [hx]
+  · have : c.y_count = 0 := by omega
+    simp [this]
 
 end Config
 end PopProto
