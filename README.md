@@ -1,4 +1,4 @@
-# PP-Proof: Formal Verification of Population Protocol Convergence
+# PP-Proof: Formal Verification of 3-State Approximate Majority Convergence
 
 A Lean 4 + Mathlib formalization of the O(n log n) convergence bound for the 3-state approximate majority population protocol from:
 
