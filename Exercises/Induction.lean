@@ -410,4 +410,86 @@ theorem mirror_mirror (e : Expr) : mirror (mirror e) = e := by
   | add a b iha ihb => simp [mirror, iha, ihb]
   | mul a b iha ihb => simp [mirror, iha, ihb]
 
+-- ═══════════════════════════════════════════════════
+-- Part 19: Constant folding — the first compiler optimization
+--
+-- 语义保持变换（semantics-preserving transformation）的入门例子。
+-- `optim` 把 `add (num 2) (num 3)` 折叠成 `num 5`，子树递归处理。
+-- 要证的是 `(optim e).eval = e.eval`——编译器正确性的原型定理。
+-- ═══════════════════════════════════════════════════
+
+/-- Smart constructor for `add`: if both sides are literal numerals,
+    collapse to their sum; otherwise build a normal `add` node. -/
+def foldAdd : Expr → Expr → Expr
+  | num m, num n => num (m + n)
+  | a, b => add a b
+
+/-- Smart constructor for `mul`: same idea. -/
+def foldMul : Expr → Expr → Expr
+  | num m, num n => num (m * n)
+  | a, b => mul a b
+
+/-- Constant folder: recursively optimize children, then apply the
+    smart constructor at the root. -/
+def optim : Expr → Expr
+  | num n => num n
+  | add a b => foldAdd (optim a) (optim b)
+  | mul a b => foldMul (optim a) (optim b)
+
+/-- `foldAdd` preserves semantics. Five cases by pattern on both args;
+    each reduces by `rfl` because `eval` on `num` is definitional. -/
+theorem foldAdd_correct (a b : Expr) :
+    (foldAdd a b).eval = a.eval + b.eval := by
+  cases a <;> cases b <;> rfl
+
+/-- Same for `foldMul`. -/
+theorem foldMul_correct (a b : Expr) :
+    (foldMul a b).eval = a.eval * b.eval := by
+  cases a <;> cases b <;> rfl
+
+/-- **The compiler correctness theorem.** Constant folding preserves
+    the evaluation result. At each node, the two IHs say "children
+    agree in value after optimization"; the `foldAdd`/`foldMul`
+    correctness lemmas cover the root. Induction + two helpers. -/
+theorem optim_correct (e : Expr) : (optim e).eval = e.eval := by
+  induction e with
+  | num n => rfl
+  | add a b iha ihb =>
+    show (foldAdd (optim a) (optim b)).eval = a.eval + b.eval
+    rw [foldAdd_correct, iha, ihb]
+  | mul a b iha ihb =>
+    show (foldMul (optim a) (optim b)).eval = a.eval * b.eval
+    rw [foldMul_correct, iha, ihb]
+
+/-- Optimizations never grow the tree: depth is non-increasing.
+    The `foldAdd`/`foldMul` branches collapse to `num` (depth 0) in
+    the numeric case and keep the same shape otherwise. -/
+theorem foldAdd_depth_le (a b : Expr) :
+    (foldAdd a b).depth ≤ max a.depth b.depth + 1 := by
+  cases a <;> cases b <;> simp [foldAdd, depth]
+
+theorem foldMul_depth_le (a b : Expr) :
+    (foldMul a b).depth ≤ max a.depth b.depth + 1 := by
+  cases a <;> cases b <;> simp [foldMul, depth]
+
+theorem optim_depth_le (e : Expr) : (optim e).depth ≤ e.depth := by
+  induction e with
+  | num n => exact Nat.le_refl _
+  | add a b iha ihb =>
+    calc (optim (add a b)).depth
+        = (foldAdd (optim a) (optim b)).depth := rfl
+      _ ≤ max (optim a).depth (optim b).depth + 1 := foldAdd_depth_le _ _
+      _ ≤ max a.depth b.depth + 1 := by
+            have := max_le_max iha ihb
+            omega
+      _ = (add a b).depth := rfl
+  | mul a b iha ihb =>
+    calc (optim (mul a b)).depth
+        = (foldMul (optim a) (optim b)).depth := rfl
+      _ ≤ max (optim a).depth (optim b).depth + 1 := foldMul_depth_le _ _
+      _ ≤ max a.depth b.depth + 1 := by
+            have := max_le_max iha ihb
+            omega
+      _ = (mul a b).depth := rfl
+
 end Expr
