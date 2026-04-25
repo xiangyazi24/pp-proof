@@ -492,4 +492,148 @@ theorem optim_depth_le (e : Expr) : (optim e).depth ≤ e.depth := by
             omega
       _ = (mul a b).depth := rfl
 
+-- ═══════════════════════════════════════════════════
+-- Part 20: Optimizer idempotence
+--
+-- 编译器优化的第二根支柱：`optim (optim e) = optim e`。
+-- 正确性告诉我们 optim 不改变语义；幂等性告诉我们跑第二遍无事可做——
+-- 优化 pass 已达不动点。实际应用：pipeline 阶段可以放心复合而不产生抖动。
+-- 关键观察：`foldAdd a b` 只有当 a、b 都是 num 时才做减少；否则原样穿过
+-- 为 `add a b`。所以若 a、b 已是优化后的形态，它们各自是 num 或不可再折
+-- 的子树，foldAdd 的结果再 optim 一遍还是同一棵树。
+-- ═══════════════════════════════════════════════════
+
+/-- If both arguments are already optimized (fixed points of `optim`),
+    then `foldAdd` produces a fixed point too. -/
+theorem foldAdd_idem (a b : Expr) (ha : optim a = a) (hb : optim b = b) :
+    optim (foldAdd a b) = foldAdd a b := by
+  cases a <;> cases b <;> simp_all [foldAdd, optim]
+
+theorem foldMul_idem (a b : Expr) (ha : optim a = a) (hb : optim b = b) :
+    optim (foldMul a b) = foldMul a b := by
+  cases a <;> cases b <;> simp_all [foldMul, optim]
+
+/-- **Optimizer idempotence.** Running constant folding twice is the
+    same as running it once — `optim` reaches a fixed point in one
+    pass. Together with `optim_correct`, this says `optim` is a
+    well-behaved compiler pass. -/
+theorem optim_idempotent (e : Expr) : optim (optim e) = optim e := by
+  induction e with
+  | num n => rfl
+  | add a b iha ihb =>
+    show optim (foldAdd (optim a) (optim b)) = foldAdd (optim a) (optim b)
+    exact foldAdd_idem _ _ iha ihb
+  | mul a b iha ihb =>
+    show optim (foldMul (optim a) (optim b)) = foldMul (optim a) (optim b)
+    exact foldMul_idem _ _ iha ihb
+
+-- ═══════════════════════════════════════════════════
+-- Part 21: Algebraic identity elimination
+--
+-- Const-folding only collapses `num m + num n`. Real compilers also use
+-- algebraic identities: `e + 0 = e`, `e * 0 = 0`, `e * 1 = e`. Here the
+-- pattern shape changes — instead of "both children are numerals",
+-- we look at "one child is a specific numeral and the other is anything".
+--
+-- Pedagogically this is the moment `cases a <;> cases b <;> rfl` stops
+-- working alone: the `num 0, b` case needs `Int.zero_add`, not just
+-- definitional unfolding. Pattern ordering also starts to matter —
+-- `num m, num n` must come *before* `num 0, b` or const-folding gets
+-- shadowed.
+-- ═══════════════════════════════════════════════════
+
+/-- Smart `add` with const-fold and `+0` identity. Pattern order matters:
+    the `num m, num n` branch must come first so const-folding wins
+    over the identity rule when both arguments are literal. -/
+def smartAdd : Expr → Expr → Expr
+  | num m, num n => num (m + n)
+  | num 0, b     => b
+  | a, num 0     => a
+  | a, b         => add a b
+
+/-- Smart `mul` with const-fold, zero-absorption, and `*1` identity. -/
+def smartMul : Expr → Expr → Expr
+  | num m, num n => num (m * n)
+  | num 0, _     => num 0
+  | _, num 0     => num 0
+  | num 1, b     => b
+  | a, num 1     => a
+  | a, b         => mul a b
+
+/-- The richer optimizer. Same recursive shape as `optim`; only the
+    smart constructors differ. -/
+def optim2 : Expr → Expr
+  | num n   => num n
+  | add a b => smartAdd (optim2 a) (optim2 b)
+  | mul a b => smartMul (optim2 a) (optim2 b)
+
+/-- `smartAdd` preserves semantics. Each pattern needs its own algebraic
+    identity (`Int.zero_add`, `Int.add_zero`); definitional `rfl` no
+    longer suffices for the identity-elimination branches. -/
+theorem smartAdd_correct (a b : Expr) :
+    (smartAdd a b).eval = a.eval + b.eval := by
+  unfold smartAdd
+  split
+  · rfl
+  · simp [eval]
+  · simp [eval]
+  · rfl
+
+/-- `smartMul` preserves semantics. Five non-trivial branches:
+    const-fold, two zero-absorption, two one-identity. -/
+theorem smartMul_correct (a b : Expr) :
+    (smartMul a b).eval = a.eval * b.eval := by
+  unfold smartMul
+  split
+  · rfl
+  · simp [eval]
+  · simp [eval]
+  · simp [eval]
+  · simp [eval]
+  · rfl
+
+/-- **Compiler correctness for `optim2`.** Same induction shape as
+    `optim_correct`; the smart-constructor lemmas absorb the new rules. -/
+theorem optim2_correct (e : Expr) : (optim2 e).eval = e.eval := by
+  induction e with
+  | num n => rfl
+  | add a b iha ihb =>
+    show (smartAdd (optim2 a) (optim2 b)).eval = a.eval + b.eval
+    rw [smartAdd_correct, iha, ihb]
+  | mul a b iha ihb =>
+    show (smartMul (optim2 a) (optim2 b)).eval = a.eval * b.eval
+    rw [smartMul_correct, iha, ihb]
+
+/-- Identity rules can shrink: `e + 0` collapses from depth `max d 0 + 1`
+    to depth `d`. Depth is non-increasing under `optim2`. -/
+theorem smartAdd_depth_le (a b : Expr) :
+    (smartAdd a b).depth ≤ max a.depth b.depth + 1 := by
+  unfold smartAdd
+  split <;> simp [depth]
+
+theorem smartMul_depth_le (a b : Expr) :
+    (smartMul a b).depth ≤ max a.depth b.depth + 1 := by
+  unfold smartMul
+  split <;> simp [depth]
+
+theorem optim2_depth_le (e : Expr) : (optim2 e).depth ≤ e.depth := by
+  induction e with
+  | num n => exact Nat.le_refl _
+  | add a b iha ihb =>
+    calc (optim2 (add a b)).depth
+        = (smartAdd (optim2 a) (optim2 b)).depth := rfl
+      _ ≤ max (optim2 a).depth (optim2 b).depth + 1 := smartAdd_depth_le _ _
+      _ ≤ max a.depth b.depth + 1 := by
+            have := max_le_max iha ihb
+            omega
+      _ = (add a b).depth := rfl
+  | mul a b iha ihb =>
+    calc (optim2 (mul a b)).depth
+        = (smartMul (optim2 a) (optim2 b)).depth := rfl
+      _ ≤ max (optim2 a).depth (optim2 b).depth + 1 := smartMul_depth_le _ _
+      _ ≤ max a.depth b.depth + 1 := by
+            have := max_le_max iha ihb
+            omega
+      _ = (mul a b).depth := rfl
+
 end Expr
