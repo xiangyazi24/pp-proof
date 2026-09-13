@@ -76,7 +76,9 @@ private lemma row_sum_eq_mul (a b c s : ℕ) (h : a + b + c = s) :
 /-- Each inner sum equals `countOf(s₁) * (n - 1)`. -/
 private lemma inner_sum_x (c : Config n) :
     (Finset.univ.sum fun s₂ => c.interactionCount .x s₂) = c.x_count * (n - 1) := by
-  rw [sum_state_eq]; simp [interactionCount, countOf]
+  rw [sum_state_eq]
+  change c.x_count * (c.x_count - 1) + c.x_count * c.b_count +
+      c.x_count * c.y_count = c.x_count * (n - 1)
   exact row_sum_eq_mul c.x_count c.b_count c.y_count n c.sum_eq
 
 private lemma inner_sum_b (c : Config n) :

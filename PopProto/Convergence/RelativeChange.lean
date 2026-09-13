@@ -58,7 +58,7 @@ theorem inv_change_error_nonneg {f Δf : ℝ} (hf : 0 < f) (hf' : 0 < f + Δf) :
 /-- Bound on the error term when `|Δf| ≤ r·f` for some `r < 1`:
     `Δf²/(f(f+Δf)) ≤ r² · f / (f+Δf) ≤ r²/(1-r)`. -/
 theorem inv_change_error_bound {f Δf r : ℝ} (hf : 0 < f)
-    (hf' : 0 < f + Δf) (hr : |Δf| ≤ r * f) (hr1 : 0 ≤ r) :
+    (hf' : 0 < f + Δf) (hr : |Δf| ≤ r * f) (_hr1 : 0 ≤ r) :
     Δf ^ 2 / (f * (f + Δf)) ≤ r ^ 2 * f / (f + Δf) := by
   have hΔsq : Δf ^ 2 ≤ (r * f) ^ 2 := by
     have h1 : -|Δf| ≤ Δf := neg_abs_le Δf

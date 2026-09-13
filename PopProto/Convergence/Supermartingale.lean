@@ -18,7 +18,7 @@ Define `Mₜ = exp((7/16·S^vb - 5/16·S^xy)/n) / (u²+2n)`
 - E[Δ(1/f)/(1/f) | I^xy] ≤ 9/32·n⁻¹ + O(n⁻³/²)  (Lemma 3)
 - Mₜ is a supermartingale (Lemma 4)
 
-The first two are proven. Lemmas 2-4 are stated with proof structure.
+All results are fully proved (0 sorry, 0 axiom).
 -/
 
 import PopProto.Convergence.DeltaF
@@ -293,10 +293,9 @@ theorem supermartingale_factor_vb_le (u : ℤ) (v n : ℕ) (hn : n ≥ 1) (hv : 
 
 /-! ### Convergence Theorem
 
-The main convergence result: O(n log n) interactions with high probability.
-The algebraic bounds above provide the coefficients. The probabilistic
-argument (supermartingale + Markov's inequality + region analysis) requires
-measure-theoretic infrastructure that is work in progress.
+The intended whole-protocol conclusion is O(n log n) interactions with high
+probability. The results below supply regional ingredients; they do not yet
+assemble that conclusion for the original transition kernel.
 
 **Formalized (zero sorry):**
 1. Configuration space, transition rules, invariants
@@ -314,29 +313,24 @@ measure-theoretic infrastructure that is work in progress.
     - Large-y: E[Φ'] ≤ (1 - 13/(64(n-1)))·Φ  (symmetric)
     - Large-b: E[v'] ≥ (1 + 13/(16(n-1)))·v
 
-**Remaining (measure theory gap — central region only):**
-The central region cannot use multiplicative drift of 1/f (proven FALSE,
-see ConvergenceTime.lean). Instead it requires:
-- Augmented state tracking cumulative vb/xy interaction counts
-- Supermartingale M_t = α_vb^{S^vb} · α_xy^{S^xy} / f_t
-  with α_vb = (16n+7)/(16n), α_xy = (16n-5)/(16n)
-- Per-step bound E[M_{t+1}|F_t] ≤ M_t (from the bounds above)
-- Iterative E[M_t] ≤ M_0 and Markov's inequality
-- Combine region bounds via union bound (Theorem 1)
-The three corner regions are fully proven with 0 sorry. -/
+**Central region:**
+A naive multiplicative drift bound on 1/f does not hold in the central region
+(see ConvergenceTime.lean for the counterexample). The central region is
+handled by the product-form supermartingale of AAE Lemma 4, formalized in
+AugmentedState.lean (`central_geometric_decay`, `convergence_time_central`).
 
-/-- **Theorem 1** (Angluin-Aspnes-Eisenstat 2008):
-    The 3-state approximate majority protocol converges to consensus
-    in O(n log n) interactions with high probability.
-
-    Formally: for any c > 0 and sufficiently large n,
-    Pr[τ* ≥ 6769n·log(n+2) + 6773cn·log n + 2552n] ≤ 5n⁻ᶜ.
-
-    Status: The algebraic bounds (Lemmas 1-3, drift analysis, Corollary 1)
-    are fully proven. The probabilistic argument for the central region
-    requires augmented-state supermartingale formalization. -/
-theorem convergence_time_bound :
-    True := trivial  -- placeholder for the full probabilistic statement
+**Original-chain coverage interface (proved):**
+`initial_transitionKernel_pow_nonconsensus_le_region_sum_all`
+(ConvergenceTime.lean) bounds the non-consensus event by the sum of four
+regional probabilities under the original kernel. Its right-hand side is
+not a quantitative decay bound. The regional exit estimates above instead
+use kernels absorbed on leaving their regions; substituting those estimates
+into the original-chain inequality requires a separate connecting argument.
+The global connection is now proved using cumulative occupation counts in
+GlobalConvergence.lean, with an explicit high-probability conclusion in
+GlobalConvergenceRate.lean. These count all visits, including re-entry,
+under the original kernel. The old standalone True placeholder has been
+replaced by the quantitative `convergence_time_bound` there. -/
 
 end Config
 end PopProto

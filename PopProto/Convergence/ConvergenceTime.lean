@@ -27,6 +27,7 @@ the approximate majority protocol exits each region.
 -/
 
 import PopProto.Convergence.GeometricDrift
+import PopProto.Invariant.Absorbing
 
 namespace PopProto
 
@@ -45,6 +46,27 @@ private theorem measurable_ennreal (f : Config n → ℝ≥0∞) : Measurable f 
 
 private theorem measurable_real (f : Config n → ℝ) : Measurable f :=
   fun _ _ => instDiscreteMeasurableSpaceConfig.forall_measurableSet _
+
+/-! ### Generic absorbed-kernel helpers -/
+
+/-- A kernel absorbed outside `R` stays fixed forever when started outside `R`. -/
+private theorem absorbedKernel_pow_eq_dirac_of_not_mem
+    {R : Set (Config n)} (hR : MeasurableSet R)
+    (K : Kernel (Config n) (Config n)) (c : Config n)
+    (hc : c ∉ R) (t : ℕ) :
+    ((Kernel.piecewise hR K Kernel.id) ^ t) c = Measure.dirac c := by
+  have hK : Kernel.piecewise hR K Kernel.id c = Measure.dirac c := by
+    rw [Kernel.piecewise_apply, if_neg hc, Kernel.id_apply]
+  induction t with
+  | zero =>
+      simp only [pow_zero]
+      change Kernel.id c = Measure.dirac c
+      exact Kernel.id_apply c
+  | succ t ih =>
+      exact Measure.ext (fun S hS => by
+        rw [Kernel.pow_succ_apply_eq_lintegral _ _ _ hS, ih,
+            MeasureTheory.lintegral_dirac' _
+              (Kernel.measurable_coe _ hS), hK])
 
 /-! ### Active region definitions -/
 
@@ -89,6 +111,34 @@ instance instIsMarkovAbsorbedLargeY (hn : n ≥ 2) :
   unfold absorbedKernelLargeY
   have := instIsMarkovKernel hn
   infer_instance
+
+theorem absorbedKernelLargeX_pow_eq_dirac_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeX) (t : ℕ) :
+    (absorbedKernelLargeX hn ^ t) c = Measure.dirac c := by
+  unfold absorbedKernelLargeX
+  exact absorbedKernel_pow_eq_dirac_of_not_mem activeLargeX_measurableSet
+    (transitionKernel hn) c hc t
+
+theorem absorbedKernelLargeY_pow_eq_dirac_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeY) (t : ℕ) :
+    (absorbedKernelLargeY hn ^ t) c = Measure.dirac c := by
+  unfold absorbedKernelLargeY
+  exact absorbedKernel_pow_eq_dirac_of_not_mem activeLargeY_measurableSet
+    (transitionKernel hn) c hc t
+
+theorem absorbedKernelLargeX_active_eq_zero_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeX) (t : ℕ) :
+    (absorbedKernelLargeX hn ^ t) c activeLargeX = 0 := by
+  rw [absorbedKernelLargeX_pow_eq_dirac_of_not_mem hn c hc t,
+    Measure.dirac_apply' _ activeLargeX_measurableSet]
+  simp [hc]
+
+theorem absorbedKernelLargeY_active_eq_zero_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeY) (t : ℕ) :
+    (absorbedKernelLargeY hn ^ t) c activeLargeY = 0 := by
+  rw [absorbedKernelLargeY_pow_eq_dirac_of_not_mem hn c hc t,
+    Measure.dirac_apply' _ activeLargeY_measurableSet]
+  simp [hc]
 
 /-! ### Truncated potentials -/
 
@@ -358,6 +408,20 @@ instance instIsMarkovAbsorbedLargeB (hn : n ≥ 2) :
   unfold absorbedKernelLargeB
   have := instIsMarkovKernel hn
   infer_instance
+
+theorem absorbedKernelLargeB_pow_eq_dirac_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeB) (t : ℕ) :
+    (absorbedKernelLargeB hn ^ t) c = Measure.dirac c := by
+  unfold absorbedKernelLargeB
+  exact absorbedKernel_pow_eq_dirac_of_not_mem activeLargeB_measurableSet
+    (transitionKernel hn) c hc t
+
+theorem absorbedKernelLargeB_active_eq_zero_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeLargeB) (t : ℕ) :
+    (absorbedKernelLargeB hn ^ t) c activeLargeB = 0 := by
+  rw [absorbedKernelLargeB_pow_eq_dirac_of_not_mem hn c hc t,
+    Measure.dirac_apply' _ activeLargeB_measurableSet]
+  simp [hc]
 
 /-- **Potential for large-b**: `n/v` as an ℝ≥0∞-valued function,
     zero outside the active region.
@@ -695,7 +759,7 @@ Bochner-to-Lebesgue bridge (`ofReal_integral_eq_lintegral_ofReal`). -/
 /-- The core 1/v drift computation: E[1/v'] ≤ r · (1/v) under the
     transition kernel, for c in activeLargeB.
     Uses `large_b_reciprocal_drift` to bound the rational expectation. -/
-private theorem lintegral_inv_v_le (c : Config n) (hn : n ≥ 2)
+theorem original_lintegral_inv_v_le_largeB (c : Config n) (hn : n ≥ 2)
     (hc : c ∈ activeLargeB) :
     ∫⁻ c', (c'.v : ℝ≥0∞)⁻¹ ∂(transitionKernel hn c) ≤
     ENNReal.ofReal (1 - 13 / (64 * ((n : ℝ) - 1))) *
@@ -739,14 +803,14 @@ theorem absorbed_drift_largeB (hn : n ≥ 2) (c : Config n) :
           unfold potentialLargeBTrunc
           split_ifs with h
           · exact le_refl _
-          · exact zero_le _
+          · exact zero_le'
       -- Step 2: Factor out the constant n
       _ = (n : ℝ≥0∞) * ∫⁻ c', (c'.v : ℝ≥0∞)⁻¹ ∂(transitionKernel hn c) :=
           lintegral_const_mul _ (measurable_ennreal _)
       -- Step 3: Apply the 1/v drift bound
       _ ≤ (n : ℝ≥0∞) * (ENNReal.ofReal (1 - 13 / (64 * ((n : ℝ) - 1))) *
           (c.v : ℝ≥0∞)⁻¹) := by
-          gcongr; exact lintegral_inv_v_le c hn hc
+          gcongr; exact original_lintegral_inv_v_le_largeB c hn hc
       -- Step 4: Commute to match the goal
       _ = ENNReal.ofReal (1 - 13 / (64 * ((n : ℝ) - 1))) *
           ((n : ℝ≥0∞) * (c.v : ℝ≥0∞)⁻¹) := by ring
@@ -786,6 +850,10 @@ give the main ingredient for Theorem 1. -/
 def reachedConsensusX (c : Config n) : Prop :=
   c.x_count = n
 
+/-- The protocol has reached y-consensus: all agents hold opinion y. -/
+def reachedConsensusY (c : Config n) : Prop :=
+  c.y_count = n
+
 /-- In the active large-x region, `potentialLargeX = 1` iff `y = 0 ∧ b = 0`,
     i.e., the protocol has reached x-consensus. So `activeLargeX` is
     exactly the set of large-x configurations that have NOT yet converged. -/
@@ -799,6 +867,20 @@ theorem activeLargeX_iff_not_consensusX (c : Config n)
   · intro hne
     refine ⟨hx, ?_⟩
     unfold reachedConsensusX at hne
+    have := c.sum_eq; omega
+
+/-- Symmetric characterization of the active large-y region as the large-y
+    corner with y-consensus removed. -/
+theorem activeLargeY_iff_not_consensusY (c : Config n)
+    (hy : c.inLargeY) :
+    c ∈ activeLargeY ↔ ¬c.reachedConsensusY := by
+  constructor
+  · intro ⟨_, hbx⟩
+    unfold reachedConsensusY
+    have := c.sum_eq; omega
+  · intro hne
+    refine ⟨hy, ?_⟩
+    unfold reachedConsensusY at hne
     have := c.sum_eq; omega
 
 /-- **Convergence time from large-x corner (explicit bound)**:
@@ -825,6 +907,17 @@ theorem convergence_time_largeY (hn : n ≥ 2) (c₀ : Config n)
   have h := prob_in_activeLargeY_le hn c₀ t
   rwa [show potentialLargeYTrunc c₀ = (c₀.potentialLargeY : ℝ≥0∞) from
     if_pos hc₀] at h
+
+/-- Convergence-time wrapper for the large-b corner with the truncated
+    reciprocal potential unfolded at an active initial configuration. -/
+theorem convergence_time_largeB (hn : n ≥ 2) (c₀ : Config n)
+    (hc₀ : c₀ ∈ activeLargeB) (t : ℕ) :
+    (absorbedKernelLargeB hn ^ t) c₀ activeLargeB ≤
+    ENNReal.ofReal ((1 - 13 / (64 * ((n : ℝ) - 1))) ^ t) *
+    ((n : ℝ≥0∞) * (c₀.v : ℝ≥0∞)⁻¹) := by
+  have h := prob_in_activeLargeB_le hn c₀ t
+  rwa [show potentialLargeBTrunc c₀ =
+      (n : ℝ≥0∞) * (c₀.v : ℝ≥0∞)⁻¹ from if_pos hc₀] at h
 
 /-- **Initial potential bound (large-x)**: When starting in the active
     large-x region, `potentialLargeX ≤ 3(n/8) + n/8 + 1`. This bounds
@@ -859,6 +952,229 @@ private theorem activeCentral_measurableSet :
     MeasurableSet (activeCentral : Set (Config n)) :=
   instDiscreteMeasurableSpaceConfig.forall_measurableSet _
 
+/-- Every non-consensus configuration with at least one opinionated agent lies
+    in one of the four active regions used by the regional tail bounds.
+
+This is the deterministic coverage step needed before applying a union bound:
+large-x and large-y consensus points are removed from their active regions, and
+the all-blank large-b point is removed by the `hasOpinion` hypothesis. -/
+theorem nonconsensus_mem_activeRegion (hn : n ≥ 2) (c : Config n)
+    (hop : c.hasOpinion) (hnot : ¬ c.isConsensus) :
+    c ∈ (activeCentral : Set (Config n)) ∨
+    c ∈ (activeLargeB : Set (Config n)) ∨
+    c ∈ (activeLargeX : Set (Config n)) ∨
+    c ∈ (activeLargeY : Set (Config n)) := by
+  rcases region_classification c hn with hcentral | hlargeB | hlargeX | hlargeY
+  · left
+    unfold activeCentral
+    exact ⟨hcentral, by
+      exact Nat.succ_le_of_lt (central_v_pos c hcentral (by omega))⟩
+  · by_cases hv : c.v ≥ 1
+    · right; left
+      unfold activeLargeB
+      exact ⟨hlargeB, hv⟩
+    · exfalso
+      have hv0 : c.v = 0 := by omega
+      unfold hasOpinion opinionated at hop
+      unfold v at hv0
+      omega
+  · by_cases hby : c.b_count + c.y_count ≥ 1
+    · right; right; left
+      unfold activeLargeX
+      exact ⟨hlargeX, hby⟩
+    · exfalso
+      apply hnot
+      exact Or.inl (by
+        unfold allX at *
+        have := c.sum_eq
+        omega)
+  · by_cases hbx : c.b_count + c.x_count ≥ 1
+    · right; right; right
+      unfold activeLargeY
+      exact ⟨hlargeY, hbx⟩
+    · exfalso
+      apply hnot
+      exact Or.inr (by
+        unfold allY at *
+        have := c.sum_eq
+        omega)
+
+/-- The union of the four active regions used by the regional tail bounds. -/
+def activeRegion : Set (Config n) :=
+  ((activeCentral : Set (Config n)) ∪ activeLargeB ∪ activeLargeX) ∪ activeLargeY
+
+theorem activeRegion_measurableSet : MeasurableSet (activeRegion : Set (Config n)) :=
+  instDiscreteMeasurableSpaceConfig.forall_measurableSet _
+
+/-- Set-valued form of `nonconsensus_mem_activeRegion`: every non-consensus
+opinionated configuration lies in the union of the four active regions. -/
+theorem nonconsensus_mem_activeRegion_set (hn : n ≥ 2) (c : Config n)
+    (hop : c.hasOpinion) (hnot : ¬ c.isConsensus) :
+    c ∈ (activeRegion : Set (Config n)) := by
+  rcases nonconsensus_mem_activeRegion hn c hop hnot with hc | hb | hx | hy
+  · exact Or.inl (Or.inl (Or.inl hc))
+  · exact Or.inl (Or.inl (Or.inr hb))
+  · exact Or.inl (Or.inr hx)
+  · exact Or.inr hy
+
+/-- Event-level coverage: the non-consensus opinionated event is contained in
+the union of the four active regions. -/
+theorem nonconsensus_opinionated_event_subset_activeRegion (hn : n ≥ 2) :
+    {c : Config n | c.hasOpinion ∧ ¬c.isConsensus} ⊆
+      (activeRegion : Set (Config n)) := by
+  intro c hc
+  exact nonconsensus_mem_activeRegion_set hn c hc.1 hc.2
+
+/-- Union-bound interface for the four regional active events. -/
+theorem measure_activeRegion_le_sum (μ : Measure (Config n)) :
+    μ (activeRegion : Set (Config n)) ≤
+      μ (activeCentral : Set (Config n)) + μ (activeLargeB : Set (Config n)) +
+        μ (activeLargeX : Set (Config n)) + μ (activeLargeY : Set (Config n)) := by
+  unfold activeRegion
+  calc
+    μ (((activeCentral : Set (Config n)) ∪ activeLargeB ∪ activeLargeX) ∪ activeLargeY)
+        ≤ μ (((activeCentral : Set (Config n)) ∪ activeLargeB) ∪ activeLargeX) +
+            μ (activeLargeY : Set (Config n)) := measure_union_le _ _
+    _ ≤ (μ ((activeCentral : Set (Config n)) ∪ activeLargeB) +
+            μ (activeLargeX : Set (Config n))) +
+          μ (activeLargeY : Set (Config n)) := by
+        gcongr
+        exact measure_union_le _ _
+    _ ≤ (μ (activeCentral : Set (Config n)) + μ (activeLargeB : Set (Config n)) +
+            μ (activeLargeX : Set (Config n))) +
+          μ (activeLargeY : Set (Config n)) := by
+        gcongr
+        exact measure_union_le _ _
+    _ = μ (activeCentral : Set (Config n)) + μ (activeLargeB : Set (Config n)) +
+          μ (activeLargeX : Set (Config n)) + μ (activeLargeY : Set (Config n)) := by
+        rw [add_assoc]
+
+/-- Probability of being both opinionated and non-consensus is bounded by the
+sum of the four regional active-event probabilities. -/
+theorem measure_nonconsensus_opinionated_le_region_sum
+    (hn : n ≥ 2) (μ : Measure (Config n)) :
+    μ {c : Config n | c.hasOpinion ∧ ¬c.isConsensus} ≤
+      μ (activeCentral : Set (Config n)) + μ (activeLargeB : Set (Config n)) +
+        μ (activeLargeX : Set (Config n)) + μ (activeLargeY : Set (Config n)) := by
+  exact (measure_mono (nonconsensus_opinionated_event_subset_activeRegion hn)).trans
+    (measure_activeRegion_le_sum μ)
+
+/-- Original-chain union-bound interface. From an opinionated initial
+configuration, the event of still being non-consensus after `t` steps is
+bounded by the four active-region events at that same time. The all-blank
+failure mode has zero mass by finite-step opinion preservation. -/
+theorem transitionKernel_pow_nonconsensus_le_region_sum
+    (hn : n ≥ 2) (c₀ : Config n) (hop : c₀.hasOpinion) (t : ℕ) :
+    (transitionKernel hn ^ t) c₀ {c : Config n | ¬c.isConsensus} ≤
+      (transitionKernel hn ^ t) c₀ (activeCentral : Set (Config n)) +
+      (transitionKernel hn ^ t) c₀ (activeLargeB : Set (Config n)) +
+      (transitionKernel hn ^ t) c₀ (activeLargeX : Set (Config n)) +
+      (transitionKernel hn ^ t) c₀ (activeLargeY : Set (Config n)) := by
+  let μ : Measure (Config n) := (transitionKernel hn ^ t) c₀
+  have hnoOpinion :
+      μ {c : Config n | ¬c.hasOpinion} = 0 :=
+    transitionKernel_pow_not_hasOpinion_eq_zero c₀ hn hop t
+  have hsubset :
+      {c : Config n | ¬c.isConsensus} ⊆
+        {c : Config n | c.hasOpinion ∧ ¬c.isConsensus} ∪
+          {c : Config n | ¬c.hasOpinion} := by
+    intro c hc
+    by_cases hopc : c.hasOpinion
+    · exact Or.inl ⟨hopc, hc⟩
+    · exact Or.inr hopc
+  calc
+    μ {c : Config n | ¬c.isConsensus}
+        ≤ μ ({c : Config n | c.hasOpinion ∧ ¬c.isConsensus} ∪
+            {c : Config n | ¬c.hasOpinion}) := measure_mono hsubset
+    _ ≤ μ {c : Config n | c.hasOpinion ∧ ¬c.isConsensus} +
+          μ {c : Config n | ¬c.hasOpinion} := measure_union_le _ _
+    _ = μ {c : Config n | c.hasOpinion ∧ ¬c.isConsensus} := by
+        rw [hnoOpinion, add_zero]
+    _ ≤ μ (activeCentral : Set (Config n)) + μ (activeLargeB : Set (Config n)) +
+          μ (activeLargeX : Set (Config n)) + μ (activeLargeY : Set (Config n)) :=
+        measure_nonconsensus_opinionated_le_region_sum hn μ
+
+/-- A two-opinion initial configuration lies in the union of the active
+regions used by the regional convergence bounds. -/
+theorem initial_mem_activeRegion_of_pos_lt
+    (hn : n ≥ 2) {a : ℕ} (h : a ≤ n) (ha_pos : 0 < a) (ha_lt : a < n) :
+    Config.initial n a h ∈ (activeRegion : Set (Config n)) := by
+  exact nonconsensus_mem_activeRegion_set hn (Config.initial n a h)
+    (initial_hasOpinion h (by omega))
+    (initial_not_isConsensus_of_pos_lt h ha_pos ha_lt)
+
+/-- Initial-state specialization of the original-chain union-bound interface:
+after `t` interactions from a two-opinion initial configuration, the
+non-consensus probability is bounded by the sum of the four regional active
+probabilities. -/
+theorem initial_transitionKernel_pow_nonconsensus_le_region_sum
+    (hn : n ≥ 2) {a : ℕ} (h : a ≤ n) (ha_pos : 0 < a) (ha_lt : a < n)
+    (t : ℕ) :
+    (transitionKernel hn ^ t) (Config.initial n a h)
+        {c : Config n | ¬c.isConsensus} ≤
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeCentral : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeB : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeX : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeY : Set (Config n)) := by
+  have _ : Config.initial n a h ∈ (activeRegion : Set (Config n)) :=
+    initial_mem_activeRegion_of_pos_lt hn h ha_pos ha_lt
+  exact transitionKernel_pow_nonconsensus_le_region_sum hn (Config.initial n a h)
+    (initial_hasOpinion h (by omega)) t
+
+/-- Boundary initial configurations (`a = 0` or `a = n`) are already
+consensus, hence the original chain stays at the same point for any finite
+number of interactions. -/
+theorem initial_consensus_transitionKernel_pow_eq_dirac
+    (hn : n ≥ 2) {a : ℕ} (h : a ≤ n) (ha : a = n ∨ a = 0) (t : ℕ) :
+    (transitionKernel hn ^ t) (Config.initial n a h) =
+      Measure.dirac (Config.initial n a h) := by
+  exact consensus_transitionKernel_pow_eq_dirac (Config.initial n a h) hn
+    ((initial_isConsensus_iff h).2 ha) t
+
+/-- Boundary initial configurations have zero probability of being
+non-consensus after any finite number of interactions. -/
+theorem initial_consensus_transitionKernel_pow_nonconsensus_eq_zero
+    (hn : n ≥ 2) {a : ℕ} (h : a ≤ n) (ha : a = n ∨ a = 0) (t : ℕ) :
+    (transitionKernel hn ^ t) (Config.initial n a h)
+        {c : Config n | ¬c.isConsensus} = 0 := by
+  have hc : (Config.initial n a h).isConsensus :=
+    (initial_isConsensus_iff h).2 ha
+  rw [initial_consensus_transitionKernel_pow_eq_dirac hn h ha t,
+    Measure.dirac_apply' _
+      (instDiscreteMeasurableSpaceConfig.forall_measurableSet _)]
+  simp [hc]
+
+/-- Global initial-state union-bound interface. For every initial split `a`,
+including the two already-consensus boundary cases, the probability of being
+non-consensus after `t` interactions is bounded by the sum of the four active
+regional probabilities at that time. -/
+theorem initial_transitionKernel_pow_nonconsensus_le_region_sum_all
+    (hn : n ≥ 2) {a : ℕ} (h : a ≤ n) (t : ℕ) :
+    (transitionKernel hn ^ t) (Config.initial n a h)
+        {c : Config n | ¬c.isConsensus} ≤
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeCentral : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeB : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeX : Set (Config n)) +
+      (transitionKernel hn ^ t) (Config.initial n a h)
+          (activeLargeY : Set (Config n)) := by
+  by_cases ha0 : a = 0
+  · rw [initial_consensus_transitionKernel_pow_nonconsensus_eq_zero
+      hn h (Or.inr ha0) t]
+    exact zero_le'
+  · by_cases han : a = n
+    · rw [initial_consensus_transitionKernel_pow_nonconsensus_eq_zero
+        hn h (Or.inl han) t]
+      exact zero_le'
+    · exact initial_transitionKernel_pow_nonconsensus_le_region_sum
+        hn h (by omega) (by omega) t
+
 /-- Absorbed kernel for the central region. -/
 noncomputable def absorbedKernelCentral (hn : n ≥ 2) :
     Kernel (Config n) (Config n) :=
@@ -869,6 +1185,20 @@ instance instIsMarkovAbsorbedCentral (hn : n ≥ 2) :
   unfold absorbedKernelCentral
   have := instIsMarkovKernel hn
   infer_instance
+
+theorem absorbedKernelCentral_pow_eq_dirac_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeCentral) (t : ℕ) :
+    (absorbedKernelCentral hn ^ t) c = Measure.dirac c := by
+  unfold absorbedKernelCentral
+  exact absorbedKernel_pow_eq_dirac_of_not_mem activeCentral_measurableSet
+    (transitionKernel hn) c hc t
+
+theorem absorbedKernelCentral_active_eq_zero_of_not_mem
+    (hn : n ≥ 2) (c : Config n) (hc : c ∉ activeCentral) (t : ℕ) :
+    (absorbedKernelCentral hn ^ t) c activeCentral = 0 := by
+  rw [absorbedKernelCentral_pow_eq_dirac_of_not_mem hn c hc t,
+    Measure.dirac_apply' _ activeCentral_measurableSet]
+  simp [hc]
 
 /-- Truncated potential for the central region: `(n²+2n)/f` inside the
     active region, 0 outside. Since `f ≤ n²+2n` always, this is ≥ 1 in
@@ -1043,7 +1373,7 @@ private theorem ae_potential_ge_one (c : Config n) (hn : n ≥ 2) :
 /-!
 ### Central region drift: supermartingale approach required
 
-**The per-step contraction `E[1/f'] ≤ (1-δ)/f` is FALSE in the central region.**
+**The naive per-step contraction `E[1/f'] ≤ (1-δ)/f` is FALSE in the central region.**
 
 Counterexample: n=4, x=1, b=0, y=3 (in activeCentral).
 E[1/f']/(1/f) = 103/102 > 1, so 1/f INCREASES on average.
@@ -1052,7 +1382,12 @@ The drift coefficient E[Δf] ≥ 0 does NOT imply E[1/f'] ≤ 1/f because
 `absorbed_drift_central` is also false: all transitions from this config
 stay in activeCentral, so truncation provides no help.
 
-**Correct approach (Lemma 4 of Angluin-Aspnes-Eisenstat 2008):**
+Note: the original AAE paper does not use this naive drift bound;
+it works with Taylor-series expansions and absorbs higher-order terms
+for sufficiently large n. The failure above is specific to a naive
+formalization route, not a gap in the published proof.
+
+**Formalization approach (following Lemma 4 of Angluin-Aspnes-Eisenstat 2008):**
 Define the supermartingale M_t = α_vb^{S^vb_t} · α_xy^{S^xy_t} / f(C_t)
 where α_vb = (16n+7)/(16n), α_xy = (16n-5)/(16n), and S^vb_t, S^xy_t
 are cumulative counts of vb and xy interactions.
@@ -1066,19 +1401,14 @@ The per-step supermartingale condition E[M_{t+1}|F_t] ≤ M_t reduces to:
   ↔ (16n-5)·f·(f+1) ≤ 16n·((f+1)²-4u²)
   **Proven** in `supermartingale_factor_xy_le` (Supermartingale.lean)
 
-Both hold for ALL n ≥ 1 (not just "sufficiently large n").
+Both hold for all n ≥ 1.
 
-**Remaining steps** to fill the sorry below:
-1. Define augmented state (Config × S^vb × S^xy) and augmented kernel
-2. Define M as a function on the augmented state
-3. Prove E[M_t] ≤ M_0 by induction using the per-step bounds
-4. Apply Markov's inequality to bound S^vb and S^xy
-5. Bound total central interactions (Lemma 5: S^c ≤ 130·S^vb + 258·S^xy)
-6. Derive the geometric tail bound on exit time
+All six assembly steps are completed in `AugmentedState.lean`:
+see `central_geometric_decay` (line 2132) and `convergence_time_central` (line 2369).
 -/
 
--- prob_in_activeCentral_le and convergence_time_central moved to
--- AugmentedState.lean to avoid circular import.
+-- prob_in_activeCentral_le and convergence_time_central are in
+-- AugmentedState.lean (to avoid circular import).
 -- See central_geometric_decay in AugmentedState.lean.
 
 end Config

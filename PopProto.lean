@@ -10,6 +10,7 @@ import PopProto.Invariant.LastAgent
 import PopProto.Probability.Scheduler
 import PopProto.Probability.StepDist
 import PopProto.Probability.MarkovChain
+import PopProto.Probability.SupportTrace
 import PopProto.Convergence.Notation
 import PopProto.Convergence.RelativeChange
 import PopProto.Convergence.DeltaF
@@ -21,3 +22,4 @@ import PopProto.Convergence.GeometricDrift
 import PopProto.Convergence.ConvergenceTime
 import PopProto.Convergence.CentralSupermartingale
 import PopProto.Convergence.AugmentedState
+import PopProto.Convergence.GlobalConvergenceRate

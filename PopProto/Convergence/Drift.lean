@@ -475,10 +475,18 @@ Specifically (Theorem 1 of AAE 2008):
 - Express weighted ℤ-drift as ℝ-valued PMF expectation ✓
 - Multiplicative drift in ℝ for all three regions ✓
 
-**Remaining (measure theory gap):**
-- Construct the supermartingale M_t
-- Apply multiplicative drift theorem / Doob's inequality
-- Stopping times and union bound → Theorem 1
+**Later regional results:**
+`AugmentedState.lean` constructs the central-region supermartingales and
+proves `central_geometric_decay` for the absorbed central kernel.
+`ConvergenceTime.lean` supplies the corner-region absorbed-kernel bounds and
+an original-chain regional union-bound interface.
+
+**Global connection:**
+GlobalConvergence.lean combines original-chain interaction products with
+cumulative occupation moments, accounting for repeated regional visits.
+GlobalConvergenceRate.lean derives an explicit O(n log n) high-probability
+consensus bound for n ≥ 16 and an initial nonblank opinion. The original-
+chain union bound alone would not provide this connection.
 -/
 
 /-- **Region coverage**: every configuration is in exactly one region

@@ -4,12 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 
 # Augmented State for Central Region Supermartingale
 
-The central region (no count ≥ 7n/8) cannot use the direct multiplicative
-drift E[1/f'] ≤ (1-δ)/f (counterexample: n=4, x=1, b=0, y=3), even with
-truncation to activeCentral (verified computationally for n=4 to n=50).
+A naive multiplicative drift bound E[1/f'] ≤ (1-δ)/f does not hold in the
+central region (counterexample: n=4, x=1, b=0, y=3), even with truncation
+to activeCentral (verified computationally for n=4 to n=50).
 
-Instead, the proof of Lemma 4 from Angluin-Aspnes-Eisenstat 2008 uses an
-exponential supermartingale on an augmented state that tracks cumulative
+Following Lemma 4 of Angluin-Aspnes-Eisenstat 2008, the formalization uses
+an exponential supermartingale on an augmented state that tracks cumulative
 interaction counts:
 
   M(c, s_vb, s_xy) = α_vb^{s_vb} · α_xy^{s_xy} / f(c)
@@ -28,7 +28,9 @@ where α_vb = (16n+7)/(16n), α_xy = (16n-5)/(16n).
 
 - `supermartingaleM_per_step` : ∫⁻ M d(absorbedAugKernel a) ≤ M a
 - `supermartingaleM_iteration` : ∫⁻ M d(absorbedAugKernel^t a) ≤ M a
-- `svb_tail_bound` : P[S^vb ≥ k] ≤ (n²+2n)/f₀ · ((16n)/(16n+7))^k
+- `original_expected_product_bound` : original-chain interaction-product moment
+- `original_blank_conservation` : original-chain count conservation
+- `augTransitionKernel_proj_pow` : exact original configuration marginal
 
 ## Proof structure
 
@@ -1048,16 +1050,17 @@ and Markov's inequality, this gives tail bounds on S^vb. -/
 
     Proof: M = product/f, so product = M·f ≤ M·(n²+2n), and
     E[M] ≤ 1/f₀ by supermartingaleM_iteration. -/
-theorem expected_product_bound (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
+theorem expected_product_bound_of_integral (hn : n ≥ 2) (c₀ : Config n)
+    (μ : Measure (AugConfig n))
+    (hM : ∫⁻ a, supermartingaleM a ∂μ ≤ supermartingaleM (c₀, 0, 0)) :
     ∫⁻ a, (((16 * n + 7 : ℕ) : ℝ≥0∞) ^ a.2.1 *
            ((16 * n - 5 : ℕ) : ℝ≥0∞) ^ a.2.2) /
           ((16 * n : ℕ) : ℝ≥0∞) ^ (a.2.1 + a.2.2)
-    ∂((absorbedAugKernel hn ^ t) (c₀, 0, 0)) ≤
+    ∂μ ≤
     ((n ^ 2 + 2 * n : ℕ) : ℝ≥0∞) / ((c₀.potential : ℕ) : ℝ≥0∞) := by
   -- Strategy: integrand(a) ≤ (n²+2n) · supermartingaleM(a),
   -- integrate, apply supermartingaleM_iteration, simplify M₀ = 1/f₀.
   set P : ℝ≥0∞ := ↑(n ^ 2 + 2 * n : ℕ) with hP_def
-  set μ := (absorbedAugKernel hn ^ t) (c₀, 0, 0) with hμ_def
   -- Pointwise bound: integrand ≤ P * M
   have hpw : ∀ a : AugConfig n,
       (((16 * n + 7 : ℕ) : ℝ≥0∞) ^ a.2.1 *
@@ -1092,7 +1095,7 @@ theorem expected_product_bound (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
       rw [ENNReal.mul_inv (Or.inl hD_ne) (Or.inl hD_top)]
       simp only [mul_assoc, mul_comm, mul_left_comm]
     calc N / D ≤ N / D * (P / F) :=
-          le_mul_of_one_le_right (zero_le _) hPF
+          le_mul_of_one_le_right (zero_le') hPF
       _ = P * (N / (D * F)) := hfact
   -- Main calc chain
   calc ∫⁻ a, (((16 * n + 7 : ℕ) : ℝ≥0∞) ^ a.2.1 *
@@ -1103,10 +1106,20 @@ theorem expected_product_bound (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
         lintegral_const_mul P supermartingaleM_measurable
     _ ≤ P * supermartingaleM (c₀, 0, 0) := by
         apply mul_le_mul_left'
-        exact supermartingaleM_iteration hn (c₀, 0, 0) t
+        exact hM
     _ = P / ((c₀.potential : ℕ) : ℝ≥0∞) := by
         unfold supermartingaleM
         simp [P, div_eq_mul_inv]
+
+/-- Product expectation bound for the central-stopped chain. -/
+theorem expected_product_bound (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
+    ∫⁻ a, (((16 * n + 7 : ℕ) : ℝ≥0∞) ^ a.2.1 *
+           ((16 * n - 5 : ℕ) : ℝ≥0∞) ^ a.2.2) /
+          ((16 * n : ℕ) : ℝ≥0∞) ^ (a.2.1 + a.2.2)
+    ∂((absorbedAugKernel hn ^ t) (c₀, 0, 0)) ≤
+    ((n ^ 2 + 2 * n : ℕ) : ℝ≥0∞) / ((c₀.potential : ℕ) : ℝ≥0∞) := by
+  exact expected_product_bound_of_integral hn c₀ _
+    (supermartingaleM_iteration hn (c₀, 0, 0) t)
 
 /-! ### Exponential bounds for the counting supermartingale
 
@@ -1491,11 +1504,11 @@ theorem countingW_per_step (hn : n ≥ 2) (a : AugConfig n) :
       linarith
     calc ∑ q, countingW (augStep c svb sxy q.1 q.2) * (c.interactionPMF hn q)
         ≤ ∑ q, countingW (c, svb, sxy) * (c.interactionPMF hn q) :=
-          Finset.sum_le_sum (fun q _ => mul_le_mul_of_nonneg_right (hle q) (zero_le _))
+          Finset.sum_le_sum (fun q _ => mul_le_mul_of_nonneg_right (hle q) (zero_le'))
       _ = countingW (c, svb, sxy) * ∑ q, (c.interactionPMF hn q) := by
           rw [← Finset.mul_sum]
       _ ≤ countingW (c, svb, sxy) := by
-          apply mul_le_of_le_one_right (zero_le _)
+          apply mul_le_of_le_one_right (zero_le')
           calc ∑ q : State × State, (c.interactionPMF hn q)
               ≤ ∑' q, (c.interactionPMF hn q) := ENNReal.sum_le_tsum _
             _ = 1 := (c.interactionPMF hn).tsum_coe
@@ -1528,6 +1541,109 @@ This is because:
 The invariant holds on the support of the kernel (infeasible interactions
 have probability 0 in the PMF). -/
 
+/-- One original augmented step preserves the exact blank/counter balance.
+Only feasible interactions matter; impossible pairs have scheduler weight zero. -/
+theorem augTransitionKernel_blank_balance_step (hn : n ≥ 2) (c₀ c : Config n)
+    (svb sxy : ℕ) (heq_a : sxy + c₀.b_count = svb + c.b_count) :
+    (augTransitionKernel hn (c, svb, sxy))
+      {a' : AugConfig n | ¬(a'.2.2 + c₀.b_count = a'.2.1 + a'.1.b_count)} = 0 := by
+  have hbad_meas : MeasurableSet
+      ({a' : AugConfig n | ¬(a'.2.2 + c₀.b_count = a'.2.1 + a'.1.b_count)}) :=
+    instDiscreteMeasurableSpaceAugConfig.forall_measurableSet _
+  change (augStepDist (c, svb, sxy) hn).toMeasure
+    {a' | ¬(a'.2.2 + c₀.b_count = a'.2.1 + a'.1.b_count)} = 0
+  rw [← lintegral_indicator_one hbad_meas,
+      lintegral_augStepDist (c, svb, sxy) hn]
+  apply Finset.sum_eq_zero
+  intro ⟨i, r⟩ _
+  -- For each (i, r): either augStep preserves invariant or PMF = 0
+  suffices (augStep c svb sxy i r).2.2 + c₀.b_count =
+             (augStep c svb sxy i r).2.1 + (augStep c svb sxy i r).1.b_count ∨
+           c.interactionPMF hn (i, r) = 0 by
+    rcases this with h | h
+    · simp only [Set.indicator_apply, Set.mem_setOf_eq, h, not_true_eq_false,
+        ite_false, zero_mul]
+    · rw [h, mul_zero]
+  rcases i with _ | _ | _ <;> rcases r with _ | _ | _
+  -- (x,x): no change
+  · left; rw [augStep_xx]; exact heq_a
+  -- (x,b): VB — split on feasibility
+  · by_cases hf : c.x_count ≥ 1 ∧ c.b_count ≥ 1
+    · left; rw [augStep_xb]
+      show sxy + c₀.b_count = (svb + 1) + (c.stepOrSelf x b).b_count
+      have hb' : (c.stepOrSelf x b).b_count = c.b_count - 1 := by
+        have hstep : c.step x b = some ⟨c.x_count + 1, c.b_count - 1, c.y_count,
+            by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
+        simp [stepOrSelf, hstep]
+      rw [hb']; omega
+    · right
+      show c.interactionProb hn x b = 0
+      unfold interactionProb interactionCount
+      simp only [show (State.x : State) ≠ State.b from by decide, ite_false, countOf]
+      have : c.x_count * c.b_count = 0 := by
+        rw [Nat.mul_eq_zero]
+        by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
+      simp [this]
+  -- (x,y): XY — split on feasibility
+  · by_cases hf : c.x_count ≥ 1 ∧ c.y_count ≥ 1
+    · left; rw [augStep_xy]
+      show (sxy + 1) + c₀.b_count = svb + (c.stepOrSelf x y).b_count
+      have hb' : (c.stepOrSelf x y).b_count = c.b_count + 1 := by
+        have hstep : c.step x y = some ⟨c.x_count, c.b_count + 1, c.y_count - 1,
+            by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
+        simp [stepOrSelf, hstep]
+      rw [hb']; omega
+    · right
+      show c.interactionProb hn x y = 0
+      unfold interactionProb interactionCount
+      simp only [show (State.x : State) ≠ State.y from by decide, ite_false, countOf]
+      have : c.x_count * c.y_count = 0 := by
+        rw [Nat.mul_eq_zero]
+        by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
+      simp [this]
+  -- (b,x): no change
+  · left; rw [augStep_bx]; exact heq_a
+  -- (b,b): no change
+  · left; rw [augStep_bb]; exact heq_a
+  -- (b,y): no change
+  · left; rw [augStep_by'']; exact heq_a
+  -- (y,x): XY — split on feasibility
+  · by_cases hf : c.y_count ≥ 1 ∧ c.x_count ≥ 1
+    · left; rw [augStep_yx]
+      show (sxy + 1) + c₀.b_count = svb + (c.stepOrSelf y x).b_count
+      have hb' : (c.stepOrSelf y x).b_count = c.b_count + 1 := by
+        have hstep : c.step y x = some ⟨c.x_count - 1, c.b_count + 1, c.y_count,
+            by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
+        simp [stepOrSelf, hstep]
+      rw [hb']; omega
+    · right
+      show c.interactionProb hn y x = 0
+      unfold interactionProb interactionCount
+      simp only [show (State.y : State) ≠ State.x from by decide, ite_false, countOf]
+      have : c.y_count * c.x_count = 0 := by
+        rw [Nat.mul_eq_zero]
+        by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
+      simp [this]
+  -- (y,b): VB — split on feasibility
+  · by_cases hf : c.y_count ≥ 1 ∧ c.b_count ≥ 1
+    · left; rw [augStep_yb]
+      show sxy + c₀.b_count = (svb + 1) + (c.stepOrSelf y b).b_count
+      have hb' : (c.stepOrSelf y b).b_count = c.b_count - 1 := by
+        have hstep : c.step y b = some ⟨c.x_count, c.b_count - 1, c.y_count + 1,
+            by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
+        simp [stepOrSelf, hstep]
+      rw [hb']; omega
+    · right
+      show c.interactionProb hn y b = 0
+      unfold interactionProb interactionCount
+      simp only [show (State.y : State) ≠ State.b from by decide, ite_false, countOf]
+      have : c.y_count * c.b_count = 0 := by
+        rw [Nat.mul_eq_zero]
+        by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
+      simp [this]
+  -- (y,y): no change
+  · left; rw [augStep_yy]; exact heq_a
+
 /-- **Blank conservation**: s_xy ≤ s_vb + n almost surely under the
     absorbed augmented kernel starting from (c₀, 0, 0).
 
@@ -1558,99 +1674,7 @@ theorem blank_conservation (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
     by_cases hact : (c, svb, sxy) ∈ augActiveCentral
     · -- Active case: show sum over interaction types is 0
       rw [if_pos hact]
-      change (augStepDist (c, svb, sxy) hn).toMeasure
-        {a' | ¬(a'.2.2 + c₀.b_count = a'.2.1 + a'.1.b_count)} = 0
-      rw [← lintegral_indicator_one hbad_meas,
-          lintegral_augStepDist (c, svb, sxy) hn]
-      apply Finset.sum_eq_zero
-      intro ⟨i, r⟩ _
-      -- For each (i, r): either augStep preserves invariant or PMF = 0
-      suffices (augStep c svb sxy i r).2.2 + c₀.b_count =
-                 (augStep c svb sxy i r).2.1 + (augStep c svb sxy i r).1.b_count ∨
-               c.interactionPMF hn (i, r) = 0 by
-        rcases this with h | h
-        · simp only [Set.indicator_apply, Set.mem_setOf_eq, h, not_true_eq_false,
-            ite_false, zero_mul]
-        · rw [h, mul_zero]
-      rcases i with _ | _ | _ <;> rcases r with _ | _ | _
-      -- (x,x): no change
-      · left; rw [augStep_xx]; exact heq_a
-      -- (x,b): VB — split on feasibility
-      · by_cases hf : c.x_count ≥ 1 ∧ c.b_count ≥ 1
-        · left; rw [augStep_xb]
-          show sxy + c₀.b_count = (svb + 1) + (c.stepOrSelf x b).b_count
-          have hb' : (c.stepOrSelf x b).b_count = c.b_count - 1 := by
-            have hstep : c.step x b = some ⟨c.x_count + 1, c.b_count - 1, c.y_count,
-                by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
-            simp [stepOrSelf, hstep]
-          rw [hb']; omega
-        · right
-          show c.interactionProb hn x b = 0
-          unfold interactionProb interactionCount
-          simp only [show (State.x : State) ≠ State.b from by decide, ite_false, countOf]
-          have : c.x_count * c.b_count = 0 := by
-            rw [Nat.mul_eq_zero]
-            by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
-          simp [this]
-      -- (x,y): XY — split on feasibility
-      · by_cases hf : c.x_count ≥ 1 ∧ c.y_count ≥ 1
-        · left; rw [augStep_xy]
-          show (sxy + 1) + c₀.b_count = svb + (c.stepOrSelf x y).b_count
-          have hb' : (c.stepOrSelf x y).b_count = c.b_count + 1 := by
-            have hstep : c.step x y = some ⟨c.x_count, c.b_count + 1, c.y_count - 1,
-                by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
-            simp [stepOrSelf, hstep]
-          rw [hb']; omega
-        · right
-          show c.interactionProb hn x y = 0
-          unfold interactionProb interactionCount
-          simp only [show (State.x : State) ≠ State.y from by decide, ite_false, countOf]
-          have : c.x_count * c.y_count = 0 := by
-            rw [Nat.mul_eq_zero]
-            by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
-          simp [this]
-      -- (b,x): no change
-      · left; rw [augStep_bx]; exact heq_a
-      -- (b,b): no change
-      · left; rw [augStep_bb]; exact heq_a
-      -- (b,y): no change
-      · left; rw [augStep_by'']; exact heq_a
-      -- (y,x): XY — split on feasibility
-      · by_cases hf : c.y_count ≥ 1 ∧ c.x_count ≥ 1
-        · left; rw [augStep_yx]
-          show (sxy + 1) + c₀.b_count = svb + (c.stepOrSelf y x).b_count
-          have hb' : (c.stepOrSelf y x).b_count = c.b_count + 1 := by
-            have hstep : c.step y x = some ⟨c.x_count - 1, c.b_count + 1, c.y_count,
-                by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
-            simp [stepOrSelf, hstep]
-          rw [hb']; omega
-        · right
-          show c.interactionProb hn y x = 0
-          unfold interactionProb interactionCount
-          simp only [show (State.y : State) ≠ State.x from by decide, ite_false, countOf]
-          have : c.y_count * c.x_count = 0 := by
-            rw [Nat.mul_eq_zero]
-            by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
-          simp [this]
-      -- (y,b): VB — split on feasibility
-      · by_cases hf : c.y_count ≥ 1 ∧ c.b_count ≥ 1
-        · left; rw [augStep_yb]
-          show sxy + c₀.b_count = (svb + 1) + (c.stepOrSelf y b).b_count
-          have hb' : (c.stepOrSelf y b).b_count = c.b_count - 1 := by
-            have hstep : c.step y b = some ⟨c.x_count, c.b_count - 1, c.y_count + 1,
-                by have := c.sum_eq; omega⟩ := by unfold step; exact dif_pos hf
-            simp [stepOrSelf, hstep]
-          rw [hb']; omega
-        · right
-          show c.interactionProb hn y b = 0
-          unfold interactionProb interactionCount
-          simp only [show (State.y : State) ≠ State.b from by decide, ite_false, countOf]
-          have : c.y_count * c.b_count = 0 := by
-            rw [Nat.mul_eq_zero]
-            by_contra hall; push_neg at hall; exact hf ⟨by omega, by omega⟩
-          simp [this]
-      -- (y,y): no change
-      · left; rw [augStep_yy]; exact heq_a
+      exact augTransitionKernel_blank_balance_step hn c₀ c svb sxy heq_a
     · -- Absorbed case: K(a) = dirac(a), and a is in the good set
       rw [if_neg hact, Kernel.id_apply, Measure.dirac_apply' _ hbad_meas]
       simp only [Set.indicator_apply, Set.mem_setOf_eq, heq_a, not_true_eq_false, ite_false]
@@ -1851,7 +1875,7 @@ theorem countingWActive_per_step (hn : n ≥ 2) (a : AugConfig n) :
           apply lintegral_mono; intro a'
           simp only [countingWActive]; split_ifs with h
           · exact le_refl _
-          · exact zero_le _
+          · exact zero_le'
       _ ≤ ENNReal.ofReal (Real.exp (-(1 : ℝ) / ↑n)) *
           countingW (c, svb, sxy) :=
           countingW_active_contraction hn c hc hv svb sxy
@@ -2091,6 +2115,15 @@ private theorem pointwise_bound_real (hn : n ≥ 2)
   · -- hcorr: 1 ≤ 2*(R^516 * αxy)^n
     exact correction_bound_516 hn
 
+/-- The interaction-product lower bound depends only on cumulative counts
+and blank conservation, not on any regional stopping rule. -/
+theorem interaction_count_product_lower_bound (hn : n ≥ 2)
+    (svb sxy t : ℕ) (hbc : sxy ≤ svb + n) (hcount : t < 260 * svb + 516 * sxy) :
+    (1 : ℝ) ≤ 2 * (1 - 1 / (15000 * (n : ℝ))) ^ t *
+      ((16 * (n : ℝ) + 7) / (16 * (n : ℝ))) ^ svb *
+      ((16 * (n : ℝ) - 5) / (16 * (n : ℝ))) ^ sxy :=
+  pointwise_bound_real hn svb sxy t hbc hcount
+
 /-! ### Final combination: geometric decay for central region
 
 Combining the M supermartingale (Corollary 2) with the counting
@@ -2127,7 +2160,7 @@ of remaining in the central region.
     proved by combining the augmented supermartingale with the
     counting supermartingale.
 
-    This fills the sorry in `prob_in_activeCentral_le` from
+    This supplies the central-region probability bound used by
     ConvergenceTime.lean. -/
 theorem central_geometric_decay (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
     (absorbedKernelCentral hn ^ t) c₀ activeCentral ≤
@@ -2283,7 +2316,7 @@ theorem central_geometric_decay (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
             simp only [Set.indicator_apply, Pi.one_apply]
             split_ifs with h
             · exact ha h
-            · exact zero_le _
+            · exact zero_le'
         _ = 2 * r * ∫⁻ a, prodFun a ∂μ :=
             lintegral_const_mul _ hprod_meas
         _ ≤ 2 * r * P := by
@@ -2356,7 +2389,7 @@ theorem central_geometric_decay (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
           rw [Kernel.pow_succ_apply_eq_lintegral _ _ _ hS, ih,
               MeasureTheory.lintegral_dirac' _
                 (Kernel.measurable_coe _ hS), hK])
-    rw [hLHS]; exact zero_le _
+    rw [hLHS]; exact zero_le'
 
 /-- Geometric decay for central region (wrapper matching ConvergenceTime statement). -/
 theorem prob_in_activeCentral_le (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
@@ -2375,6 +2408,144 @@ theorem convergence_time_central (hn : n ≥ 2) (c₀ : Config n)
   rwa [show potentialCentralTrunc c₀ =
     ((n ^ 2 + 2 * n : ℕ) : ℝ≥0∞) * (c₀.potential : ℝ≥0∞)⁻¹ from
     if_pos hc₀] at h
+
+
+/-! ### Original-chain interaction-count supermartingale
+
+The regional stopping rule is not needed for M. Its algebraic one-step
+inequality holds at every opinionated configuration. At the all-blank
+configuration only the blank/blank interaction has positive weight and M
+is unchanged. Thus M controls cumulative interaction counts across every
+exit and re-entry; this is the global version needed by the paper.
+-/
+
+/-- The product supermartingale also contracts under the original augmented
+chain, including crossings between regions. -/
+theorem supermartingaleM_original_per_step (hn : n ≥ 2) (a : AugConfig n) :
+    ∫⁻ a', supermartingaleM a' ∂(augTransitionKernel hn a) ≤
+      supermartingaleM a := by
+  change ∫⁻ a', supermartingaleM a' ∂(augStepDist a hn).toMeasure ≤ _
+  rw [lintegral_augStepDist]
+  by_cases hv : 0 < a.1.v
+  · exact supermartingaleM_per_step_ennreal a hn hv
+  · have hx : a.1.x_count = 0 := by unfold v at hv; omega
+    have hy : a.1.y_count = 0 := by unfold v at hv; omega
+    have hb : a.1.b_count = n := by have := a.1.sum_eq; omega
+    have hsum : ∀ q : State × State,
+        supermartingaleM (augStep a.1 a.2.1 a.2.2 q.1 q.2) *
+            (a.1.interactionPMF hn q) =
+        supermartingaleM a * (a.1.interactionPMF hn q) := by
+      intro ⟨i, r⟩
+      change supermartingaleM (augStep a.1 a.2.1 a.2.2 i r) *
+          a.1.interactionProb hn i r = supermartingaleM a * a.1.interactionProb hn i r
+      cases i <;> cases r <;>
+        simp [augStep, isVB, isXY, stepOrSelf, step, hx, hy, hb, hn,
+          interactionProb, interactionCount, countOf]
+    simp_rw [hsum]
+    rw [← Finset.mul_sum]
+    have htotal : (∑ q : State × State, a.1.interactionPMF hn q) = 1 := by
+      simpa using (a.1.interactionPMF hn).tsum_coe
+    rw [htotal, mul_one]
+
+/-- The original chain satisfies E[M_t] ≤ M_0 without stopping on region
+exit. Counts accumulated during all later visits remain in this bound. -/
+theorem supermartingaleM_original_iteration (hn : n ≥ 2)
+    (a₀ : AugConfig n) (t : ℕ) :
+    ∫⁻ a, supermartingaleM a ∂((augTransitionKernel hn ^ t) a₀) ≤
+      supermartingaleM a₀ := by
+  have h := lintegral_geometric_decay
+    (augTransitionKernel hn) supermartingaleM supermartingaleM_measurable
+    1 (fun a => by simpa using supermartingaleM_original_per_step hn a) t a₀
+  simpa using h
+
+/-- Exact blank balance holds at every time on the original augmented chain,
+so region exits and returns do not reset the accumulated interaction counts. -/
+theorem original_blank_balance (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
+    ∀ᵐ a ∂((augTransitionKernel hn ^ t) (c₀, 0, 0)),
+      a.2.2 + c₀.b_count = a.2.1 + a.1.b_count := by
+  induction t with
+  | zero =>
+    simp only [pow_zero]
+    change ∀ᵐ a ∂(Kernel.id (c₀, 0, 0)), _
+    rw [Kernel.id_apply, MeasureTheory.ae_dirac_iff
+      (instDiscreteMeasurableSpaceAugConfig.forall_measurableSet _)]
+  | succ t ih =>
+    rw [MeasureTheory.ae_iff]
+    have hbad : MeasurableSet
+        {a : AugConfig n | ¬(a.2.2 + c₀.b_count = a.2.1 + a.1.b_count)} :=
+      instDiscreteMeasurableSpaceAugConfig.forall_measurableSet _
+    rw [Kernel.pow_succ_apply_eq_lintegral _ _ _ hbad,
+        MeasureTheory.lintegral_eq_zero_iff (Kernel.measurable_coe _ hbad)]
+    filter_upwards [ih] with ⟨c, svb, sxy⟩ hb
+    exact augTransitionKernel_blank_balance_step hn c₀ c svb sxy hb
+
+/-- The original-chain interaction counts satisfy S_xy ≤ S_vb + n almost
+surely. This is the global conservation input for the interaction-count tail. -/
+theorem original_blank_conservation (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
+    ∀ᵐ a ∂((augTransitionKernel hn ^ t) (c₀, 0, 0)),
+      a.2.2 ≤ a.2.1 + n := by
+  filter_upwards [original_blank_balance hn c₀ t] with a ha
+  have := b_count_le a.1
+  omega
+
+/-- Product expectation bound for cumulative counts on the original chain. -/
+theorem original_expected_product_bound (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
+    ∫⁻ a, (((16 * n + 7 : ℕ) : ℝ≥0∞) ^ a.2.1 *
+           ((16 * n - 5 : ℕ) : ℝ≥0∞) ^ a.2.2) /
+          ((16 * n : ℕ) : ℝ≥0∞) ^ (a.2.1 + a.2.2)
+      ∂((augTransitionKernel hn ^ t) (c₀, 0, 0)) ≤
+      ((n ^ 2 + 2 * n : ℕ) : ℝ≥0∞) / ((c₀.potential : ℕ) : ℝ≥0∞) := by
+  exact expected_product_bound_of_integral hn c₀ _
+    (supermartingaleM_original_iteration hn (c₀, 0, 0) t)
+
+/-- The original augmented one-step kernel has exactly the original
+configuration marginal, with no regional stopping or reset. -/
+theorem augTransitionKernel_proj_step (hn : n ≥ 2) (a : AugConfig n)
+    (S : Set (Config n)) (hS : MeasurableSet S) :
+    (augTransitionKernel hn a) (Prod.fst ⁻¹' S) =
+      (transitionKernel hn a.1) S := by
+  change (augStepDist a hn).toMeasure (Prod.fst ⁻¹' S) =
+    (a.1.stepDist hn).toMeasure S
+  rw [← Measure.map_apply (Measurable.of_discrete : Measurable
+    (Prod.fst : AugConfig n → Config n)) hS]
+  rw [PMF.toMeasure_map, augStepDist_proj_eq_stepDist]
+  exact Measurable.of_discrete
+
+/-- Every finite-time marginal of the augmented original chain equals
+the corresponding original configuration-chain marginal. -/
+theorem augTransitionKernel_proj_pow (hn : n ≥ 2) (a₀ : AugConfig n) (t : ℕ)
+    (S : Set (Config n)) (hS : MeasurableSet S) :
+    ((augTransitionKernel hn ^ t) a₀) (Prod.fst ⁻¹' S) =
+    ((transitionKernel hn ^ t) a₀.1) S := by
+  induction t generalizing S with
+  | zero =>
+    simp only [pow_zero]
+    change Kernel.id a₀ _ = Kernel.id a₀.1 _
+    rw [Kernel.id_apply, Kernel.id_apply,
+        Measure.dirac_apply' a₀
+          (instDiscreteMeasurableSpaceAugConfig.forall_measurableSet _),
+        Measure.dirac_apply' a₀.1 hS]
+    simp only [Set.indicator, Set.mem_preimage]
+    split <;> rfl
+  | succ t ih =>
+    rw [Kernel.pow_succ_apply_eq_lintegral _ _ _
+          (instDiscreteMeasurableSpaceAugConfig.forall_measurableSet _),
+        Kernel.pow_succ_apply_eq_lintegral _ _ _ hS]
+    -- Step 1: Rewrite integrand using one-step projection
+    have h_proj : ∀ a : AugConfig n,
+        (augTransitionKernel hn a) (Prod.fst ⁻¹' S) =
+        (transitionKernel hn a.1) S := fun a =>
+      augTransitionKernel_proj_step hn a S hS
+    simp_rw [h_proj]
+    -- Goal: ∫ g(a.1) d(K_aug^t a₀) = ∫ g(c) d(K_C^t a₀.1)
+    -- Step 2: Change of variables via Prod.fst
+    rw [← lintegral_map (Kernel.measurable_coe _ hS) Measurable.of_discrete]
+    -- Step 3: The pushed-forward measure equals the config kernel by IH
+    congr 1
+    exact Measure.ext (fun S' hS' => by
+      rw [Measure.map_apply Measurable.of_discrete hS']
+      exact ih S' hS')
+
 
 end Config
 end PopProto

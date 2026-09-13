@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 
 # Central Region Supermartingale (Lemma 4)
 
-The central region (no count ≥ 7n/8) cannot use the multiplicative drift
-of 1/f (counterexample: n=4, x=1, b=0, y=3, where E[1/f'] > 1/f).
-Instead, the proof requires an exponential supermartingale on an
-augmented state that tracks cumulative interaction counts.
+A naive multiplicative drift bound E[1/f'] ≤ (1-δ)/f does not hold in the
+central region (counterexample: n=4, x=1, b=0, y=3, where E[1/f'] > 1/f).
+Following Lemma 4 of AAE 2008, the formalization uses an exponential
+supermartingale on an augmented state that tracks cumulative interaction counts.
 
 ## The supermartingale
 
@@ -152,7 +152,7 @@ expressed as a property of the stepDist PMF. -/
     - other: = T - bv - 2xy (f unchanged)
     - Total: ≤ T ✓ -/
 theorem supermartingale_per_step (c : Config n) (hn : n ≥ 1)
-    (hv : 0 < c.v) :
+    (_hv : 0 < c.v) :
     -- Cross-multiplied integer form of E[M'/M] ≤ 1:
     -- VB: b · (16n+7) · f · (v(f+1) - 2u²) ≤ b · 16n · v · ab
     -- XY: 2xy · (16n-5) · f · (f+1) ≤ 2xy · 16n · ab
@@ -189,10 +189,10 @@ theorem supermartingale_per_step (c : Config n) (hn : n ≥ 1)
         2 * ↑c.x_count * ↑c.y_count * (16 * ↑n * ab) := add_le_add hvb' hxy'
     _ = (↑c.b_count * ↑c.v + 2 * ↑c.x_count * ↑c.y_count) * (16 * ↑n * ab) := by ring
 
-/-! ### Roadmap for completing prob_in_activeCentral_le
+/-! ### Roadmap for the central-region probability theorem
 
 The per-step supermartingale condition above is the algebraic foundation.
-The remaining steps to fill the sorry in ConvergenceTime.lean are:
+The remaining steps for the full theorem packaging are:
 
 **Step 3: Augmented state and kernel**
 - Define `AugConfig n := Config n × ℕ × ℕ` (tracks S^vb, S^xy)

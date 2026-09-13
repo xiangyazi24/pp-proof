@@ -1,97 +1,108 @@
-# PP-Proof: Formal Verification of 3-State Approximate Majority Convergence
+# PP-Proof: Three-State Approximate Majority Consensus Time
 
-A Lean 4 + Mathlib formalization of the O(n log n) convergence bound for the 3-state approximate majority population protocol from:
+A Lean 4 formalization of the high-probability O(n log n) consensus-time
+bound for the three-state population protocol of:
 
-> D. Angluin, J. Aspnes, and D. Eisenstat. "A simple population protocol for fast robust approximate majority." *Distributed Computing*, 21(2):87–102, 2008.
+> D. Angluin, J. Aspnes, and D. Eisenstat. “A simple population protocol for
+> fast robust approximate majority.” *Distributed Computing*, 21(2):87–102, 2008.
 
-**Status:** Complete. All proofs compile with **zero `sorry`** (Lean 4.27.0, Mathlib v4.27.0).
+## Result and scope
 
-## Key Discovery
+`PopProto.Config.convergence_time_bound_exp` proves, for n ≥ 16 and any
+initial configuration containing at least one nonblank opinion,
 
-During formalization, we found that a key intermediate step in the original proof is **false**: the per-step multiplicative drift E[1/f'] ≤ (1−δ)/f does not hold in the central region.
+\[
+\Pr[\text{not all-X or all-Y after }4k\text{ interactions}]
+\le 3n^2\exp\!\left(-\frac{k}{15000n}\right).
+\]
 
-**Counterexample:** n = 4, x = 1, b = 0, y = 3. The ratio E[1/f']/(1/f) = 103/102 > 1.
+The probability is under the original protocol's uniform ordered-pair
+scheduler, with distinct agents and denominator n(n−1). One step is one
+interaction, not a parallel round. The initial state may contain blanks;
+no initial majority-gap assumption is needed for this consensus-time bound.
+All-blank is excluded because it is absorbing without reaching all-X or all-Y.
 
-The issue is that 1/x is convex, so Jensen's inequality goes the wrong way when step sizes are comparable to the potential f = u² + 2n. This drift *does* hold in the three corner regions (large-x, large-y, large-b), but fails in the central region.
+`convergence_time_high_probability` consequently proves failure probability
+at most n^(-r) whenever
 
-The correct proof for the central region uses the **exponential supermartingale** on an augmented state tracking cumulative interaction counts (as described in Lemma 4 of the paper). The final theorem — O(n log n) convergence with high probability — is correct.
+\[
+k\ge15000n\bigl(\log(3n^2)+r\log n\bigr).
+\]
 
-See [the blog post](https://infsup.com/math/formalizing-population-protocol/) for a detailed write-up.
+For a fixed positive r, take the natural ceiling of this threshold and run
+4k interactions. This is the explicit O(n log n) high-probability guarantee.
+The constants are conservative; this does not reproduce the paper's exact
+constants. Populations below 16 and correctness of the winning opinion are
+outside these headline statements.
 
-## Structure
+## Proof architecture
 
-```
-PopProto/
-├── Config.lean              # State space (x, y, b counts), potential function
-├── State.lean               # State properties, region definitions
-├── Step.lean                # Single-step transitions
-├── Transition.lean          # Markov kernel on configurations
-├── Convergence/
-│   ├── DeltaF.lean          # Drift of potential (Δf per interaction type)
-│   ├── RelativeChange.lean  # Relative change bounds
-│   ├── Drift.lean           # Corner region drift analysis
-│   ├── RegionBounds.lean    # Region-specific bounds
-│   ├── Expected.lean        # Expected value infrastructure
-│   ├── GeometricDrift.lean  # Generic geometric decay framework
-│   ├── Supermartingale.lean # Algebraic supermartingale bounds (Lemma 4)
-│   ├── CentralSupermartingale.lean  # Per-step supermartingale on kernel
-│   ├── AugmentedState.lean  # Augmented state, central region proof (~2,380 lines)
-│   ├── ConvergenceTime.lean # Corner region convergence + main theorem
-│   └── Notation.lean        # Shared notation
-└── ...
-```
+The proof records cumulative counts along the original execution, including
+all exits from and returns to a region. Regional first-exit bounds alone do
+not control the complete execution.
 
-~6,650 lines of Lean across 23 files.
+- `AugmentedState.lean` extends the interaction-product supermartingale to
+  the original chain and proves blank-count conservation and exact marginals.
+- `OccupationTime.lean`, `CornerCharge.lean`, and `BlankOccupation.lean`
+  establish exponential moments for cumulative central, X, Y, and blank
+  occupation charges. `WeightedOccupation.lean` provides their common step
+  and iteration argument; each use supplies a concrete protocol inequality.
+- `OccupationAssembly.lean` proves that a non-consensus execution of length
+  t has recorded exactly t active-region visits, with no reset on re-entry.
+- `InteractionProduct.lean` transports the product bound to this same
+  counting process. The projected configuration law remains exactly the
+  original kernel law.
+- `GlobalConvergence.lean` proves the quantitative global tail: either the
+  interaction count is large, or at least one occupation charge is large.
+  `GlobalConvergenceRate.lean` derives the uniform exponential and polynomial
+  failure bounds above.
 
-## Main Results
+All results are exported by `PopProto.lean`. The corresponding Ripple
+modules use the prefix `Ripple.PopulationProtocol.Majority.PopProto`.
 
-### Central region (supermartingale approach)
+## Correction to the earlier completion claim
 
-```lean
-theorem prob_in_activeCentral_le (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
-    (absorbedKernelCentral hn ^ t) c₀ activeCentral ≤
-    3 * ENNReal.ofReal ((1 - 1 / (15000 * (n : ℝ))) ^ t) *
-    potentialCentralTrunc c₀
-```
+Revision `b072efb` advertised completion while its headline was
+`convergence_time_bound : True := trivial`. The supporting regional proofs
+were substantive, but this placeholder proved no consensus-time guarantee.
+The current theorem replaces it with the original-kernel bound above.
 
-### Corner regions (multiplicative drift)
+The earlier README also incorrectly described the failed naive drift of
+1/f as a defect in the paper. The paper already uses an interaction-product
+supermartingale and cumulative counts. The missing global assembly was in
+this formalization. Compilation and absence of `sorry` did not detect the
+old placeholder; acceptance also checks the actual compiled theorem types,
+assumptions, original-kernel connection, and transitive axioms.
 
-```lean
-theorem prob_in_activeLargeX_le (hn : n ≥ 2) (c₀ : Config n) (t : ℕ) :
-    (absorbedKernelLargeX hn ^ t) c₀ activeLargeX ≤
-    ENNReal.ofReal ((1 - 1 / (15000 * (n : ℝ))) ^ t) *
-    potentialLargeXTrunc c₀
-```
+## Toolchain and verification
 
-Analogous theorems for large-y and large-b regions.
+The project pins Lean **4.30.0** and Mathlib
+**c5ea00351c28e24afc9f0f84379aa41082b1188f**, with transitive revisions in
+`lake-manifest.json`.
 
-### Supermartingale algebraic core (all n ≥ 1)
-
-```lean
-theorem supermartingale_factor_vb_le (u : ℤ) (v n : ℕ) (hn : n ≥ 1) (hv : v ≤ n) :
-    (16 * (n : ℤ) + 7) * (u ^ 2 + 2 * n) *
-    ((v : ℤ) * (u ^ 2 + 2 * n + 1) - 2 * u ^ 2) ≤
-    16 * (n : ℤ) * (v : ℤ) * ((u ^ 2 + 2 * n + 1) ^ 2 - 4 * u ^ 2)
-
-theorem supermartingale_factor_xy_le (u : ℤ) (n : ℕ) (hn : n ≥ 1) :
-    (16 * (n : ℤ) - 5) * (u ^ 2 + 2 * n) * (u ^ 2 + 2 * n + 1) ≤
-    16 * (n : ℤ) * ((u ^ 2 + 2 * n + 1) ^ 2 - 4 * u ^ 2)
-```
-
-## Building
+On a suitably provisioned build host:
 
 ```bash
-# Install Lean 4.27.0 via elan
-curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
-
-# Build (first build downloads Mathlib cache, may take a while)
 lake exe cache get
-lake build
+lake build PopProto
 ```
 
-## Constants
+Full builds for this workspace run remotely on uisai2. Local checks should
+target one file rather than building the complete dependency graph.
 
-The formalization uses a contraction rate of 1/(15000n) where the paper's implicit constants are tighter. This larger constant provides more margin for formal inequalities without affecting the asymptotic O(n log n) bound.
+The complete 34-module subtree and umbrella passed a fresh remote build on
+2026-09-13, followed by compiled headline-type inspection and transitive axiom
+checks for all three results. A non-consensus 8-X/8-Y configuration and a
+consumer supplying the natural-ceiling time threshold also compiled. Ripple's
+corresponding subtree passed the same gates. Exact source hashes, commands,
+logs and type readbacks are retained in the IPS project under
+`arena/prove2me-validation/pp-proof-global-20260913/verification/`.
+
+To inspect the three actual headlines, import `PopProto` and run `#check`
+and `#print axioms` on `PopProto.Config.convergence_time_bound`,
+`PopProto.Config.convergence_time_bound_exp`, and
+`PopProto.Config.convergence_time_high_probability`. Only `propext`,
+`Classical.choice`, and `Quot.sound` are allowed in their transitive axioms.
 
 ## Author
 

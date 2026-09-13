@@ -35,10 +35,7 @@ noncomputable instance instMeasurableSpaceConfig : MeasurableSpace (Config n) :=
 
 /-- With the discrete σ-algebra, every set is measurable. -/
 instance instDiscreteMeasurableSpaceConfig : DiscreteMeasurableSpace (Config n) where
-  forall_measurableSet s := by
-    change @MeasurableSet _ instMeasurableSpaceConfig s
-    simp only [instMeasurableSpaceConfig]
-    trivial
+  forall_measurableSet _ := trivial
 
 /-- The Markov transition kernel for the population protocol.
     Maps each configuration to the distribution over next configurations.
