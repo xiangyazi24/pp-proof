@@ -1,5 +1,7 @@
 # PP-Proof: Three-State Approximate Majority Consensus Time
 
+*Formalized by [Formally Correct](https://formallycorrect.com/work/approximate-majority), which formalizes mathematics and theoretical computer science papers in Lean 4.*
+
 A Lean 4 formalization of the high-probability O(n log n) consensus-time
 bound for the three-state population protocol of:
 
