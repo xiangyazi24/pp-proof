@@ -1,0 +1,69 @@
+name: Q10181 temporary numerical audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - q10181/run.py
+      - .github/workflows/q10181-temp.yml
+
+permissions:
+  contents: write
+
+env:
+  OPENBLAS_NUM_THREADS: 1
+  OMP_NUM_THREADS: 1
+  MKL_NUM_THREADS: 1
+
+jobs:
+  cases:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - {k: 2, eps: '1e-3', ratio: '0.90', tag: '2-3-90'}
+          - {k: 2, eps: '1e-3', ratio: '0.95', tag: '2-3-95'}
+          - {k: 2, eps: '1e-4', ratio: '0.90', tag: '2-4-90'}
+          - {k: 2, eps: '1e-4', ratio: '0.95', tag: '2-4-95'}
+          - {k: 3, eps: '1e-3', ratio: '0.90', tag: '3-3-90'}
+          - {k: 3, eps: '1e-3', ratio: '0.95', tag: '3-3-95'}
+          - {k: 3, eps: '1e-4', ratio: '0.90', tag: '3-4-90'}
+          - {k: 3, eps: '1e-4', ratio: '0.95', tag: '3-4-95'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy scipy
+      - run: |
+          mkdir -p results
+          python q10181/run.py case '${{ matrix.k }}' '${{ matrix.eps }}' '${{ matrix.ratio }}' 'results/case-${{ matrix.tag }}.json'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q10181-case-${{ matrix.tag }}
+          path: results/case-${{ matrix.tag }}.json
+          retention-days: 2
+
+  collect:
+    runs-on: ubuntu-latest
+    needs: cases
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy scipy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: q10181-case-*
+          path: results
+          merge-multiple: true
+      - run: python q10181/run.py summarize results q10181/numerics-summary.json q10181/numerics-report.txt
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add q10181/numerics-summary.json q10181/numerics-report.txt
+          git commit -m 'Add Q10181 numerical audit results [skip ci]'
+          git push origin HEAD:main
