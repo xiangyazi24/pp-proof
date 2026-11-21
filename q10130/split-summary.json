@@ -1,0 +1,1088 @@
+{
+  "atol": 1e-12,
+  "cells": [
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 1,
+      "nominal": {
+        "color_drift": 4.004518938671708e-12,
+        "end_resid": 3.7947076036992655e-18,
+        "horizon": 43590357.78222591,
+        "mass_drift": 7.244982391796384e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9922266953778428,
+        "passed": 120,
+        "total": 120,
+        "worst_entry": 78770.97928881506,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 1.1013967515793865e-11,
+            "end_resid": 1.0950441942103595e-17,
+            "horizon": 43591665.51257523,
+            "mass_drift": 1.7035262089848402e-11,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9917311080715859,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 81752.73375343528,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:8",
+            "worst_sign": 1
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 7.001732527101012e-12,
+            "end_resid": 6.667843360785852e-18,
+            "horizon": 43590357.86017154,
+            "mass_drift": 1.187561160520545e-11,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266675840706,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 78771.15016425085,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:8",
+            "worst_sign": 1
+          },
+          "theta": 1.7881393432617187e-09
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 6.9238503819235575e-12,
+            "end_resid": 5.204170427930421e-18,
+            "horizon": 43590357.790020466,
+            "mass_drift": 1.237210334181782e-11,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266925108435,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 78770.99634734476,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:8",
+            "worst_sign": 1
+          },
+          "theta": 1.7881393432617185e-10
+        },
+        "ck": {
+          "random": {
+            "color_drift": 6.9675376579425574e-12,
+            "end_resid": 5.6107462426124854e-18,
+            "horizon": 43590357.783005364,
+            "mass_drift": 1.2289280704180783e-11,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266950486208,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 78770.98092403087,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:8",
+            "worst_sign": 1
+          },
+          "theta": 1.7881393432617186e-11
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 1,
+      "nominal": {
+        "color_drift": 2.4393265185551627e-12,
+        "end_resid": 1.1384122811097797e-18,
+        "horizon": 11844242.683038013,
+        "mass_drift": 3.7763125959600075e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9922294190821789,
+        "passed": 120,
+        "total": 120,
+        "worst_entry": 23632.888357033436,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 5.603018049527009e-12,
+            "end_resid": 4.336808689942018e-18,
+            "horizon": 11845427.166529505,
+            "mass_drift": 7.643663479939278e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9917141976107251,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 24579.166590412133,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 2.8488322811881517e-12,
+            "end_resid": 2.7647155398380363e-18,
+            "horizon": 11844242.753635202,
+            "mass_drift": 4.348521542851813e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922293902643262,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 23632.942331404352,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 5.960464477539063e-09
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 2.130629006558138e-12,
+            "end_resid": 2.4936649967166602e-18,
+            "horizon": 11844242.690097732,
+            "mass_drift": 3.798628078754973e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922294162033797,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 23632.89374520988,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 5.960464477539063e-10
+        },
+        "ck": {
+          "random": {
+            "color_drift": 2.1486146195570655e-12,
+            "end_resid": 2.439454888092385e-18,
+            "horizon": 11844242.683743984,
+            "mass_drift": 3.4212632726848824e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922294188153657,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 23632.88888657176,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 5.960464477539063e-11
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 1,
+      "nominal": {
+        "color_drift": 1.1973755320582313e-12,
+        "end_resid": 8.131516293641283e-19,
+        "horizon": 3573091.233147289,
+        "mass_drift": 1.6866508190105378e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9922372010748148,
+        "passed": 120,
+        "total": 120,
+        "worst_entry": 7879.147363358777,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 2.173705659913594e-12,
+            "end_resid": 2.168404344971009e-18,
+            "horizon": 3574163.3213224187,
+            "mass_drift": 2.539080057317733e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9917192040955949,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 8229.709983742494,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:9",
+            "worst_sign": -1
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 1.2631007351160406e-12,
+            "end_resid": 1.328147661294743e-18,
+            "horizon": 3573091.29703914,
+            "mass_drift": 1.6860957074982252e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922371721137949,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 7879.167309120099,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:9",
+            "worst_sign": -1
+          },
+          "theta": 1.7881393432617187e-08
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 1.4085399513419361e-12,
+            "end_resid": 1.1926223897340549e-18,
+            "horizon": 3573091.2395364745,
+            "mass_drift": 1.9593215938584763e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922371981774147,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 7879.14935794243,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:9",
+            "worst_sign": -1
+          },
+          "theta": 1.7881393432617187e-09
+        },
+        "ck": {
+          "random": {
+            "color_drift": 1.2435608098826378e-12,
+            "end_resid": 1.2197274440461925e-18,
+            "horizon": 3573091.233786207,
+            "mass_drift": 1.8183232697310814e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922372007835625,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 7879.147562816973,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:9",
+            "worst_sign": -1
+          },
+          "theta": 1.7881393432617188e-10
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 1,
+      "nominal": {
+        "color_drift": 2.7966517990307693e-13,
+        "end_resid": 9.75781955236954e-19,
+        "horizon": 948644.0547812108,
+        "mass_drift": 4.0800696154974503e-13,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9922644375261276,
+        "passed": 120,
+        "total": 120,
+        "worst_entry": 2365.335564845745,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 1.22379884004431e-12,
+            "end_resid": 1.4094628242311558e-18,
+            "horizon": 949593.1733161664,
+            "mass_drift": 1.474820265912058e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9916220258686308,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 2451.1122430454257,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:6",
+            "worst_sign": -1
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 4.612976667317525e-13,
+            "end_resid": 1.1926223897340549e-18,
+            "horizon": 948644.1113248045,
+            "mass_drift": 6.968869925572108e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922644021215833,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 2365.340490435577,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:24",
+            "worst_sign": -1
+          },
+          "theta": 5.960464477539063e-08
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 5.000444502911705e-13,
+            "end_resid": 1.0842021724855044e-18,
+            "horizon": 948644.0604355701,
+            "mass_drift": 6.923350781562476e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922644339856687,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 2365.3360574493768,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:24",
+            "worst_sign": -1
+          },
+          "theta": 5.960464477539063e-09
+        },
+        "ck": {
+          "random": {
+            "color_drift": 6.232792060245629e-13,
+            "end_resid": 1.0842021724855044e-18,
+            "horizon": 948644.0553466468,
+            "mass_drift": 1.0296208330373702e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922644371722538,
+            "passed": 3000,
+            "total": 3000,
+            "worst_entry": 2365.3356144850013,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:24",
+            "worst_sign": -1
+          },
+          "theta": 5.960464477539063e-10
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 2,
+      "nominal": {
+        "color_drift": 9.176548410039231e-13,
+        "end_resid": 3.903127820947816e-18,
+        "horizon": 6577489.308531516,
+        "mass_drift": 1.6227019727921288e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9691216063457051,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 496379.8352236626,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 9.69724300858843e-13,
+            "end_resid": 5.827374918872773e-18,
+            "horizon": 6577686.636170671,
+            "mass_drift": 1.7383872119580701e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9683163732525072,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 499806.4391192868,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:11",
+            "worst_sign": 1
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 1.2174705688039467e-12,
+            "end_resid": 5.400682071693419e-18,
+            "horizon": 6577489.3087152885,
+            "mass_drift": 2.1974644326405723e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9691216056272862,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 496379.8382492034,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:11",
+            "worst_sign": 1
+          },
+          "theta": 2.7939677238464354e-11
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 1.123878767828046e-12,
+            "end_resid": 5.517784376651326e-18,
+            "horizon": 6577489.308549894,
+            "mass_drift": 1.8889334540972413e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.969121606280166,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 496379.8355235443,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:21",
+            "worst_sign": -1
+          },
+          "theta": 2.793967723846435e-12
+        },
+        "ck": {
+          "random": {
+            "color_drift": 9.284240043427872e-13,
+            "end_resid": 4.695950659577841e-18,
+            "horizon": 6577489.308533354,
+            "mass_drift": 1.8249846078788323e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9691216063342359,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 496379.83532944694,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:21",
+            "worst_sign": -1
+          },
+          "theta": 2.7939677238464353e-13
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 2,
+      "nominal": {
+        "color_drift": 5.986322548778844e-13,
+        "end_resid": 1.3010426069826053e-18,
+        "horizon": 3290747.814312432,
+        "mass_drift": 8.006928453596629e-13,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9764716408887153,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 232329.30381491547,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 6.982747713379922e-13,
+            "end_resid": 2.2090619264392153e-18,
+            "horizon": 3291076.905548151,
+            "mass_drift": 1.0671463712697005e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.975351386608319,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 234432.87779007707,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:1",
+            "worst_sign": 1
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 5.822009541134321e-13,
+            "end_resid": 1.7143946852427039e-18,
+            "horizon": 3290747.8146189065,
+            "mass_drift": 8.333334022836425e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716398941212,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 232329.3056583657,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:1",
+            "worst_sign": 1
+          },
+          "theta": 9.313225746154786e-11
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 5.996869667512783e-13,
+            "end_resid": 1.0577747445311703e-17,
+            "horizon": 3290747.8143430795,
+            "mass_drift": 9.465761507954085e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716407931926,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 232329.3039840645,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:1",
+            "worst_sign": 1
+          },
+          "theta": 9.313225746154785e-12
+        },
+        "ck": {
+          "random": {
+            "color_drift": 7.402412016688231e-13,
+            "end_resid": 1.6940658945086007e-18,
+            "horizon": 3290747.8143154965,
+            "mass_drift": 1.0116352200384426e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716408779376,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 232329.3038394184,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:21",
+            "worst_sign": 1
+          },
+          "theta": 9.313225746154785e-13
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 2,
+      "nominal": {
+        "color_drift": 2.1649348980190553e-13,
+        "end_resid": 9.351243737687476e-19,
+        "horizon": 1735602.5520678177,
+        "mass_drift": 3.1041835768519377e-13,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9835522522487531,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 113026.98066018127,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 4.1694425689797754e-13,
+            "end_resid": 1.4670610646444482e-17,
+            "horizon": 1736123.3109433637,
+            "mass_drift": 5.904166044956582e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9825412800605057,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 114180.10487872125,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:11",
+            "worst_sign": 1
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 5.555000903711971e-13,
+            "end_resid": 8.167430490604866e-17,
+            "horizon": 1735602.5525527394,
+            "mass_drift": 7.145395386487507e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522513619984,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 113026.9817233469,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:11",
+            "worst_sign": 1
+          },
+          "theta": 2.7939677238464354e-10
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 5.184186413487168e-13,
+            "end_resid": 9.364796264843545e-18,
+            "horizon": 1735602.5521163098,
+            "mass_drift": 5.702105454474804e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522521601925,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 113026.98078814788,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:12",
+            "worst_sign": -1
+          },
+          "theta": 2.7939677238464354e-11
+        },
+        "ck": {
+          "random": {
+            "color_drift": 4.353184479555239e-13,
+            "end_resid": 3.144186300207963e-18,
+            "horizon": 1735602.5520726668,
+            "mass_drift": 7.051026429394369e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522522395742,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 113026.98071227517,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:19",
+            "worst_sign": 1
+          },
+          "theta": 2.7939677238464356e-12
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 2,
+      "nominal": {
+        "color_drift": 6.961098364399732e-14,
+        "end_resid": 2.642742795433417e-18,
+        "horizon": 852001.4778879101,
+        "mass_drift": 1.056932319443149e-13,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9898563057138782,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 48957.04546633589,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 2.76667577736589e-13,
+            "end_resid": 5.153822789545626e-16,
+            "horizon": 852853.9055085727,
+            "mass_drift": 3.6770586575585185e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9892638252225069,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 49718.450842662074,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:20",
+            "worst_sign": -1
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 1.6708856520608606e-13,
+            "end_resid": 2.067573542929857e-16,
+            "horizon": 852001.4786813983,
+            "mass_drift": 2.6645352591003757e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563051932908,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 48957.04615319445,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:20",
+            "worst_sign": -1
+          },
+          "theta": 9.313225746154785e-10
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 2.814415367424772e-13,
+            "end_resid": 6.2511031507367365e-16,
+            "horizon": 852001.4779672589,
+            "mass_drift": 3.566036355096003e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563056617201,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 48957.04554182569,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:20",
+            "worst_sign": -1
+          },
+          "theta": 9.313225746154786e-11
+        },
+        "ck": {
+          "random": {
+            "color_drift": 2.9121149935917856e-13,
+            "end_resid": 5.357381747429779e-16,
+            "horizon": 852001.477895845,
+            "mass_drift": 4.0678571622265736e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563057087411,
+            "passed": 3850,
+            "total": 3850,
+            "worst_entry": 48957.04548711233,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:10",
+            "worst_sign": -1
+          },
+          "theta": 9.313225746154785e-12
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 3,
+      "nominal": {
+        "color_drift": 3.061439990403869e-13,
+        "end_resid": 3.353932833771809e-18,
+        "horizon": 6281775.12316018,
+        "mass_drift": 5.557776461273534e-13,
+        "min_concentration": -2.8698592549372254e-42,
+        "min_final_signed_h": 0.9744683192226185,
+        "passed": 202,
+        "total": 202,
+        "worst_entry": 443331.9821824702,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 5.173639294753229e-13,
+            "end_resid": 1.819500886085122e-17,
+            "horizon": 6281963.579240701,
+            "mass_drift": 8.810729923425242e-13,
+            "min_concentration": -8.566028975117914e-14,
+            "min_final_signed_h": 0.9740025781450745,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 445467.8524507949,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:2",
+            "worst_sign": -1
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 4.677369602745785e-13,
+            "end_resid": 1.2792526844144884e-17,
+            "horizon": 6281775.123165054,
+            "mass_drift": 8.484324354185446e-13,
+            "min_concentration": -2.7769776617263324e-13,
+            "min_final_signed_h": 0.9744683192129331,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 443331.9823077014,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:2",
+            "worst_sign": -1
+          },
+          "theta": 7.761021455128987e-13
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 4.3598458177029897e-13,
+            "end_resid": 8.343062772218045e-18,
+            "horizon": 6281775.123160668,
+            "mass_drift": 7.285283487590277e-13,
+            "min_concentration": -4.213083517344367e-13,
+            "min_final_signed_h": 0.9744683192203939,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 443331.98226884624,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 7.761021455128987e-14
+        },
+        "ck": {
+          "random": {
+            "color_drift": 4.078959392472825e-13,
+            "end_resid": 1.1728865220630297e-17,
+            "horizon": 6281775.123160228,
+            "mass_drift": 7.183142969324763e-13,
+            "min_concentration": -1.8882743507496327e-13,
+            "min_final_signed_h": 0.9744683192205064,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 443331.98224919394,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:3",
+            "worst_sign": -1
+          },
+          "theta": 7.761021455128986e-15
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 3,
+      "nominal": {
+        "color_drift": 3.9362957338084925e-13,
+        "end_resid": 1.7217003444127722e-18,
+        "horizon": 3872354.504345117,
+        "mass_drift": 6.634692795159935e-13,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.9787313593907662,
+        "passed": 202,
+        "total": 202,
+        "worst_entry": 258378.6266008517,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 3.9468428525424315e-13,
+            "end_resid": 2.304572302780426e-16,
+            "horizon": 3872741.7591579696,
+            "mass_drift": 4.598543767997398e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9783221209606804,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 260707.2020943844,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:2",
+            "worst_sign": -1
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 4.1400216588272087e-13,
+            "end_resid": 1.2462607511189334e-17,
+            "horizon": 3872354.504355135,
+            "mass_drift": 5.8519855627992e-13,
+            "min_concentration": -1.305060893599705e-54,
+            "min_final_signed_h": 0.9787313593815271,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 258378.62662239055,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:2",
+            "worst_sign": -1
+          },
+          "theta": 2.5870071517096626e-12
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 4.447553436648377e-13,
+            "end_resid": 3.1952200352800345e-18,
+            "horizon": 3872354.504346119,
+            "mass_drift": 6.871170299405094e-13,
+            "min_concentration": -1.305060893599705e-54,
+            "min_final_signed_h": 0.9787313593902058,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 258378.62662737942,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:11",
+            "worst_sign": 1
+          },
+          "theta": 2.5870071517096625e-13
+        },
+        "ck": {
+          "random": {
+            "color_drift": 5.090372567906343e-13,
+            "end_resid": 1.0945465623538476e-17,
+            "horizon": 3872354.5043452177,
+            "mass_drift": 8.110179194886769e-13,
+            "min_concentration": -1.305060893599705e-54,
+            "min_final_signed_h": 0.9787313593899453,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 258378.62663229543,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:2",
+            "worst_sign": -1
+          },
+          "theta": 2.5870071517096624e-14
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 3,
+      "nominal": {
+        "color_drift": 2.2226664952995634e-13,
+        "end_resid": 1.1661292422800534e-18,
+        "horizon": 2474337.6344091254,
+        "mass_drift": 3.220756994437579e-13,
+        "min_concentration": -5.22024357439882e-54,
+        "min_final_signed_h": 0.9845339474565815,
+        "passed": 202,
+        "total": 202,
+        "worst_entry": 154467.34687474626,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 2.809974475326271e-13,
+            "end_resid": 1.5223193765409506e-17,
+            "horizon": 2475080.047055777,
+            "mass_drift": 4.669598041573408e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9840750263925784,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 155584.28540704944,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:14",
+            "worst_sign": -1
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 2.325917236589703e-13,
+            "end_resid": 1.3417905579327332e-18,
+            "horizon": 2474337.6344283293,
+            "mass_drift": 3.594902153736257e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9845339474451399,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 154467.34692106844,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:3",
+            "worst_sign": -1
+          },
+          "theta": 7.761021455128988e-12
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 2.41140440948584e-13,
+            "end_resid": 2.842536691867025e-18,
+            "horizon": 2474337.634411046,
+            "mass_drift": 3.3784086639343514e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9845339474553684,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 154467.34690651027,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 7.761021455128988e-13
+        },
+        "ck": {
+          "random": {
+            "color_drift": 2.466915560717098e-13,
+            "end_resid": 1.2617083076993306e-18,
+            "horizon": 2474337.6344093177,
+            "mass_drift": 3.79585252119341e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9845339474563909,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 154467.34692409018,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "random:5",
+            "worst_sign": -1
+          },
+          "theta": 7.761021455128987e-14
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 3,
+      "nominal": {
+        "color_drift": 1.3022916078853086e-13,
+        "end_resid": 5.352259228827294e-19,
+        "horizon": 1501898.1846972061,
+        "mass_drift": 2.0594637106796654e-13,
+        "min_concentration": -2.8698592549372254e-42,
+        "min_final_signed_h": 0.991176651875376,
+        "passed": 202,
+        "total": 202,
+        "worst_entry": 84977.50431652306,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      },
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "random": {
+            "color_drift": 2.0450308113595383e-13,
+            "end_resid": 1.0749241011448034e-18,
+            "horizon": 1503400.8340813748,
+            "mass_drift": 2.433608869978343e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.990797552633512,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 85624.22305499497,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:13",
+            "worst_sign": 1
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "random": {
+            "color_drift": 1.4366285938649526e-13,
+            "end_resid": 3.6716437563679005e-18,
+            "horizon": 1501898.1847360602,
+            "mass_drift": 2.375877272697835e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9911766518661452,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 84977.50438446573,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:0",
+            "worst_sign": 1
+          },
+          "theta": 2.5870071517096624e-11
+        },
+        "10ck": {
+          "random": {
+            "color_drift": 1.7008616737257398e-13,
+            "end_resid": 7.384086748883907e-19,
+            "horizon": 1501898.1847010916,
+            "mass_drift": 2.353672812205332e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9911766518745186,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 84977.5043691442,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:10",
+            "worst_sign": 1
+          },
+          "theta": 2.5870071517096626e-12
+        },
+        "ck": {
+          "random": {
+            "color_drift": 1.5520917884259688e-13,
+            "end_resid": 3.607989778388896e-18,
+            "horizon": 1501898.1846975947,
+            "mass_drift": 2.289279876777073e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9911766518752761,
+            "passed": 5050,
+            "total": 5050,
+            "worst_entry": 84977.50437333446,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "random:10",
+            "worst_sign": 1
+          },
+          "theta": 2.5870071517096625e-13
+        }
+      }
+    }
+  ],
+  "random_starts": 50,
+  "rate_assignments": 25,
+  "rtol": 1e-09
+}
