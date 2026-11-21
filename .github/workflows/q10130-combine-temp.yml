@@ -1,0 +1,86 @@
+name: Q10130 combine corrected results
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'q10130/fixed-summary.json'
+      - 'q10130/split-summary.json'
+
+permissions:
+  contents: write
+
+jobs:
+  combine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy
+      - name: Combine if both inputs exist
+        id: combine
+        run: |
+          if [ ! -f q10130/fixed-summary.json ] || [ ! -f q10130/split-summary.json ]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+          python - <<'PY'
+          import json
+          import numpy as np
+          from pathlib import Path
+          b = json.load(open('q10130/split-summary.json'))
+          f = json.load(open('q10130/fixed-summary.json'))
+          bc = {(x['k'], x['eps']): x for x in b['cells']}
+          fc = {(x['k'], x['eps']): x for x in f['cells']}
+          out = {'cells': [], 'edge': f['edge'], 'fits': {}, 'conservation': {}}
+          for key in sorted(bc):
+              x, y = bc[key], fc[key]
+              assert x['channels'] == y['channels'] and x['duplicates'] == y['duplicates']
+              z = dict(x)
+              for name in z['theta']:
+                  z['theta'][name]['adverse'] = y['theta'][name]['adverse']
+              out['cells'].append(z)
+          for k in (1, 2, 3):
+              cc = sorted([x for x in out['cells'] if x['k'] == k], key=lambda x: x['eps'], reverse=True)
+              X = np.log([1/x['eps'] for x in cc])
+              nom = np.log([x['nominal']['worst_entry'] for x in cc])
+              rob = np.log([max(x['theta']['ck']['random']['worst_entry'],
+                                x['theta']['ck']['adverse']['worst_entry']) for x in cc])
+              out['fits'][str(k)] = {'expected': 1/k,
+                                     'nominal_slope': float(np.polyfit(X, nom, 1)[0]),
+                                     'ck_slope': float(np.polyfit(X, rob, 1)[0])}
+          stats = []
+          for x in out['cells']:
+              stats.append(x['nominal'])
+              for v in x['theta'].values(): stats += [v['random'], v['adverse']]
+          out['conservation'] = {
+              'max_mass_drift': max(s['mass_drift'] for s in stats),
+              'max_color_drift': max(s['color_drift'] for s in stats),
+              'min_concentration': min(s['min_concentration'] for s in stats),
+              'max_end_resid': max(s['end_resid'] for s in stats)}
+          Path('q10130/combined-summary.json').write_text(json.dumps(out, indent=2, sort_keys=True))
+          with open('q10130/combined-report.txt', 'w') as g:
+              print('CONS', json.dumps(out['conservation'], sort_keys=True), file=g)
+              for k, v in sorted(out['fits'].items()): print('FIT', k, json.dumps(v, sort_keys=True), file=g)
+              print('EDGE', json.dumps(out['edge'], sort_keys=True), file=g)
+              for x in sorted(out['cells'], key=lambda z: (z['k'], -z['eps'])):
+                  n=x['nominal']
+                  print('CELL',x['k'],x['eps'],x['starts_per_sign'],x['channels'],x['duplicates'],n['passed'],n['total'],n['worst_entry'],n['worst_name'],n['min_final_signed_h'],file=g)
+                  for name,v in sorted(x['theta'].items()):
+                      r,a=v['random'],v['adverse']
+                      print('MODE',x['k'],x['eps'],name,v['theta'],r['passed'],r['total'],r['worst_entry'],r['worst_name'],r['worst_rate'],r['min_final_signed_h'],a['passed'],a['total'],a['worst_entry'],a['worst_name'],a['worst_rate'],a['min_final_signed_h'],file=g)
+          PY
+          cat q10130/combined-report.txt
+      - name: Commit combined report
+        if: steps.combine.outputs.ready == 'true'
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git pull --rebase origin main
+          git add q10130/combined-summary.json q10130/combined-report.txt
+          git commit -m 'Combine corrected Q10130 numerical results' || true
+          git push origin HEAD:main
