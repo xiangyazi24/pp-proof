@@ -1,0 +1,37 @@
+name: Q10208 best candidate validation
+on:
+  push:
+    branches: [main]
+    paths:
+      - q10208/validate.py
+      - .github/workflows/q10208-validate-temp.yml
+permissions:
+  contents: read
+env:
+  OPENBLAS_NUM_THREADS: 1
+  OMP_NUM_THREADS: 1
+  MKL_NUM_THREADS: 1
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {eps: '1e-3', tag: '1e-3'}
+          - {eps: '3e-4', tag: '3e-4'}
+          - {eps: '1e-4', tag: '1e-4'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy scipy
+      - run: |
+          mkdir -p results
+          python q10208/validate.py '${{ matrix.eps }}' 'results/validate-${{ matrix.tag }}.json'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q10208-validate-${{ matrix.tag }}
+          path: results/validate-${{ matrix.tag }}.json
+          retention-days: 2
