@@ -1,0 +1,50 @@
+name: Q10130 collect fixed cells
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/q10130-fixed-cells-collect-temp.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download fixed cells
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p raw result q10130
+          for k in 1 2 3; do
+            for ei in 0 1 2 3; do
+              gh run download 44864094134 --repo "$GITHUB_REPOSITORY" --name "fixed-cell-$k-$ei" --dir "raw/$k-$ei"
+            done
+          done
+          find raw -name '*.json' -exec cp {} result/ \;
+      - name: Summarize
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cells=[json.loads(p.read_text()) for p in sorted(Path('result').glob('fixed-cell-*.json'))]
+          Path('q10130/fixed-cells.json').write_text(json.dumps({'cells':cells},indent=2,sort_keys=True))
+          with open('q10130/fixed-cells-report.txt','w') as f:
+            for c in sorted(cells,key=lambda z:(z['k'],-z['eps'])):
+              for name,v in sorted(c['theta'].items()):
+                a=v['adverse']
+                print('FIXED',c['k'],c['eps'],name,v['theta'],a['passed'],a['total'],a['worst_entry'],a['worst_name'],a['worst_rate'],a['min_final_signed_h'],a['mass_drift'],a['color_drift'],a['min_concentration'],a['end_resid'],file=f)
+          PY
+          cat q10130/fixed-cells-report.txt
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git pull --rebase origin main
+          git add q10130/fixed-cells.json q10130/fixed-cells-report.txt
+          git commit -m 'Collect Q10130 fixed cells'
+          git push origin HEAD:main
