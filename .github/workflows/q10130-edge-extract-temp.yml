@@ -1,0 +1,33 @@
+name: Q10130 extract edge result
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/q10130-edge-extract-temp.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download edge artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p raw q10130
+          gh run download 44863458832 --repo "$GITHUB_REPOSITORY" --name edge --dir raw
+          find raw -name 'edge.json' -exec cp {} q10130/edge.json \;
+          cat q10130/edge.json
+      - name: Commit edge
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git pull --rebase origin main
+          git add q10130/edge.json
+          git commit -m 'Record Q10130 edge result'
+          git push origin HEAD:main
