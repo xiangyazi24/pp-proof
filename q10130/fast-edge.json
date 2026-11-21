@@ -1,0 +1,93 @@
+{
+  "definition": "symmetry-reduced search; final bracket verified for both fixed mirrored assignments on both signs",
+  "eps": 0.001,
+  "fail_by_target": {
+    "-1": {
+      "color_drift": 6.9180217110442754e-12,
+      "end_resid": 1.0156089944729496e-11,
+      "horizon": 13176157.173046384,
+      "mass_drift": 1.1787237852445287e-11,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.24725540766955262,
+      "passed": 77,
+      "total": 154,
+      "worst_entry": Infinity,
+      "worst_name": "-:corner:0|0",
+      "worst_sign": -1
+    },
+    "1": {
+      "color_drift": 6.417089082333405e-12,
+      "end_resid": 9.287753725828463e-12,
+      "horizon": 13176157.173046384,
+      "mass_drift": 1.1183498571654127e-11,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.2472554425345836,
+      "passed": 77,
+      "total": 154,
+      "worst_entry": Infinity,
+      "worst_name": "+:corner:0|0",
+      "worst_sign": 1
+    }
+  },
+  "fail_stats": {
+    "color_drift": 6.9180217110442754e-12,
+    "end_resid": 1.0156089944729496e-11,
+    "horizon": 13176157.173046384,
+    "mass_drift": 1.1787237852445287e-11,
+    "min_concentration": 0.0,
+    "min_final_signed_h": 0.24725540766955262,
+    "passed": 154,
+    "total": 308,
+    "worst_entry": Infinity,
+    "worst_name": "+:corner:0|0",
+    "worst_rate": "fixed-target:+1",
+    "worst_sign": 1
+  },
+  "k": 2,
+  "pass_by_target": {
+    "-1": {
+      "color_drift": 4.452216373351803e-12,
+      "end_resid": 6.7080594551294226e-12,
+      "horizon": 13176157.162993774,
+      "mass_drift": 7.562173109931791e-12,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.2502101325058207,
+      "passed": 154,
+      "total": 154,
+      "worst_entry": 1537597.9733423772,
+      "worst_name": "-:corner:1|1",
+      "worst_sign": -1
+    },
+    "1": {
+      "color_drift": 6.8263172892102375e-12,
+      "end_resid": 1.327328394765126e-11,
+      "horizon": 13176157.162993774,
+      "mass_drift": 1.0087930490954022e-11,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.25020611180321767,
+      "passed": 154,
+      "total": 154,
+      "worst_entry": 1537489.979617444,
+      "worst_name": "+:corner:2|2",
+      "worst_sign": 1
+    }
+  },
+  "pass_stats": {
+    "color_drift": 6.8263172892102375e-12,
+    "end_resid": 1.327328394765126e-11,
+    "horizon": 13176157.162993774,
+    "mass_drift": 1.0087930490954022e-11,
+    "min_concentration": 0.0,
+    "min_final_signed_h": 0.25020611180321767,
+    "passed": 308,
+    "total": 308,
+    "worst_entry": 1537597.9733423772,
+    "worst_name": "-:corner:1|1",
+    "worst_rate": "fixed-target:-1",
+    "worst_sign": -1
+  },
+  "ratio_fail": 0.9997222900390629,
+  "ratio_pass": 0.9997215270996097,
+  "theta_fail": 0.0009997222900390628,
+  "theta_pass": 0.0009997215270996097
+}
