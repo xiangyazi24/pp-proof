@@ -1,4 +1,8 @@
 import math, sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import numpy as np
 from scipy.integrate import solve_ivp
 import q10181.run as base
