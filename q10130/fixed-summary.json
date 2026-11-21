@@ -1,0 +1,2365 @@
+{
+  "cells": [
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 1,
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 5.21027665456586e-13,
+            "end_resid": 1.0842021724855044e-18,
+            "horizon": 949593.1733161664,
+            "mass_drift": 7.58726415028832e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9913924546271043,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 2585.8172239473083,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 5.21027665456586e-13,
+              "end_resid": 1.0842021724855044e-18,
+              "horizon": 949593.1733161664,
+              "mass_drift": 7.478462293875054e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913924546271043,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2585.8172239473083,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 4.0456527017340704e-13,
+              "end_resid": 8.673617379884035e-19,
+              "horizon": 949593.1733161664,
+              "mass_drift": 7.58726415028832e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913924546272046,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2585.817164202914,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 3.9757086511826856e-13,
+            "end_resid": 7.589415207398531e-19,
+            "horizon": 948644.1113248045,
+            "mass_drift": 3.530509218307998e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922643907242876,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 2365.347520072683,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.9757086511826856e-13,
+              "end_resid": 6.776263578034403e-19,
+              "horizon": 948644.1113248045,
+              "mass_drift": 3.530509218307998e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922643907242876,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.3475199802856,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.076428001236309e-13,
+              "end_resid": 7.589415207398531e-19,
+              "horizon": 948644.1113248045,
+              "mass_drift": 3.2818192607919627e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922643907244727,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.347520072683,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-08
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 5.981881656680343e-13,
+            "end_resid": 8.673617379884035e-19,
+            "horizon": 948644.0604355701,
+            "mass_drift": 5.964118088286341e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922644328455295,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 2365.3367625076085,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 5.589972928987663e-13,
+              "end_resid": 8.131516293641283e-19,
+              "horizon": 948644.0604355701,
+              "mass_drift": 5.055955654142963e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922644328455295,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.3367625076085,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 5.981881656680343e-13,
+              "end_resid": 8.673617379884035e-19,
+              "horizon": 948644.0604355701,
+              "mass_drift": 5.964118088286341e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922644328462403,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.3367528039244,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-09
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 4.035660694512444e-13,
+            "end_resid": 8.944667923005412e-19,
+            "horizon": 948644.0553466468,
+            "mass_drift": 3.9124259387790516e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922644370582331,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 2365.3356838900086,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.1741276274033225e-13,
+              "end_resid": 7.318364664277155e-19,
+              "horizon": 948644.0553466468,
+              "mass_drift": 3.4505731605349865e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922644370584659,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.3356838900086,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 4.035660694512444e-13,
+              "end_resid": 8.944667923005412e-19,
+              "horizon": 948644.0553466468,
+              "mass_drift": 3.9124259387790516e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922644370582331,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 2365.3356838333634,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-10
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 1,
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 1.6292522886374172e-12,
+            "end_resid": 1.4094628242311558e-18,
+            "horizon": 3574163.3213224187,
+            "mass_drift": 2.9543034685275416e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9913741763712465,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 8604.607170291629,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.5659695762337833e-12,
+              "end_resid": 1.3552527156068805e-18,
+              "horizon": 3574163.3213224187,
+              "mass_drift": 2.9543034685275416e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913741763712465,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 8604.607164432387,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.6292522886374172e-12,
+              "end_resid": 1.4094628242311558e-18,
+              "horizon": 3574163.3213224187,
+              "mass_drift": 2.414846100862178e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.991374176372639,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 8604.607170291629,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 1.0141887329950805e-12,
+            "end_resid": 9.75781955236954e-19,
+            "horizon": 3573091.29703914,
+            "mass_drift": 1.3209433546990113e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922371547524726,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 7879.186698281846,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 9.029443859276398e-13,
+              "end_resid": 7.047314121155779e-19,
+              "horizon": 3573091.29703914,
+              "mass_drift": 1.1932677068671182e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922371547534267,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.186697621044,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.0141887329950805e-12,
+              "end_resid": 9.75781955236954e-19,
+              "horizon": 3573091.29703914,
+              "mass_drift": 1.3209433546990113e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922371547524726,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.186698281846,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617187e-08
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 9.068301665138279e-13,
+            "end_resid": 7.318364664277155e-19,
+            "horizon": 3573091.2395364745,
+            "mass_drift": 1.2814194150223557e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922371964403052,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 7879.151296806045,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 9.068301665138279e-13,
+              "end_resid": 6.505213034913027e-19,
+              "horizon": 3573091.2395364745,
+              "mass_drift": 1.2271295091181855e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922371964404674,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.151296806045,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 8.435474541101939e-13,
+              "end_resid": 7.318364664277155e-19,
+              "horizon": 3573091.2395364745,
+              "mass_drift": 1.2814194150223557e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922371964403052,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.1512962180595,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617187e-09
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 1.0096923297453486e-12,
+            "end_resid": 6.2341624917916505e-19,
+            "horizon": 3573091.233786207,
+            "mass_drift": 1.5922818619173995e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922372006105228,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 7879.14775673464,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.0096923297453486e-12,
+              "end_resid": 6.2341624917916505e-19,
+              "horizon": 3573091.233786207,
+              "mass_drift": 1.5922818619173995e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922372006106966,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.14775673464,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 7.478462293875054e-13,
+              "end_resid": 4.87890977618477e-19,
+              "horizon": 3573091.233786207,
+              "mass_drift": 1.369127033967743e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922372006105228,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 7879.147756675683,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617188e-10
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 1,
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 2.430167178602005e-12,
+            "end_resid": 2.8189256484623115e-18,
+            "horizon": 11845427.166529505,
+            "mass_drift": 4.333866598926761e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9913689741578022,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 25801.133697416786,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.361888462587558e-12,
+              "end_resid": 2.7647155398380363e-18,
+              "horizon": 11845427.166529505,
+              "mass_drift": 4.257816321739938e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913689741634403,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 25801.133686667432,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.430167178602005e-12,
+              "end_resid": 2.8189256484623115e-18,
+              "horizon": 11845427.166529505,
+              "mass_drift": 4.333866598926761e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913689741578022,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 25801.133697416786,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 1.7278400932241311e-12,
+            "end_resid": 1.7076184216646695e-18,
+            "horizon": 11844242.753635202,
+            "mass_drift": 3.3067992788460288e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922293729059292,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 23633.00590789831,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.483868583562753e-12,
+              "end_resid": 1.7076184216646695e-18,
+              "horizon": 11844242.753635202,
+              "mass_drift": 2.3872015475490116e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922293729059292,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23633.00590789831,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.7278400932241311e-12,
+              "end_resid": 1.3823577699190182e-18,
+              "horizon": 11844242.753635202,
+              "mass_drift": 3.3067992788460288e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922293729073866,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23633.005899250726,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-09
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 1.9251267247000214e-12,
+            "end_resid": 1.6805133673525319e-18,
+            "horizon": 11844242.690097732,
+            "mass_drift": 2.378208741049548e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922294144854716,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 23632.90012974114,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.9251267247000214e-12,
+              "end_resid": 1.6805133673525319e-18,
+              "horizon": 11844242.690097732,
+              "mass_drift": 2.378208741049548e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922294144864086,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23632.90012974114,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.8676171720244383e-12,
+              "end_resid": 1.5720931501039814e-18,
+              "horizon": 11844242.690097732,
+              "mass_drift": 2.114530772701073e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922294144854716,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23632.900109476403,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-10
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 2.3353541322990168e-12,
+            "end_resid": 1.6263032587282567e-18,
+            "horizon": 11844242.683743984,
+            "mass_drift": 4.236389017364672e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922294186173133,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 23632.889523570422,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.3353541322990168e-12,
+              "end_resid": 1.4907779871675686e-18,
+              "horizon": 11844242.683743984,
+              "mass_drift": 4.236389017364672e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922294186191549,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23632.88949876092,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.0850543513972752e-12,
+              "end_resid": 1.6263032587282567e-18,
+              "horizon": 11844242.683743984,
+              "mass_drift": 3.269828852126011e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922294186173133,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 23632.889523570422,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 5.960464477539063e-11
+        }
+      }
+    },
+    {
+      "channels": 40,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 1,
+      "starts_per_sign": 60,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 5.959899240792765e-12,
+            "end_resid": 1.0299920638612292e-17,
+            "horizon": 43591665.51257523,
+            "mass_drift": 7.827738457422129e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9913671553148713,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 85988.9706533493,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 5.22176746287073e-12,
+              "end_resid": 1.0299920638612292e-17,
+              "horizon": 43591665.51257523,
+              "mass_drift": 7.194023154966089e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.991367155339117,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 85988.97064340972,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 5.959899240792765e-12,
+              "end_resid": 9.215718466126788e-18,
+              "horizon": 43591665.51257523,
+              "mass_drift": 7.827738457422129e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9913671553148713,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 85988.9706533493,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 3.2169822361538536e-12,
+            "end_resid": 3.984442983884229e-18,
+            "horizon": 43590357.86017154,
+            "mass_drift": 6.0267346668752e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266492835045,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 78771.37067996875,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.087419209180098e-12,
+              "end_resid": 3.984442983884229e-18,
+              "horizon": 43590357.86017154,
+              "mass_drift": 5.903277866536882e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266492854888,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78771.37067996875,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.2169822361538536e-12,
+              "end_resid": 3.2526065174565133e-18,
+              "horizon": 43590357.86017154,
+              "mass_drift": 6.0267346668752e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266492835045,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78771.37060846391,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617187e-09
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 4.091782468407246e-12,
+            "end_resid": 3.9302328752599536e-18,
+            "horizon": 43590357.790020466,
+            "mass_drift": 6.582956402212403e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266907993209,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 78771.01846354901,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 4.091782468407246e-12,
+              "end_resid": 3.9302328752599536e-18,
+              "horizon": 43590357.790020466,
+              "mass_drift": 6.582956402212403e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266908076722,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78771.01840047225,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.388012093097359e-12,
+              "end_resid": 3.2526065174565133e-18,
+              "horizon": 43590357.790020466,
+              "mass_drift": 5.179634499086205e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266907993209,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78771.01846354901,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617185e-10
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 3.542222071217793e-12,
+            "end_resid": 4.174178364069192e-18,
+            "horizon": 43590357.783005364,
+            "mass_drift": 4.404254738687996e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9922266949534674,
+            "passed": 240,
+            "total": 240,
+            "worst_entry": 78770.98319310724,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.2673863614718357e-12,
+              "end_resid": 4.174178364069192e-18,
+              "horizon": 43590357.783005364,
+              "mass_drift": 4.404254738687996e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266949576559,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78770.98313685202,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.542222071217793e-12,
+              "end_resid": 4.065758146820642e-18,
+              "horizon": 43590357.783005364,
+              "mass_drift": 3.992028929644675e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9922266949534674,
+              "passed": 120,
+              "total": 120,
+              "worst_entry": 78770.98319310724,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 1.7881393432617186e-11
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 2,
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 1.2934098236883074e-13,
+            "end_resid": 5.827586677109586e-19,
+            "horizon": 852853.9055085727,
+            "mass_drift": 2.0539125955565396e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.988823488271162,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 50302.60892206807,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.1401990462900358e-13,
+              "end_resid": 5.739707008831953e-19,
+              "horizon": 852853.9055085727,
+              "mass_drift": 1.716404796070492e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9888234882711683,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 50302.608921756386,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.2934098236883074e-13,
+              "end_resid": 5.827586677109586e-19,
+              "horizon": 852853.9055085727,
+              "mass_drift": 2.0539125955565396e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.988823488271162,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 50302.60892206807,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 2.438049762076844e-13,
+            "end_resid": 1.265784860553145e-18,
+            "horizon": 852001.4786813983,
+            "mass_drift": 3.630429290524262e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563048394531,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 48957.046647886134,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.438049762076844e-13,
+              "end_resid": 1.265784860553145e-18,
+              "horizon": 852001.4786813983,
+              "mass_drift": 3.630429290524262e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563048394531,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.04664298633,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.2290168882600483e-13,
+              "end_resid": 7.298247631779865e-19,
+              "horizon": 852001.4786813983,
+              "mass_drift": 1.6009416015094757e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563048397389,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.046647886134,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154785e-10
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 1.2789769243681803e-13,
+            "end_resid": 3.42133548054957e-17,
+            "horizon": 852001.4779672589,
+            "mass_drift": 1.9895196601282805e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563056263743,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 48957.04559129941,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.2789769243681803e-13,
+              "end_resid": 3.42133548054957e-17,
+              "horizon": 852001.4779672589,
+              "mass_drift": 1.9895196601282805e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563056263743,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.04558205763,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 8.182343691487404e-14,
+              "end_resid": 5.638063055161437e-19,
+              "horizon": 852001.4779672589,
+              "mass_drift": 1.4499512701604544e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563056265262,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.04559129941,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154786e-11
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 9.103828801926284e-14,
+            "end_resid": 1.0625181290357943e-17,
+            "horizon": 852001.477895845,
+            "mass_drift": 1.559863349598345e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9898563057051376,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 48957.04548422362,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 8.404388296412435e-14,
+              "end_resid": 5.33736635888616e-19,
+              "horizon": 852001.477895845,
+              "mass_drift": 1.0547118733938987e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563057051376,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.045469653625,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 9.103828801926284e-14,
+              "end_resid": 1.0625181290357943e-17,
+              "horizon": 852001.477895845,
+              "mass_drift": 1.559863349598345e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9898563057051563,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 48957.04548422362,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154785e-12
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 2,
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 5.250244683452365e-13,
+            "end_resid": 1.4840017235895342e-18,
+            "horizon": 1736123.3109433637,
+            "mass_drift": 7.269740365245525e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9820828853398109,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 115288.91170685994,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.2451819009793326e-13,
+              "end_resid": 1.3145951341386741e-18,
+              "horizon": 1736123.3109433637,
+              "mass_drift": 4.771738559838923e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.982082885339996,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 115288.91170685994,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 5.250244683452365e-13,
+              "end_resid": 1.4840017235895342e-18,
+              "horizon": 1736123.3109433637,
+              "mass_drift": 7.269740365245525e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9820828853398109,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 115288.91170681792,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 2.8343993818680246e-13,
+            "end_resid": 2.5139937874507634e-18,
+            "horizon": 1735602.5525527394,
+            "mass_drift": 4.1744385725905886e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522509913277,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 113026.98269777265,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.156053113822054e-13,
+              "end_resid": 2.5139937874507634e-18,
+              "horizon": 1735602.5525527394,
+              "mass_drift": 2.0294876890147862e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9835522509914476,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.9826867527,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.8343993818680246e-13,
+              "end_resid": 8.267041565201971e-19,
+              "horizon": 1735602.5525527394,
+              "mass_drift": 4.1744385725905886e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9835522509913277,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.98269777265,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.7939677238464354e-10
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 3.655409308578328e-13,
+            "end_resid": 4.391018798566293e-18,
+            "horizon": 1735602.5521163098,
+            "mass_drift": 6.470379787515412e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522521221987,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 113026.98089650182,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.64177568709556e-13,
+              "end_resid": 4.391018798566293e-18,
+              "horizon": 1735602.5521163098,
+              "mass_drift": 4.818367926873179e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9835522521234378,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.98089650182,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.655409308578328e-13,
+              "end_resid": 7.386127300057499e-19,
+              "horizon": 1735602.5521163098,
+              "mass_drift": 6.470379787515412e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9835522521221987,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.98088929492,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.7939677238464354e-11
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 5.802025526691068e-13,
+            "end_resid": 1.0130514049161432e-17,
+            "horizon": 1735602.5520726668,
+            "mass_drift": 8.737455203799982e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9835522522346363,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 113026.98070116426,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 5.802025526691068e-13,
+              "end_resid": 9.41900637346782e-19,
+              "horizon": 1735602.5520726668,
+              "mass_drift": 8.737455203799982e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9835522522346363,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.98070116426,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 4.776179451937423e-13,
+              "end_resid": 1.0130514049161432e-17,
+              "horizon": 1735602.5520726668,
+              "mass_drift": 5.611067166455541e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.983552252235518,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 113026.98069743764,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.7939677238464356e-12
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 2,
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 9.217626661950362e-13,
+            "end_resid": 1.111307226797642e-18,
+            "horizon": 3291076.905548151,
+            "mass_drift": 1.5225598559709397e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9747572838674562,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 236102.2787063766,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 7.936429291532932e-13,
+              "end_resid": 1.111307226797642e-18,
+              "horizon": 3291076.905548151,
+              "mass_drift": 1.432187701766452e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9747572838674562,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 236102.2787063766,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 9.217626661950362e-13,
+              "end_resid": 9.75781955236954e-19,
+              "horizon": 3291076.905548151,
+              "mass_drift": 1.5225598559709397e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9747572838675731,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 236102.27869677628,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 4.0129011225076283e-13,
+            "end_resid": 1.4501204056993622e-18,
+            "horizon": 3290747.8146189065,
+            "mass_drift": 5.265787805797117e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716394042701,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 232329.30711943618,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.0375701953744283e-13,
+              "end_resid": 1.0638733817514012e-18,
+              "horizon": 3290747.8146189065,
+              "mass_drift": 4.518607710224387e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716394042701,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.30711943618,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 4.0129011225076283e-13,
+              "end_resid": 1.4501204056993622e-18,
+              "horizon": 3290747.8146189065,
+              "mass_drift": 5.265787805797117e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716394049454,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.3070841131,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154786e-11
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 6.06736882957648e-13,
+            "end_resid": 1.0164395367051604e-18,
+            "horizon": 3290747.8143430795,
+            "mass_drift": 1.0900169655769787e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716407401575,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 232329.30414702243,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 4.1466829969749597e-13,
+              "end_resid": 9.893344823930228e-19,
+              "horizon": 3290747.8143430795,
+              "mass_drift": 6.272760089132134e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716407459927,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.30414702243,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 6.06736882957648e-13,
+              "end_resid": 1.0164395367051604e-18,
+              "horizon": 3290747.8143430795,
+              "mass_drift": 1.0900169655769787e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716407401575,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.30413872696,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154785e-12
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 5.137001934940599e-13,
+            "end_resid": 1.5585406229479126e-18,
+            "horizon": 3290747.8143154965,
+            "mass_drift": 7.469580509678053e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9764716408750624,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 232329.30377987554,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.071987109137808e-13,
+              "end_resid": 1.2468324983583301e-18,
+              "horizon": 3290747.8143154965,
+              "mass_drift": 5.504485756091526e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716408752516,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.30373920195,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 5.137001934940599e-13,
+              "end_resid": 1.5585406229479126e-18,
+              "horizon": 3290747.8143154965,
+              "mass_drift": 7.469580509678053e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9764716408750624,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 232329.30377987554,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 9.313225746154785e-13
+        }
+      }
+    },
+    {
+      "channels": 116,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 2,
+      "starts_per_sign": 77,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 6.80788758700146e-13,
+            "end_resid": 5.666650417131269e-18,
+            "horizon": 6577686.636170671,
+            "mass_drift": 9.25592935629993e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9674122533933829,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 503131.4174077789,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 6.632472349110685e-13,
+              "end_resid": 5.666650417131269e-18,
+              "horizon": 6577686.636170671,
+              "mass_drift": 8.704148513061227e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9674122533933829,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 503131.4174077789,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 6.80788758700146e-13,
+              "end_resid": 4.438029127138907e-18,
+              "horizon": 6577686.636170671,
+              "mass_drift": 9.25592935629993e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9674122534016063,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 503131.4173572238,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 7.217559883088143e-13,
+            "end_resid": 4.099639464710814e-18,
+            "horizon": 6577489.3087152885,
+            "mass_drift": 1.3423706590742768e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9691216048447184,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 496379.84125828743,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 6.404876629062528e-13,
+              "end_resid": 4.099639464710814e-18,
+              "horizon": 6577489.3087152885,
+              "mass_drift": 1.197930643570544e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9691216048447184,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.8411283361,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 7.217559883088143e-13,
+              "end_resid": 3.842141448745506e-18,
+              "horizon": 6577489.3087152885,
+              "mass_drift": 1.3423706590742768e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9691216048483494,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.84125828743,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.7939677238464354e-11
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 1.0902390101819037e-12,
+            "end_resid": 4.30970363562988e-18,
+            "horizon": 6577489.308549894,
+            "mass_drift": 1.9111379145897445e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9691216061950074,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 496379.83579024975,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.0503820035978606e-12,
+              "end_resid": 3.499516621581142e-18,
+              "horizon": 6577489.308549894,
+              "mass_drift": 1.8471890683713355e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9691216062015069,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.83579024975,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.0902390101819037e-12,
+              "end_resid": 4.30970363562988e-18,
+              "horizon": 6577489.308549894,
+              "mass_drift": 1.9111379145897445e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9691216061950074,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.83572329074,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.793967723846435e-12
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 1.0133560657266116e-12,
+            "end_resid": 3.57109090562413e-18,
+            "horizon": 6577489.308533354,
+            "mass_drift": 1.8143264668424308e-12,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9691216063318308,
+            "passed": 308,
+            "total": 308,
+            "worst_entry": 496379.83523832756,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.0133560657266116e-12,
+              "end_resid": 3.530433324155924e-18,
+              "horizon": 6577489.308533354,
+              "mass_drift": 1.8143264668424308e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9691216063318308,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.83523832756,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 8.800737916203616e-13,
+              "end_resid": 3.57109090562413e-18,
+              "horizon": 6577489.308533354,
+              "mass_drift": 1.6551204851111834e-12,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.969121606339559,
+              "passed": 154,
+              "total": 154,
+              "worst_entry": 496379.8352252205,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.7939677238464353e-13
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.01,
+      "k": 3,
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 1.6642243139131097e-13,
+            "end_resid": 7.031250273659999e-19,
+            "horizon": 1503400.8340813748,
+            "mass_drift": 2.1505019986989282e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9903374710144878,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 86859.21513511776,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.6642243139131097e-13,
+              "end_resid": 7.031250273659999e-19,
+              "horizon": 1503400.8340813748,
+              "mass_drift": 1.9595436384634013e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9903374710144878,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 86859.21513511776,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.553202011450594e-13,
+              "end_resid": 5.631691696493247e-19,
+              "horizon": 1503400.8340813748,
+              "mass_drift": 2.1505019986989282e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9903374710145048,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 86859.21512679606,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 1.0702549957386509e-13,
+            "end_resid": 8.137015493751112e-19,
+            "horizon": 1501898.1847360602,
+            "mass_drift": 1.5920598173124745e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9911766518555791,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 84977.50441136639,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.035838081975271e-13,
+              "end_resid": 5.758189842631567e-19,
+              "horizon": 1501898.1847360602,
+              "mass_drift": 1.5920598173124745e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9911766518555791,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50441136639,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.0702549957386509e-13,
+              "end_resid": 8.137015493751112e-19,
+              "horizon": 1501898.1847360602,
+              "mass_drift": 1.0802470029602773e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9911766518555961,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50440461979,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096624e-11
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 1.1862733018119798e-13,
+            "end_resid": 8.020969808628165e-19,
+            "horizon": 1501898.1847010916,
+            "mass_drift": 1.758593271006248e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9911766518734685,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 84977.50433694961,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.1862733018119798e-13,
+              "end_resid": 4.811330154114953e-19,
+              "horizon": 1501898.1847010916,
+              "mass_drift": 1.758593271006248e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9911766518734685,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50433694961,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.1834977442504169e-13,
+              "end_resid": 8.020969808628165e-19,
+              "horizon": 1501898.1847010916,
+              "mass_drift": 1.667554982986985e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9911766518734698,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50433616321,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096626e-12
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 1.8274270985330077e-13,
+            "end_resid": 7.994185700393698e-19,
+            "horizon": 1501898.1846975947,
+            "mass_drift": 2.3381296898605797e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.991176651875087,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 84977.50437571522,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.1723955140041653e-13,
+              "end_resid": 6.416892892959208e-19,
+              "horizon": 1501898.1846975947,
+              "mass_drift": 1.8607337892717624e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9911766518753272,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50434351679,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.8274270985330077e-13,
+              "end_resid": 7.994185700393698e-19,
+              "horizon": 1501898.1846975947,
+              "mass_drift": 2.3381296898605797e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.991176651875087,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 84977.50437571522,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096625e-13
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.003,
+      "k": 3,
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 1.8673951274195133e-13,
+            "end_resid": 1.0905456138080205e-18,
+            "horizon": 2475080.047055777,
+            "mass_drift": 3.0453417565468044e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9834701823677574,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 157044.40158995264,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 1.6586731987899839e-13,
+              "end_resid": 1.0009857349111385e-18,
+              "horizon": 2475080.047055777,
+              "mass_drift": 2.637889906509372e-13,
+              "min_concentration": -5.22024357439882e-54,
+              "min_final_signed_h": 0.9834701823680126,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 157044.40158253943,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.8673951274195133e-13,
+              "end_resid": 1.0905456138080205e-18,
+              "horizon": 2475080.047055777,
+              "mass_drift": 3.0453417565468044e-13,
+              "min_concentration": -5.22024357439882e-54,
+              "min_final_signed_h": 0.9834701823677574,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 157044.40158995264,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.00030000000000000003
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 2.082223282684481e-13,
+            "end_resid": 8.488117991615956e-19,
+            "horizon": 2474337.6344283293,
+            "mass_drift": 3.6859404417555197e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9845339474309184,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 154467.34696094057,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.082223282684481e-13,
+              "end_resid": 8.488117991615956e-19,
+              "horizon": 2474337.6344283293,
+              "mass_drift": 3.6859404417555197e-13,
+              "min_concentration": -5.22024357439882e-54,
+              "min_final_signed_h": 0.9845339474310268,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.34690029998,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.0272672429655358e-13,
+              "end_resid": 7.209809616588758e-19,
+              "horizon": 2474337.6344283293,
+              "mass_drift": 3.3506530883187224e-13,
+              "min_concentration": -1.5930919111324523e-58,
+              "min_final_signed_h": 0.9845339474309184,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.34696094057,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128988e-12
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 2.461364445593972e-13,
+            "end_resid": 1.1234767079695222e-18,
+            "horizon": 2474337.634411046,
+            "mass_drift": 4.04343225568482e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.984533947453982,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 154467.34687589543,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.1083135237631723e-13,
+              "end_resid": 9.219697204873168e-19,
+              "horizon": 2474337.634411046,
+              "mass_drift": 3.3284486278262193e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9845339474540065,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.34687589543,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.461364445593972e-13,
+              "end_resid": 1.1234767079695222e-18,
+              "horizon": 2474337.634411046,
+              "mass_drift": 4.04343225568482e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.984533947453982,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.34684588638,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128988e-13
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 2.05613304160579e-13,
+            "end_resid": 1.0817561994141851e-18,
+            "horizon": 2474337.6344093177,
+            "mass_drift": 3.885780586188048e-13,
+            "min_concentration": -5.22024357439882e-54,
+            "min_final_signed_h": 0.9845339474564888,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 154467.34689651505,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.05613304160579e-13,
+              "end_resid": 8.441866187665054e-19,
+              "horizon": 2474337.6344093177,
+              "mass_drift": 3.0386804183990535e-13,
+              "min_concentration": -5.22024357439882e-54,
+              "min_final_signed_h": 0.9845339474565301,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.3468747506,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.0439205883349132e-13,
+              "end_resid": 1.0817561994141851e-18,
+              "horizon": 2474337.6344093177,
+              "mass_drift": 3.885780586188048e-13,
+              "min_concentration": -5.22024357439882e-54,
+              "min_final_signed_h": 0.9845339474564888,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 154467.34689651505,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128987e-14
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.001,
+      "k": 3,
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 2.020605904817785e-13,
+            "end_resid": 2.7011880687939638e-18,
+            "horizon": 3872741.7591579696,
+            "mass_drift": 2.8110846983508964e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9777513915275332,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 261937.15261240542,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.020605904817785e-13,
+              "end_resid": 1.7709341344719284e-18,
+              "horizon": 3872741.7591579696,
+              "mass_drift": 2.8110846983508964e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9777513915275332,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 261937.15261240542,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 1.546540673302843e-13,
+              "end_resid": 2.7011880687939638e-18,
+              "horizon": 3872741.7591579696,
+              "mass_drift": 2.0627943797535409e-13,
+              "min_concentration": -1.305060893599705e-54,
+              "min_final_signed_h": 0.9777513915278662,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 261937.15260865464,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 0.0001
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 2.877698079828406e-13,
+            "end_resid": 1.6502319394881906e-18,
+            "horizon": 3872354.504355135,
+            "mass_drift": 5.041522754822836e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9787313593678801,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 258378.62666463188,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 2.698397061351443e-13,
+              "end_resid": 1.6502319394881906e-18,
+              "horizon": 3872354.504355135,
+              "mass_drift": 4.618527782440651e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593678801,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.62666463188,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.877698079828406e-13,
+              "end_resid": 1.4139097472042408e-18,
+              "horizon": 3872354.504355135,
+              "mass_drift": 5.041522754822836e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593683269,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.62664081337,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096626e-12
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 3.2568392427378967e-13,
+            "end_resid": 1.7239238058993148e-18,
+            "horizon": 3872354.504346119,
+            "mass_drift": 5.679900993982301e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9787313593895783,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 258378.6266303993,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.2568392427378967e-13,
+              "end_resid": 1.7239238058993148e-18,
+              "horizon": 3872354.504346119,
+              "mass_drift": 5.679900993982301e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593895783,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.6266303993,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.7344793096517606e-13,
+              "end_resid": 1.6713018840511414e-18,
+              "horizon": 3872354.504346119,
+              "mass_drift": 5.146993942162226e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593896552,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.62650198545,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096625e-13
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 3.6509684164798273e-13,
+            "end_resid": 1.7042302898756523e-18,
+            "horizon": 3872354.5043452177,
+            "mass_drift": 6.252776074688882e-13,
+            "min_concentration": 0.0,
+            "min_final_signed_h": 0.9787313593915243,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 258378.6265806478,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.51163542688937e-13,
+              "end_resid": 1.3683817262893222e-18,
+              "horizon": 3872354.5043452177,
+              "mass_drift": 5.816458426011195e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593915243,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.626562753,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.6509684164798273e-13,
+              "end_resid": 1.7042302898756523e-18,
+              "horizon": 3872354.5043452177,
+              "mass_drift": 6.252776074688882e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9787313593920571,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 258378.6265806478,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.5870071517096624e-14
+        }
+      }
+    },
+    {
+      "channels": 224,
+      "duplicates": 0,
+      "eps": 0.0003,
+      "k": 3,
+      "starts_per_sign": 101,
+      "theta": {
+        "0.1eps": {
+          "adverse": {
+            "color_drift": 3.58268970046538e-13,
+            "end_resid": 3.6442533764432204e-18,
+            "horizon": 6281963.579240701,
+            "mass_drift": 6.044054146059352e-13,
+            "min_concentration": -8.031286451185948e-14,
+            "min_final_signed_h": 0.973664822005393,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 448510.62200249836,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.4505731605349865e-13,
+              "end_resid": 2.870594658244824e-18,
+              "horizon": 6281963.579240701,
+              "mass_drift": 6.044054146059352e-13,
+              "min_concentration": -8.031286451185948e-14,
+              "min_final_signed_h": 0.973664822005393,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 448510.62199432275,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.58268970046538e-13,
+              "end_resid": 3.6442533764432204e-18,
+              "horizon": 6281963.579240701,
+              "mass_drift": 5.282441151166495e-13,
+              "min_concentration": 0.0,
+              "min_final_signed_h": 0.9736648220067818,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 448510.62200249836,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 2.9999999999999997e-05
+        },
+        "100ck": {
+          "adverse": {
+            "color_drift": 3.9956926656259384e-13,
+            "end_resid": 3.4394831614444933e-18,
+            "horizon": 6281775.123165054,
+            "mass_drift": 6.403766406037903e-13,
+            "min_concentration": -1.5930919111324523e-58,
+            "min_final_signed_h": 0.9744683192052785,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 443331.9823100129,
+            "worst_name": "+:corner:2|2",
+            "worst_rate": "fixed-target:+1",
+            "worst_sign": 1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.9956926656259384e-13,
+              "end_resid": 3.365473657678149e-18,
+              "horizon": 6281775.123165054,
+              "mass_drift": 6.403766406037903e-13,
+              "min_concentration": -1.5930919111324523e-58,
+              "min_final_signed_h": 0.9744683192052785,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.982301642,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.845501612114276e-13,
+              "end_resid": 3.4394831614444933e-18,
+              "horizon": 6281775.123165054,
+              "mass_drift": 4.25659507641285e-13,
+              "min_concentration": -1.5930919111324523e-58,
+              "min_final_signed_h": 0.9744683192081857,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.9823100129,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128987e-13
+        },
+        "10ck": {
+          "adverse": {
+            "color_drift": 3.639311074721263e-13,
+            "end_resid": 4.306315503840863e-18,
+            "horizon": 6281775.123160668,
+            "mass_drift": 6.372680161348399e-13,
+            "min_concentration": -1.5930919111324523e-58,
+            "min_final_signed_h": 0.9744683192211404,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 443331.9822489172,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.5726976932437537e-13,
+              "end_resid": 4.306315503840863e-18,
+              "horizon": 6281775.123160668,
+              "mass_drift": 5.402345237826012e-13,
+              "min_concentration": -1.5930919111324523e-58,
+              "min_final_signed_h": 0.9744683192211404,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.9822489172,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 3.639311074721263e-13,
+              "end_resid": 3.1129519602779605e-18,
+              "horizon": 6281775.123160668,
+              "mass_drift": 6.372680161348399e-13,
+              "min_concentration": -1.5930919111324523e-58,
+              "min_final_signed_h": 0.9744683192221727,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.98219824885,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128987e-14
+        },
+        "ck": {
+          "adverse": {
+            "color_drift": 3.061439990403869e-13,
+            "end_resid": 3.558703048770536e-18,
+            "horizon": 6281775.123160228,
+            "mass_drift": 5.582201367815287e-13,
+            "min_concentration": -2.8698592549372254e-42,
+            "min_final_signed_h": 0.9744683192243699,
+            "passed": 404,
+            "total": 404,
+            "worst_entry": 443331.9821591677,
+            "worst_name": "-:corner:1|1",
+            "worst_rate": "fixed-target:-1",
+            "worst_sign": -1
+          },
+          "by_target": {
+            "-1": {
+              "color_drift": 3.061439990403869e-13,
+              "end_resid": 3.558703048770536e-18,
+              "horizon": 6281775.123160228,
+              "mass_drift": 5.582201367815287e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9744683192247123,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.9821591677,
+              "worst_name": "-:corner:1|1",
+              "worst_sign": -1
+            },
+            "1": {
+              "color_drift": 2.774447338538266e-13,
+              "end_resid": 2.9723444910337467e-18,
+              "horizon": 6281775.123160228,
+              "mass_drift": 4.931610675384945e-13,
+              "min_concentration": -2.8698592549372254e-42,
+              "min_final_signed_h": 0.9744683192243699,
+              "passed": 202,
+              "total": 202,
+              "worst_entry": 443331.9821469933,
+              "worst_name": "+:corner:2|2",
+              "worst_sign": 1
+            }
+          },
+          "theta": 7.761021455128986e-15
+        }
+      }
+    }
+  ],
+  "edge": {
+    "definition": "two fixed sign-mirrored assignments, each unchanged across both input signs",
+    "eps": 0.001,
+    "fail_by_target": {
+      "-1": {
+        "color_drift": 6.233846772119023e-12,
+        "end_resid": 1.2256021718337617e-11,
+        "horizon": 13176157.164250351,
+        "mass_drift": 9.402145728643063e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.24984050098365673,
+        "passed": 77,
+        "total": 154,
+        "worst_entry": Infinity,
+        "worst_name": "-:corner:0|0",
+        "worst_sign": -1
+      },
+      "1": {
+        "color_drift": 6.296629884161575e-12,
+        "end_resid": 1.1129430276674013e-11,
+        "horizon": 13176157.164250351,
+        "mass_drift": 9.080403096106693e-12,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.24984184242020036,
+        "passed": 77,
+        "total": 154,
+        "worst_entry": Infinity,
+        "worst_name": "+:corner:0|0",
+        "worst_sign": 1
+      }
+    },
+    "fail_stats": {
+      "color_drift": 6.296629884161575e-12,
+      "end_resid": 1.2256021718337617e-11,
+      "horizon": 13176157.164250351,
+      "mass_drift": 9.402145728643063e-12,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.24984050098365673,
+      "passed": 154,
+      "total": 308,
+      "worst_entry": Infinity,
+      "worst_name": "+:corner:0|0",
+      "worst_rate": "fixed-target:+1",
+      "worst_sign": 1
+    },
+    "k": 2,
+    "pass_by_target": {
+      "-1": {
+        "color_drift": 8.441469745434915e-12,
+        "end_resid": 9.567680415295543e-12,
+        "horizon": 13176157.163622065,
+        "mass_drift": 1.1936895916164758e-11,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.25001941456745136,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 1762417.876347873,
+        "worst_name": "-:corner:1|1",
+        "worst_sign": -1
+      },
+      "1": {
+        "color_drift": 7.150391390098321e-12,
+        "end_resid": 1.4626133637563044e-11,
+        "horizon": 13176157.163622065,
+        "mass_drift": 1.102740121439183e-11,
+        "min_concentration": 0.0,
+        "min_final_signed_h": 0.2500287663488729,
+        "passed": 154,
+        "total": 154,
+        "worst_entry": 1762913.3491139847,
+        "worst_name": "+:corner:2|2",
+        "worst_sign": 1
+      }
+    },
+    "pass_stats": {
+      "color_drift": 8.441469745434915e-12,
+      "end_resid": 1.4626133637563044e-11,
+      "horizon": 13176157.163622065,
+      "mass_drift": 1.1936895916164758e-11,
+      "min_concentration": 0.0,
+      "min_final_signed_h": 0.25001941456745136,
+      "passed": 308,
+      "total": 308,
+      "worst_entry": 1762913.3491139847,
+      "worst_name": "+:corner:2|2",
+      "worst_rate": "fixed-target:+1",
+      "worst_sign": 1
+    },
+    "ratio_fail": 0.9997216224670413,
+    "ratio_pass": 0.9997215747833254,
+    "theta_fail": 0.0009997216224670413,
+    "theta_pass": 0.0009997215747833254
+  }
+}
