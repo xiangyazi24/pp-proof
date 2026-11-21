@@ -1,0 +1,35 @@
+{
+  "definition": "paired sign-mirrored aligned adverse assignment over the full start panel",
+  "eps": 0.001,
+  "fail_stats": {
+    "color_drift": 4.769906691848291e-12,
+    "end_resid": 8.29561246085131e-12,
+    "horizon": 13176157.164250351,
+    "mass_drift": 7.322142892007832e-12,
+    "min_concentration": 0.0,
+    "min_final_signed_h": 0.24984975985777091,
+    "passed": 0,
+    "total": 154,
+    "worst_entry": Infinity,
+    "worst_name": "+:corner:0|0",
+    "worst_sign": 1
+  },
+  "k": 2,
+  "pass_stats": {
+    "color_drift": 6.391553952767026e-12,
+    "end_resid": 1.2246776943253268e-11,
+    "horizon": 13176157.163622065,
+    "mass_drift": 1.2048140263232199e-11,
+    "min_concentration": 0.0,
+    "min_final_signed_h": 0.2500263860934049,
+    "passed": 154,
+    "total": 154,
+    "worst_entry": 1762409.624645528,
+    "worst_name": "-:corner:1|1",
+    "worst_sign": -1
+  },
+  "ratio_fail": 0.9997216224670413,
+  "ratio_pass": 0.9997215747833254,
+  "theta_fail": 0.0009997216224670413,
+  "theta_pass": 0.0009997215747833254
+}
