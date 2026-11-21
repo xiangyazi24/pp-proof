@@ -1,0 +1,72 @@
+name: Q10130 split random sweep
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/q10130-split-temp.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  modes:
+    strategy:
+      fail-fast: false
+      max-parallel: 48
+      matrix:
+        k: [1, 2, 3]
+        ei: [0, 1, 2, 3]
+        mi: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy scipy
+      - run: |
+          curl -fsSL https://raw.githubusercontent.com/xiangyazi24/SSExactMajority/scratch/q10130/run.py -o /tmp/run.py
+          curl -fsSL https://raw.githubusercontent.com/xiangyazi24/SSExactMajority/scratch/q10130/split.py -o /tmp/split.py
+      - run: |
+          mkdir -p result
+          cd /tmp
+          python split.py mode '${{ matrix.k }}' '${{ matrix.ei }}' '${{ matrix.mi }}' "$GITHUB_WORKSPACE/result/split-${{ matrix.k }}-${{ matrix.ei }}-${{ matrix.mi }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: split-${{ matrix.k }}-${{ matrix.ei }}-${{ matrix.mi }}
+          path: result/split-${{ matrix.k }}-${{ matrix.ei }}-${{ matrix.mi }}.json
+          retention-days: 2
+
+  aggregate:
+    needs: modes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy scipy
+      - run: |
+          curl -fsSL https://raw.githubusercontent.com/xiangyazi24/SSExactMajority/scratch/q10130/run.py -o /tmp/run.py
+          curl -fsSL https://raw.githubusercontent.com/xiangyazi24/SSExactMajority/scratch/q10130/split.py -o /tmp/split.py
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: 'split-*'
+          path: result
+          merge-multiple: true
+      - run: |
+          test $(find result -name 'split-*.json' | wc -l) -eq 48
+          mkdir -p q10130
+          cd /tmp
+          python split.py aggregate "$GITHUB_WORKSPACE/result" "$GITHUB_WORKSPACE/q10130/split-summary.json" "$GITHUB_WORKSPACE/q10130/split-report.txt"
+          cat "$GITHUB_WORKSPACE/q10130/split-report.txt"
+      - run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git pull --rebase origin main
+          git add q10130/split-summary.json q10130/split-report.txt
+          git commit -m 'Record split Q10130 random sweep'
+          git push origin HEAD:main
